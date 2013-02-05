@@ -15,6 +15,11 @@ src: url('HUD.ttf') format('truetype');
 	z-index: 0;
 	background-color:grey;
 	background-image:url('/img/map.jpg');
+	-webkit-user-select: none; /* Safari, Chrome */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE */
+    user-select: none; /* CSS3 */
 }
 .player{
 	width:30px;/*Changer aussi characterManager et gameMap si on change ça*/
