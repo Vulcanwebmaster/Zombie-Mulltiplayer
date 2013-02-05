@@ -1,0 +1,141 @@
+@font-face
+{
+font-family: 'HUDFond';
+src: url('HUD.ttf') format('truetype');
+}
+
+
+/****************  CSS MAP **************** */
+#map{
+	width:1200px;/*Changer aussi ServerMap et characterManager si on change ces 2 là*/
+	height: 700px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index: 0;
+	background-color:grey;
+	background-image:url('/img/map.jpg');
+}
+.player{
+	width:30px;/*Changer aussi characterManager et gameMap si on change ça*/
+	height: 30px;
+	z-index: 10;
+	background-image: url('/img/players.png');
+	background-position:-10px -60px;/*10 60 ... etc*/ 
+	background-repeat: no-repeat;
+}
+.map-item{
+	position:absolute;
+	top:0px;
+	left:0px;
+	-webkit-user-select: none; /* Safari, Chrome */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE */
+    user-select: none; /* CSS3 */
+}
+.zombie{
+	width: 30px;/*Changer aussi characterManager et gameMap si on change ça*/
+	height: 30px;
+	z-index: 11;
+	background-image: url('/img/zombies.png');
+	background-position:-10px -10px; /*10, 60, etc*/
+	background-repeat: no-repeat;
+}
+.sang{
+	z-index: 1;
+	width:25px;
+	height: 25px;
+	background-image: url('/img/sang.png');
+	background-position:-10px -10px; /*10, 60, etc*/
+	background-repeat: no-repeat;
+}
+
+/****************  CSS HUD  ***************** */
+#hud{
+	background-color:rgba(0,0,0,0.6);
+	width: 300px;
+	height: 40px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	color:rgb(162,13,17);
+	border-bottom-right-radius: 10px;
+}
+#hud p{
+	position:absolute;top:-40px;
+	font-family: "HUDFond",courier;
+	font-size: 45px;
+	width:80px;
+	text-align: right;
+	background-position: left top;
+	background-size: 30px;
+	background-repeat: no-repeat;
+}
+#joueur-life{
+	background-image:url('/img/heart.png');
+	left:0px;
+	color:rgb(70,128,51);
+}
+#joueur-kills{
+	background-image:url('/img/viseur.png');
+	left:100px;
+}
+#vague-courante{
+	background-image:url('/img/wave.png');
+	left:200px;
+}
+#debug{
+	position:absolute;
+	top:0px;right:0px;
+	width:150px;
+	color:white;
+	background-color:rgba(0,0,0,0.5);
+	display: none;
+}
+
+/****************  CSS TCHAT **************** */
+
+#tchat{
+	background-color:rgba(0,0,0,0.4);
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:300px;
+	height: 150px;
+	overflow: hidden;
+	color:white;
+	font-family: courier;
+	font-size:12px;
+	border-top-right-radius: 20px;
+}
+#tchat ul{
+	list-style: none;
+	padding:5px;
+	margin:0;
+	position:absolute;
+	bottom:12px;
+}
+#tchat p.input{
+	background-color:rgba(0,0,0,0.2);
+	position:absolute;
+	bottom:0px;
+	padding:0px 0px 2px 5px;
+	margin:0px;
+	color:white;
+	border:none;
+}
+
+#tchat ul li{
+	margin:0;
+	padding: 0;
+}
+#tchat ul li.tchat-admin{
+	color:rgb(200,50,200);
+}
+#tchat ul li.tchat-game-event{
+	color:rgb(210,117,16);
+}
+#tchat ul li.tchat-game-info{
+	color:rgb(50,110,190);
+}

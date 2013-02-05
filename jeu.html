@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jeu de zombies</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/game.css">
+	<script src ="/socket.io/socket.io.js"></script>
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/GameCore.class.js"></script>
+	<script type="text/javascript" src="/js/GameMap.class.js"></script>
+	<meta charset="utf-8"/>
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1>ZOMBIZ ! Team Survival</h1>
+			<h2>Zombies Massacre, multiplayer team survival</h2>
+		</header>
+		<div id="plateau">
+			<div id="map">
+			</div><!-- div#map -->
+
+			<div id="tchat">
+				<ul>
+				</ul>
+				<!--<p class="input">Appuyer sur Y pour envoyer un message</p>-->
+			</div>
+
+			<div id="hud">
+				<p id="joueur-life">100</p>
+				<p id="joueur-kills">0</p>
+				<p id="vague-courante">0</p>
+			</div>
+			<div id="debug"></div>
+
+			<div id="inscription">
+				<div>
+					<h2>Choisissez un pseudo</h2>
+					<input id="champs-pseudo" type="text"/>
+					<button id="button-inscription">Valider</button><br/>
+					<h3>Comment jouer ?</h3>
+					<ul>
+						<li>Utilisez Z,Q,S,D ou les flèches directionnelles pour vous déplacer</li>
+						<li>Clic gauche pour tirer (vous pouvez rester cliqué, chaque arme a sa propre cadence de tir)</li>
+						<li>Touche CTRL pour poser une mine ( 1 vague survécue = +1 mine ) (A VENIR)</li>
+						<li>Survivez le plus longtemps possible !</li>
+					</ul>
+				</div>
+			</div>
+
+		</div><!-- div#plateau-->
+		<footer>
+			<p id="warning-navigateur">
+				Si le jeu ne s'affiche pas correctement, soit votre navigateur n'est pas compatible, soit vous avez désactivé javascript.<br/>
+				Pour éviter tout problème, utilisez <a href="http://www.google.fr/intl/fr/chrome/browser/">Google Chrome</a> ! (ou un firefox à jour).
+			</p>
+			<p id="copyright">Copyright 2013 Mikaël B.</p>
+			<p id="version">Version 0.5.5 alpha (20130205)</p>
+		</footer>
+	</div><!-- div#wrapper -->
+</body>
+<!-- Script servant à forcer le chargement des sprites-->
+<script>
+var preloadImage1 = new Image(); 
+preloadImage1.src = 'img/players.png'; 
+var preloadImage2 = new Image(); 
+preloadImage2.src = 'img/zombies.png'; 
+</script>
+</html>

@@ -1,0 +1,471 @@
+
+/*Classe qui gère tout les calculs sur la map*/
+module.exports = function ServerMap(io,characterManager)
+{
+   var listeJoueurs;
+   var listeZombies;
+   var nbJoueurs;
+   var nbZombies;
+   var io;
+   var widthMap;
+   var heightMap;
+   var GAME_SPEED;
+   var PAS;
+   var isRunning;
+   var DEFAULT_ZOMBIE_SPEED;
+
+   this.addJoueur=function(pseudo){
+   		var newJoueur=characterManager.creationJoueur(this.nbJoueurs++,pseudo);
+   		this.listeJoueurs[newJoueur.id]=newJoueur;
+   		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
+   }
+   this.removeJoueur=function(id){
+      delete this.listeJoueurs[id];
+   }
+
+   this.addZombie=function(type){
+      //Zombie par défaut (type 0 et 1)
+      var newZombie=characterManager.creationZombie(this.nbZombies++,type);
+      this.moveToBorder(newZombie);
+      this.listeZombies[newZombie.id]=newZombie;
+   }
+
+   this.moveToBorder=function(zombie){
+      //Tout d'abord un premier random pour savoir
+      //si il sera au nord, sud est, ouest.
+      var position=parseInt(Math.random()*4);
+      if(position==0){
+         zombie.x=parseInt(Math.random()*(this.widthMap-zombie.taille/2));
+         zombie.y=0;
+      }
+      else if(position==1){
+         zombie.x=parseInt(Math.random()*(this.widthMap-zombie.taille/2));
+         zombie.y=this.heightMap - zombie.taille/2;
+      }
+      else if(position==2){
+         zombie.x=0;
+         zombie.y=parseInt(Math.random()*(this.heightMap-zombie.taille/2));
+      }
+      else if(position==3){
+         zombie.x=this.widthMap - zombie.taille/2;
+         zombie.y=parseInt(Math.random()*(this.heightMap-zombie.taille/2));
+      }
+      //De base le zombie vise au milieu (pour pas qu'il se bouffe le mur)
+      zombie.angle=Math.atan2(this.heightMap/2 - zombie.y , this.widthMap/2 - zombie.x )*180/Math.PI;
+   }
+
+   this.spawnWave=function(id){
+      console.log('Lancement de la vague ' + id);
+      var _this=this;
+      setTimeout(function(){
+         _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'numero_vague', value: _this.currentWave};
+         _this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
+         //Pour le moment on fait juste "numéro de la vague * 10 +1 mais faudra faire un switch plus tard".
+         setTimeout(function(){
+            _this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
+            var jSONVague=characterManager.getWave(id);
+            for(var zombieType in jSONVague){
+               for(var i=0;i<jSONVague[zombieType].nombre;i++){
+                  _this.addZombie(zombieType);
+               }
+            }
+         },7000);         
+      },3000);
+
+   }
+
+   this.updateJoueurMouvement=function(datas){
+	   	this.listeJoueurs[datas.id].directions.gauche=datas.directions.gauche;
+	   	this.listeJoueurs[datas.id].directions.droite=datas.directions.droite;
+	   	this.listeJoueurs[datas.id].directions.haut=datas.directions.haut;
+	   	this.listeJoueurs[datas.id].directions.bas=datas.directions.bas;
+   }
+   this.updateJoueurAngle=function(datas){
+      this.listeJoueurs[datas.id].angle=datas.angle;
+   }
+
+   this.update=function(){
+      var _this=this;
+      if(this.isRunning)
+       setTimeout(function(){_this.update();},_this.GAME_SPEED);
+      else
+         return;//ajout de cette sécurité si la partie se finit alors qu'un timeOut est lancé      
+
+		//Update des joueurs en fonction des directions qu'ils appuyent
+		for(var idPerso in this.listeJoueurs){
+         var persoTmp=this.listeJoueurs[idPerso];
+         if(persoTmp.alive){
+            this.move(persoTmp, 'humain');
+            this.validatePositionToMapLimits(persoTmp);
+            this.calculNextEtapeFire(persoTmp);
+         }
+		}
+      for(var idZombie in this.listeZombies){
+         var zombieTmp=this.listeZombies[idZombie];
+         if(zombieTmp.alive){
+            this.calculNextEtapeIA(zombieTmp);
+            this.move(zombieTmp, 'zombie');
+            this.validatePositionToMapLimits(zombieTmp);
+         }
+      }
+
+		this.io.sockets.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
+                                              'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
+                                              'listeTemporaryItems': this.temporaryDisplayItem});
+      //On réinitialise les item temporaires.
+      this.temporaryDisplayItem={};
+      this.numberTmpItem=0;	     
+   }  
+	  
+   this.validatePositionToMapLimits=function(entite){
+      if(entite.x<0)
+         entite.x=0;
+      if(entite.x>this.widthMap - entite.taille)
+         entite.x=this.widthMap  - entite.taille;
+
+      if(entite.y<0)
+         entite.y=0;
+      if(entite.y>this.heightMap - entite.taille)
+         entite.y=this.heightMap  - entite.taille; 
+   }
+
+   this.calculNextEtapeIA=function(zombie){
+
+      if(zombie.alive==false)
+         return;
+
+      var joueurLePlusProche=null;
+      var distancePlusCourte=this.DIAGONALE_MAP;
+      //D'abord on cherche le joueur le plus proche
+      for(var idPerso in this.listeJoueurs){
+         var persoTmp=this.listeJoueurs[idPerso];
+         if(persoTmp.alive){
+            var distanceTmp=this.calculDistanceBetween(persoTmp, zombie);
+            if(distanceTmp < distancePlusCourte){
+               joueurLePlusProche=persoTmp;
+               distancePlusCourte=distanceTmp;
+            }
+         }
+      }
+      //Dans tous les cas on décompte le fait qu'il puisse mordre à nouveau
+       zombie.attaque.compteAReboursAttaque=Math.max(0,zombie.attaque.compteAReboursAttaque-1);
+      //Si un personnage passe dans son champs de vision, il se met à courir
+      if(distancePlusCourte< zombie.distanceVision){
+         zombie.aware=true;
+         zombie.speed=zombie.maxSpeed;
+      }
+
+      //on test si on a bien un joueur proche (cas où 0 joueurs)
+      if(joueurLePlusProche!=null && zombie.aware==true){
+
+         if(distancePlusCourte < joueurLePlusProche.taille/2 + zombie.taille/2){
+            if(zombie.attaque.compteAReboursAttaque ==0){
+               joueurLePlusProche.life-=zombie.attaque.degats;
+               if(joueurLePlusProche.life<=0){
+                  joueurLePlusProche.alive=false;
+                  this.io.sockets.emit('player_die', joueurLePlusProche);
+                  this.testFinPartie();
+               }
+               else{
+                  this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang',x:parseInt(joueurLePlusProche.x), y:parseInt(joueurLePlusProche.y)};
+                  this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurLePlusProche.id, life:joueurLePlusProche.life};
+               }
+               zombie.attaque.compteAReboursAttaque=zombie.attaque.delaiMax;
+            }
+         }
+         /*Mise à jour de l'angle avec lequel afficher le zombie*/
+         //Cet angle est utilisé pour avancer, donc important :)
+         zombie.angle=Math.atan2(joueurLePlusProche.y - zombie.y , joueurLePlusProche.x - zombie.x )*180/Math.PI;
+      }
+      else{
+         zombie.angle = Math.random() < 0.5 ? zombie.angle+1 : zombie.angle-1;
+      }
+
+   }
+
+   this.calculDistanceBetween=function(ent1, ent2){
+      return Math.sqrt(Math.pow(ent1.x-ent2.x,2)+Math.pow(ent1.y-ent2.y,2));
+   }
+
+   this.stopFire=function(datas){
+      this.listeJoueurs[datas.id].isFiring=false;
+   }
+   this.fire=function(datas){
+      this.listeJoueurs[datas.id].isFiring=true;
+      this.listeJoueurs[datas.id].target={targetX:datas.targetX,targetY:datas.targetY};
+   }
+
+   this.calculNextEtapeFire=function(joueur){
+      //Dans tous les cas on fait le decompte du timer
+      joueur.attaque.compteAReboursAttaque=Math.max(0,joueur.attaque.compteAReboursAttaque-1);
+      if(!joueur.isFiring)
+         return;
+
+      var joueurX=joueur.x + joueur.taille/2;
+      var joueurY=joueur.y + joueur.taille/2;
+      var targetX=joueur.target.targetX;
+      var targetY=joueur.target.targetY;
+
+
+      //On calcul la droite entre la target et le joueur
+      //Test du cas où le tir est vertical !! (probleme de division par zéro)
+      if(targetX - joueurX < joueur.taille/1.3 && targetX - joueurX > -joueur.taille/1.3 ){
+         // x=M
+         var M=joueurX;
+         var zombiePlusProche=null;
+         var distancePlusCourte=this.DIAGONALE_MAP;
+
+         var viseEnHaut=false;
+         if(targetY-joueurY<0)
+            viseEnHaut=true;
+
+         for(var idZombie in this.listeZombies){
+            var zombieTmp=this.listeZombies[idZombie];
+            var distanceTmp=this.calculDistanceBetween(joueur,zombieTmp);
+            if(zombieTmp.alive
+               && zombieTmp.x +zombieTmp.taille/2 > M-zombieTmp.taille/2 
+               && zombieTmp.x +zombieTmp.taille/2 < M+zombieTmp.taille/2
+               &&  distanceTmp < distancePlusCourte){
+               if((viseEnHaut && joueurY > zombieTmp.y ) || (!viseEnHaut && joueurY < zombieTmp.y) ){
+                  zombiePlusProche=zombieTmp;
+                  distancePlusCourte=distanceTmp;
+               }
+            }
+         }
+      }
+      else{
+         //y=ax+b
+         var a=(targetY - joueurY)/(targetX - joueurX);
+         var b=joueurY - ( a * joueurX);
+         //console.log('Droite : y=' + a + 'x + ' + b);
+         //On regarde si y'a des zombies sur cette droite
+         //et on sauvegarde le plus proche
+         var zombiePlusProche=null;
+         var distancePlusCourte=this.DIAGONALE_MAP;
+
+         var viseADroite=false;
+         if(targetX-joueurX>0)
+            viseADroite=true;
+
+         for(var idZombie in this.listeZombies){
+            var zombieTmp=this.listeZombies[idZombie];
+            var distanceTmp=this.calculDistanceBetween(joueur,zombieTmp);
+            if( zombieTmp.alive
+                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) > b-zombieTmp.taille/2
+                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) < b+zombieTmp.taille/2
+                && distanceTmp < distancePlusCourte){
+                  //sécurité pour pas viser en arrière
+                  if((viseADroite && zombieTmp.x > joueurX) || (!viseADroite && zombieTmp.x < joueurX)){
+                     zombiePlusProche=zombieTmp;
+                     distancePlusCourte=distanceTmp;
+               }
+            }
+         }
+      }
+      //Si on peut tirer
+      if(joueur.attaque.compteAReboursAttaque==0){
+         //On enlève la vie au zombie le plus proche
+         if(zombiePlusProche!=null){
+            zombiePlusProche.life-=joueur.attaque.degats;
+            zombiePlusProche.aware=true;
+            zombiePlusProche.speed=zombiePlusProche.maxSpeed;
+            if(zombiePlusProche.life<=0){
+               zombiePlusProche.life=0;
+               zombiePlusProche.alive=false;
+               joueur.kills++;
+               this.totalZombiesKilled++;
+               this.checkWeaponUpdate(joueur);
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
+            }
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang', x:parseInt(zombiePlusProche.x),y:parseInt(zombiePlusProche.y)};
+            //On balance l'event d'affichage du tir
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt(zombiePlusProche.y+zombiePlusProche.taille/2)};
+            this.testFinVague();
+         }
+         else{
+             //On balance l'event d'affichage du tir
+             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(targetX), targetY:parseInt(targetY)};
+          }
+          joueur.attaque.compteAReboursAttaque=joueur.attaque.delaiMax;
+       }
+   }
+
+   this.movePlayerTarget=function(entite,deplacement){
+         if(entite.directions.haut){entite.target.targetY-=deplacement;}
+         else if(entite.directions.bas){entite.target.targetY+=deplacement;}
+         if(entite.directions.gauche){entite.target.targetX-=deplacement;}
+         else if(entite.directions.droite){entite.target.targetX+=deplacement;}
+   }
+
+   this.move=function(entite, type){
+      if(type=='humain'){
+         //Cas des diagonales (pour pas avancer trop en diagonales)
+         var countDirection=0;
+         for(var direction in entite.directions)
+            if(entite.directions[direction])
+               countDirection++;
+         //si on a plus de 1 appuyé, on fait une diagonale
+         var deplacement=entite.speed;
+         if(countDirection>1){
+            deplacement=this.COSINUS_45*entite.speed;
+         }
+         if(entite.directions.haut){entite.y-=deplacement}
+         else if(entite.directions.bas){entite.y+=deplacement}
+         if(entite.directions.gauche){entite.x-=deplacement}
+         else if(entite.directions.droite){entite.x+=deplacement}
+
+         //console.log("Vitesse : " + entite.speed + '. Distance : ' + this.calculDistanceBetween(entiteTmp,entite));
+         this.movePlayerTarget(entite,deplacement);
+      }
+      else{
+         //Déplacement par rapport à leur angle.
+         entite.x+=Math.cos(Math.PI * entite.angle / 180)*entite.speed;
+         entite.y+=Math.sin(Math.PI * entite.angle / 180)*entite.speed;
+      }
+   }
+
+   this.checkWeaponUpdate=function(joueur){
+      if(joueur.kills==25){
+         joueur.attaque=characterManager.creationArme(1);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
+      }
+      if(joueur.kills==50){
+         joueur.attaque=characterManager.creationArme(2);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
+      }
+      if(joueur.kills==100){
+         joueur.attaque=characterManager.creationArme(3);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
+      }
+      if(joueur.kills==250){
+         joueur.attaque=characterManager.creationArme(4);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
+      }
+      if(joueur.kills==500){
+         joueur.attaque=characterManager.creationArme(5);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
+      }
+      if(joueur.kills==1000){
+         joueur.attaque=characterManager.creationArme(6);
+         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});  
+      }
+   }
+
+   this.start=function(){
+      if(!this.isRunning){
+         this.isRunning=true;
+         if(this.currentWave==-1)
+            this.spawnWave(++this.currentWave);
+   		this.update();
+      }
+	}
+   this.stop=function(){
+      this.isRunning=false;
+   }
+
+   this.testFinVague=function(){
+      var fin=true;
+      for(var idZombie in this.listeZombies){
+         if(this.listeZombies[idZombie].alive==true){
+            fin=false;
+            break;
+         }
+      }
+      if(fin){
+         this.io.sockets.emit('broadcast_msg', {'message':'Vague ' + this.currentWave + ' terminée. (Total : ' + this.totalZombiesKilled + ' zombies)'
+                                                , 'class':'tchat-game-event'});
+         this.io.sockets.emit('clear_map_full');
+         this.listeZombies={};
+         this.nbZombies=0;
+
+         //On fait revivre les morts
+         //et on regarde le joueur qui a le plus de kill pour lui donner un bonus
+         var joueurMeneur=null;
+         var maxKills=0;
+         for(var idPerso in this.listeJoueurs){
+            //si le joueur est mort
+            if(!this.listeJoueurs[idPerso].alive){
+               this.listeJoueurs[idPerso].alive=true;
+               this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
+               this.io.sockets.emit('player_revive', this.listeJoueurs[idPerso]);
+            }  
+            else{
+               //Sinon il gagne un bonus
+               this.listeJoueurs[idPerso].life+=25;
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:this.listeJoueurs[idPerso].id, life:this.listeJoueurs[idPerso].life};
+            }
+            //comparaison du nombre de kills
+            if(this.listeJoueurs[idPerso].kills > maxKills){
+               joueurMeneur=this.listeJoueurs[idPerso];
+               maxKills=joueurMeneur.kills;
+            }
+         }
+
+         //Assignation du bonus Zombiz Slayer
+         if(joueurMeneur!=null){
+            this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer en menant avec ' + joueurMeneur.kills + ' kills.' , 'class':'tchat-game-info'});
+            joueurMeneur.life+=25;
+            joueurMeneur.speed+=0.1;
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurMeneur.id, life:joueurMeneur.life};
+         }
+         this.spawnWave(++this.currentWave);
+      }
+   }
+
+   this.testFinPartie=function(){
+      var fin=true;
+      for(var idJoueur in this.listeJoueurs){
+         if(this.listeJoueurs[idJoueur].alive==true){
+            fin=false;
+            break;
+         }
+      }
+      if(fin){
+         this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
+         this.stop();
+         console.log("La partie est terminée");
+         for(var idPerso in this.listeJoueurs){
+            this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
+         }
+
+         //On relance une partie
+         var _this=this;
+         setTimeout(function(){
+            _this.io.sockets.emit('clear_map_full');
+            _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Pourrez-vous mieux faire? Je vous donne une nouvelle chance !', 'class':'tchat-admin'});
+            _this.currentWave=-1;
+            _this.nbZombies=0;
+            _this.listeZombies={};
+            //On fait revivre les morts
+            for(var idPerso in _this.listeJoueurs){
+               if(!_this.listeJoueurs[idPerso].alive){
+                  _this.listeJoueurs[idPerso].alive=true;
+                  _this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
+                  _this.listeJoueurs[idPerso].attaque=characterManager.creationArme(0);
+                  _this.listeJoueurs[idPerso].kills=0;
+                  _this.listeJoueurs[idPerso].directions={haut:false,bas:false,gauche:false,droite:false};
+                  _this.listeJoueurs[idPerso].isFiring=false;
+                  _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
+                  _this.totalZombiesKilled=0;
+               }           
+            }
+            _this.start();
+         },10000);
+      }
+   }
+   this.widthMap=1200;
+   this.heightMap=700;
+   this.DIAGONALE_MAP=Math.sqrt(Math.pow(this.heightMap,2)+Math.pow(this.widthMap,2));
+   this.io=io;//io passé en argument du constructeur
+   this.GAME_SPEED=50;//ms
+   this.nbJoueurs=0;
+   this.listeJoueurs={};
+   this.nbZombies=0;
+   this.listeZombies={};
+   this.numberTmpItem=0;
+   this.temporaryDisplayItem={}; //such as blood, shots, ...
+   this.isRunning=false;
+   this.currentWave=-1;
+   this.totalZombiesKilled=0;
+   this.COSINUS_45=Math.cos(Math.PI * 45 / 180 );
+}

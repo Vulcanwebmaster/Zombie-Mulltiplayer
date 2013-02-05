@@ -1,0 +1,91 @@
+@font-face
+{
+font-family: 'headerFont';
+src: url('zombie.ttf') format('truetype');
+}
+
+body{
+	-webkit-user-select: none; /* Safari, Chrome */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE */
+    user-select: none; /* CSS3 */
+    background-color:black;
+    background-image: url('/img/background.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+	height: 100%;
+}
+
+#wrapper{
+	width:960px;padding:30px;
+	min-height: 100%;
+	background-color:rgba(0,0,0,0.5);
+	margin:auto;
+	box-shadow: 0px 0px 50px black, 0px 0px 30px black;
+}
+
+#plateau{
+	width:900px;height:500px;
+	margin:auto;
+	border:1px solid black;
+	overflow: hidden;position:relative;
+	background-color:black;
+}
+#plateau:hover{
+	cursor: url('/img/viseur.png') 24 24,pointer;
+}
+
+#inscription{
+	background-color:black;
+	color:white;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:900px;
+	height: 500px;
+}
+#inscription div{
+	margin:auto;
+	width:60%;
+	margin-top: 150px;
+	text-align: center;
+}
+#inscription div ul{
+	text-align: left;
+	color:grey;
+}
+
+h1{
+	font-family: 'headerFont', courier;
+	font-size: 70px;
+	color:white;
+	color:rgb(162,13,17);
+	padding:0px;
+	margin:0px;
+	text-align: center;
+}
+h2{
+	color:grey;
+	text-align: center;
+	font-size: 30px;
+	margin:0px;
+}
+
+footer{
+	color:rgb(200,200,200);
+	font-size: 11px;
+	font-family: courier;
+}
+#warning-navigateur{
+	/*background-color:rgb(210,150,20);*/
+	background-color: rgb(30,80,150);
+	border-radius: 10px;
+	padding:10px;
+}
+#copyright{
+	text-align: right;
+}
+#version{
+	text-align: right;
+}
