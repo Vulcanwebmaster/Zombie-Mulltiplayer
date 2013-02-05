@@ -35,16 +35,16 @@ function GameMap(){
 			player=document.getElementById('player'+gameCore.playerId);
 			var angle=Math.round(Math.atan2(relativeY,relativeX)*180/Math.PI,0);
 			gameMap.rotate(player,angle);		
-			if(angle < gameMap.lastDegreeSent - 10 || angle>gameMap.lastDegreeSent + 10){
+			if(angle < gameMap.lastDegreeSent - 1 || angle>gameMap.lastDegreeSent + 1){
 				gameCore.updateAngle(angle);
 				gameMap.lastDegreeSent=angle;
-			}
-			//Si on est en train de tirer, alors on met la position target a jour sur le server
-			if(gameMap.isFiring){
-				offset=$('#map').offset();
-				var viseX = (e.pageX - offset.left);
-				var viseY = (e.pageY - offset.top);
-				gameCore.fire(viseX,viseY);
+				//Si on est en train de tirer, alors on met la position target a jour sur le server
+				if(gameMap.isFiring){
+					offset=$('#map').offset();
+					var viseX = (e.pageX - offset.left);
+					var viseY = (e.pageY - offset.top);
+					gameCore.fire(viseX,viseY);
+				}
 			}
 		})
 		$('#map').focus();

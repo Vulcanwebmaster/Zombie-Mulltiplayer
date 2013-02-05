@@ -4,12 +4,10 @@
 - ajouter un système de mines !! (KABOUM)
 	- ajouter un zombie explosif du coup si je fais les mines pour les hommes :)
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
-- tester si tous les joueurs partent (remettre à zero ?)
-- ajouter une portée max
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - ajouter un coefficient pour multiplier les vagues quand y'a plusieurs de joueurs
 - attention à si le monstre est collé sur le joueur. (ça a l'air de marcher quand même)
-- remettre deplacement et tir à zero si un joueur meurt. (pour le respawn)
+- corriger les trajectoires pour éviter les amas de zombies
 
 Idées :
 
@@ -21,10 +19,19 @@ Idées :
 - zombifier les morts ? (ou totu du moins pop un zombie)
 - faire un système où on choisi l'arme qu'on veut utiliser ?
 - Agrandir un peu la map :) (là on la voit déjà presque entière...)
-
+- friendly fire ?
 
 
 *************** PATCH NOTE **************************
+
+--- v 0.5.6 alpha (20130205)
+	Nouveautés :
+		Ajout d'une portée maximum sur les armes
+		Ajout de la connexion en appuyant sur "entrée" (dédicasse à Flodess =) )
+	Corrections :
+		Si tous les joueurs partent d'une partie, le serveur se réinitialise en vague 0
+		Remise à zéro des variables de déplacements quand un joueur meurt (pour éviter qu'il tire/bouge au respawn)
+
 --- v 0.5.5 alpha (20130205)
 	Nouveautés :
 		Affichage de la vague courante

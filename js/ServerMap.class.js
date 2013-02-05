@@ -21,6 +21,16 @@ module.exports = function ServerMap(io,characterManager)
    }
    this.removeJoueur=function(id){
       delete this.listeJoueurs[id];
+      var ilResteDesJoueurs=false;
+      for(var id in this.listeJoueurs)
+         ilResteDesJoueurs=true;
+      if(!ilResteDesJoueurs){
+         console.log('Tous les joueurs ont quitté la partie, on met le serveur en veille.')
+         this.stop();
+         this.currentWave=-1;
+         this.nbZombies=0;
+         this.listeZombies={};
+      }
    }
 
    this.addZombie=function(type){
@@ -62,6 +72,8 @@ module.exports = function ServerMap(io,characterManager)
          _this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
          //Pour le moment on fait juste "numéro de la vague * 10 +1 mais faudra faire un switch plus tard".
          setTimeout(function(){
+            if(!_this.isRunning)
+               return;
             _this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
             var jSONVague=characterManager.getWave(id);
             for(var zombieType in jSONVague){
@@ -163,6 +175,8 @@ module.exports = function ServerMap(io,characterManager)
                joueurLePlusProche.life-=zombie.attaque.degats;
                if(joueurLePlusProche.life<=0){
                   joueurLePlusProche.alive=false;
+                  joueurLePlusProche.isFiring=false;
+                  joueurLePlusProche.directions={haut:false,bas:false,gauche:false,droite:false};
                   this.io.sockets.emit('player_die', joueurLePlusProche);
                   this.testFinPartie();
                }
@@ -225,7 +239,8 @@ module.exports = function ServerMap(io,characterManager)
             if(zombieTmp.alive
                && zombieTmp.x +zombieTmp.taille/2 > M-zombieTmp.taille/2 
                && zombieTmp.x +zombieTmp.taille/2 < M+zombieTmp.taille/2
-               &&  distanceTmp < distancePlusCourte){
+               &&  distanceTmp < distancePlusCourte
+               && distanceTmp < joueur.attaque.portee){
                if((viseEnHaut && joueurY > zombieTmp.y ) || (!viseEnHaut && joueurY < zombieTmp.y) ){
                   zombiePlusProche=zombieTmp;
                   distancePlusCourte=distanceTmp;
@@ -253,7 +268,8 @@ module.exports = function ServerMap(io,characterManager)
             if( zombieTmp.alive
                 && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) > b-zombieTmp.taille/2
                 && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) < b+zombieTmp.taille/2
-                && distanceTmp < distancePlusCourte){
+                && distanceTmp < distancePlusCourte
+                && distanceTmp < joueur.attaque.portee ){
                   //sécurité pour pas viser en arrière
                   if((viseADroite && zombieTmp.x > joueurX) || (!viseADroite && zombieTmp.x < joueurX)){
                      zombiePlusProche=zombieTmp;
@@ -284,7 +300,7 @@ module.exports = function ServerMap(io,characterManager)
          }
          else{
              //On balance l'event d'affichage du tir
-             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(targetX), targetY:parseInt(targetY)};
+             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(joueurX + Math.cos(joueur.angle/180*Math.PI)*joueur.attaque.portee), targetY:parseInt( joueurY+ Math.sin(joueur.angle/180*Math.PI)*joueur.attaque.portee)};
           }
           joueur.attaque.compteAReboursAttaque=joueur.attaque.delaiMax;
        }
