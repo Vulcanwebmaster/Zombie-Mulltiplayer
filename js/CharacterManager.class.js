@@ -16,9 +16,10 @@ module.exports = function CharacterManager(){
             attaque:{degats:5,compteAReboursAttaque:0,delaiMax:25},
             alive:true,
             aware:false,
-            distanceVision:this.MIN_DISTANCE_VISIBLE,
+            distanceVision:this.MIN_DISTANCE_VISIBLE/2,
             style:parseInt(Math.random()*2),
-            taille:this.LARGEUR_PERSO
+            taille:this.LARGEUR_PERSO,
+            agressivite:Math.random()*100 -50
          };
 
          //Normal 4 DPS
@@ -60,8 +61,8 @@ module.exports = function CharacterManager(){
             result.distanceVision=this.MAX_DISTANCE/2;
          }
          //Mini Boss 300 DPS
-         if(type==this.ZOMBIE_BOSS1+1){
-            result.maxSpeed=this.PAS-1;
+         if(type==this.ZOMBIE_BOSS1){
+            result.maxSpeed=this.PAS;
             result.life=15000;
             result.attaque.degats=30;
             result.attaque.delaiMax=2;
@@ -90,7 +91,7 @@ module.exports = function CharacterManager(){
 		var result={
    			x:0,
    			y:0,
-   			life:100,
+   			life:this.DEFAULT_PLAYER_LIFE,
             angle:0,//degrés
    			directions:{haut:false,bas:false,gauche:false,droite:false},
    			id:id,

@@ -194,9 +194,15 @@ module.exports = function ServerMap(io,characterManager)
                zombie.attaque.compteAReboursAttaque=zombie.attaque.delaiMax;
             }
          }
+
+         //Calcul du coefficient d'aggressivité. Si on est proche, on le met à 0 pour foncer sur le mec.
+         var coef=1;
+         if(distancePlusCourte < 50)
+            coef=0;
          /*Mise à jour de l'angle avec lequel afficher le zombie*/
          //Cet angle est utilisé pour avancer, donc important :)
-         zombie.angle=Math.atan2(joueurLePlusProche.y - zombie.y , joueurLePlusProche.x - zombie.x )*180/Math.PI;
+         zombie.angle=Math.atan2(joueurLePlusProche.y + coef*zombie.agressivite- zombie.y, joueurLePlusProche.x + coef*zombie.agressivite - zombie.x )*180/Math.PI;
+
       }
       else{
          zombie.angle = Math.random() < 0.5 ? zombie.angle+1 : zombie.angle-1;
