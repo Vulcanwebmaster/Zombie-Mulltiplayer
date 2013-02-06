@@ -17,7 +17,7 @@ var KEYS={
 var gameMap;
 var gameCore;
 
-var SERVER_ADRESS=document.URL;
+var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
 
 
 /*Classe qui sera appelée pour gérer les envois/réceptions du serveur*/
@@ -29,7 +29,6 @@ function GameCore(pseudo){
 
 	this.init=function(){
 		this.socket = io.connect(SERVER_ADRESS);
-
 		this.socket.on('broadcast_msg', function ( data ) {
 			gameCore.tchat(data.auteur, data.message, data.class);
 		});

@@ -1,0 +1,71 @@
+@font-face
+{
+font-family: 'linkFont';
+src: url('zombie.ttf') format('truetype');
+}
+
+#content{
+	color:white;
+}
+
+#button-jouer{
+	display:block;
+	color:white;
+	width:50%;margin:auto;
+	padding:30px;
+	border-radius: 20px;
+	text-align: center;
+	font-family: 'linkFont',courier;
+	font-size: 40px;
+	text-decoration: none;
+}
+#button-jouer:hover{
+	cursor: pointer;
+}
+
+#liste-zombies{
+	list-style: none;
+}
+#liste-zombies{
+	
+}
+
+.miniature-zombie{
+	width:30px;
+	height: 30px;
+	float:left;
+	background-image: url('/img/zombies.png');
+	margin-right:10px;
+}
+
+
+#button-jouer{
+	-moz-box-shadow:inset 0px 1px 0px 0px #000000;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #000000;
+	box-shadow:inset 0px 1px 0px 0px #000000;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bd3535), color-stop(1, #000000) );
+	background:-moz-linear-gradient( center top, #bd3535 5%, #000000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bd3535', endColorstr='#000000');
+	background-color:#bd3535;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #000000;
+	color:#bdbdbd;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #240303;
+}
+
+#button-jouer:hover{
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #bd3535) );
+	background:-moz-linear-gradient( center top, #000000 5%, #bd3535 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#bd3535');
+	background-color:#000000;
+}
+
+#button-jouer:active {
+	position:relative;
+	top:1px;
+}

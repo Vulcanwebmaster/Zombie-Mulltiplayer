@@ -17,7 +17,11 @@ io.set('log level', 1);
 function handler( request , response ) {
 	var filePath = '.' + request.url;
     if (filePath == './')
-        filePath = './jeu.html';
+        filePath = './index.html';
+    else if(filePath=='./index')
+        filePath='./index.html';
+    else if(filePath=='./jeu')
+        filePath='./jeu.html';
          
     var extname = path.extname(filePath);
     var contentType = 'text/html';
@@ -64,6 +68,7 @@ function handler( request , response ) {
 
 io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
+        console.log('Un joueur envoi son pseudo');
         var joueurId=serverMap.addJoueur(datas.pseudo);
         /*Ici on choisi ou non de lancer la partie*/
         if(serverMap.isRunning==false)
