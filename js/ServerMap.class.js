@@ -30,12 +30,19 @@ module.exports = function ServerMap(io,characterManager)
          this.currentWave=-1;
          this.nbZombies=0;
          this.listeZombies={};
+         this.nbJoueurs=0;
+         this.listeJoueurs={};
       }
    }
 
    this.addZombie=function(type){
       //Zombie par défaut (type 0 et 1)
       var newZombie=characterManager.creationZombie(this.nbZombies++,type);
+      //On multiplie la vie du zombie par un coefficient dépendant du nombre de joueurs      
+      var nombreDeJoueurs=0;
+      for(var id in this.listeJoueurs)
+         nombreDeJoueurs++;
+      newZombie.life= newZombie.life * (1 + (nombreDeJoueurs-1)*0.3);
       this.moveToBorder(newZombie);
       this.listeZombies[newZombie.id]=newZombie;
    }
@@ -421,7 +428,7 @@ module.exports = function ServerMap(io,characterManager)
          if(joueurMeneur!=null){
             this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer en menant avec ' + joueurMeneur.kills + ' kills.' , 'class':'tchat-game-info'});
             joueurMeneur.life+=25;
-            joueurMeneur.speed+=0.1;
+            joueurMeneur.speed+=0.2;
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurMeneur.id, life:joueurMeneur.life};
          }
          this.spawnWave(++this.currentWave);

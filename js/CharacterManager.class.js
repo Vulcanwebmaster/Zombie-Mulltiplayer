@@ -60,7 +60,7 @@ module.exports = function CharacterManager(){
             result.distanceVision=this.MAX_DISTANCE/2;
          }
          //Mini Boss 300 DPS
-         if(type==this.ZOMBIE_BOSS1){
+         if(type==this.ZOMBIE_BOSS1+1){
             result.maxSpeed=this.PAS-1;
             result.life=15000;
             result.attaque.degats=30;

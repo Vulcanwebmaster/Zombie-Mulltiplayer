@@ -4,6 +4,8 @@
 	<title>Zombiz ! Team Survival | Index</title>
 	<link rel="stylesheet" type="text/css" href="/css/common.css">
 	<link rel="stylesheet" type="text/css" href="/css/index.css">
+	<meta charset='utf-8'/>
+	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
 
@@ -23,71 +25,205 @@
 
 			<!-- Description des zombies -->
 			<h3>Découvrez vos ennemis :</h3>
-			<ul id="liste-zombies">
-				<li>
-					<div class="miniature-zombie" style="background-position:-10px -10px"></div>
-					<h4>Le zombiz</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-10px -110px"></div>
-					<h4>Le sprinter</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-60px -10px"></div>
-					<h4>La fourmie</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-10px -160px"></div>
-					<h4>Bouboule</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-60px -160px"></div>
-					<h4>M. boucher</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-60px -60px"></div>
-					<h4>Le soldat</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-				<li>
-					<div class="miniature-zombie" style="background-position:-60px -110px"></div>
-					<h4>Maîtresse de l'ombre</h4>
-					Description : <br/>
-					Attaque : <br/>
-					Vitesse : <br/>
-					Endurance : <br/>
-					Abilités :
-				</li>
-			</ul>
+			<table id="liste-zombies">
+				<tr>
+					<td>
+						<h4><div class="miniature-zombie" style="background-position:-10px -10px"></div>Le zombiz</h4>
+						<p>
+							<span class="italic">Description</span> : Pas très malin, le Zombiz, c'est la base, la lada des zombies. Si jamais ils arrivent à vous attraper, vous êtes probablement obèse, ou endormi. Bref, c'est gratuit, ça prend bien les balles, que du bonheur !<br/>
+							<span class="italic">Attaque</span> : <span class="stats-bonnes">Très faible</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-bonnes">Faible</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-bonnes">Assez Faible</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+					<td>
+						<h4><div class="miniature-zombie" style="background-position:-10px -110px"></div>Le sprinter</h4>
+						<p>
+							<span class="italic">Description</span> : Bien plus rapide que les zombiz, les sprinters sont des adversaires difficiles à battre... Les 2 premières minutes. Ils vous donneront tout de même un léger surplus de difficultés, d'autant plus qu'ils sont plus endurants que les Zombiz. A vos fusils, prêt, tirez !!<br/>
+							<span class="italic">Attaque</span> : <span class="stats-bonnes">Plutôt faible</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-bonnes">Faible</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+					<td>
+						<h4><div class="miniature-zombie" style="background-position:-60px -10px"></div>L'araignée</h4>
+						<p>
+							<span class="italic">Description</span> : Si vous avez déjà joué à Zombiz!, alors vous connaissez les araignées. Je dirais même que vous les détestez probablement. Rapide, collante, nombreuses... Vous les connaissiez à peine qu'elles étaient déjà vos pires ennemies. Rien ne sert de courir, Elles finiront toujours par vous rattraper... Brrr. Je déteste les araignées !<br/>
+							<span class="italic">Attaque</span> : <span class="stats-bonnes">Très faible</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Très rapide</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-bonnes">Très Faible</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="miniature-zombie" style="background-position:-10px -160px"></div>
+						<h4>Bouboule</h4>
+						<p>
+							<span class="italic">Description</span> : Vous l'aurez deviné, Bouboule ne fait pas dans la finesse. Une chance pour vous, il est du genre très lent. Mais diantre, qu'est ce qu'il est resistant !<br/>
+							<span class="italic">Attaque</span> : <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-bonnes">Très Faible</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+					<td>
+						<div class="miniature-zombie" style="background-position:-60px -160px"></div>
+						<h4>M. boucher</h4>
+						<p>
+							<span class="italic">Description</span> : Le boucher aime son travail. Tellement, qu'il ne s'arrête jamais de travailler. Il est dans son monde, tant que vous ne l'approchez pas trop, il vous laissera tranquille. Méfiez-vous de son couteau, plus d'un aventurier a été servi dans son fameux plat de cervelle farcie !<br/>
+							<span class="italic">Attaque</span> : <span class="stats-mauvaises">Très forte</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Rapide</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+					<td>
+						<div class="miniature-zombie" style="background-position:-60px -60px"></div>
+						<h4>Le soldat</h4>
+						<p>
+							<span class="italic">Description</span> : Vous vous demandiez ce qui pouvait être pire qu'un zombie avec un hachoir de cuisine ? Et bien, imaginez un fanatique ex-soldat. Le tout, en gilet par balle, avec le casque et tout le tintouin... Et oui. Le soldat, c'est ça. Autant vous dire que vous allez en gaspiller des balles pour en venir à bout...<br/>
+							<span class="italic">Attaque</span> : <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-moyennes">Moyenne</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-mauvaises">Très résistant</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="miniature-zombie" style="background-position:-60px -110px"></div>
+						<h4>Maîtresse de l'ombre</h4>
+						<p>
+							<span class="italic">Description</span> : Mmmh. J'ai bien peur que vous ayez ici un zombie de qualité. La puissance du boucher (en mieux !), la résistance du soldat (en mieux !) et la vitesse des araignées... En mieux ! Autant vous dire qu'avant de la reveiller, il faudra bien vous organiser. (astuce : faites tanker celui qui court le plus vite - zombiz slayer)<br/>
+							<span class="italic">Attaque</span> : <span class="stats-mauvaises">Très forte</span><br/>
+							<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Très rapide</span><br/>
+							<span class="italic">Endurance</span> : <span class="stats-mauvaises">Très résistante</span><br/>
+							<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+						</p>
+					</td>
+				</tr>
+			</table>
+
+			<a href="#" onclick="$('#changelog').show();return false;" style="color:white;margin-left:400px;">Afficher le changelog</a>
+			<textarea id="changelog">*************** PATCH NOTE **************************
+
+--- v 0.5.7 alpha (20130206)
+	Nouveautés :
+		Ajout d'une page d'accueil avec les stats des zombies et patchnote
+		Ajout d'une icone pour la page
+		Ajout d'un coefficient qui adapte la difficulté au nombre de joueurs.
+	Corrections :
+		Correction de CSS qui faisait changer le curseur si on cliquait + bougeait
+		Suppression du clic droit !
+
+--- v 0.5.6 alpha (20130205)
+	Nouveautés :
+		Ajout d'une portée maximum sur les armes
+		Ajout de la connexion en appuyant sur "entrée" (dédicasse à Flodess =) )
+	Corrections :
+		Si tous les joueurs partent d'une partie, le serveur se réinitialise en vague 0
+		Remise à zéro des variables de déplacements quand un joueur meurt (pour éviter qu'il tire/bouge au respawn)
+
+--- v 0.5.5 alpha (20130205)
+	Nouveautés :
+		Affichage de la vague courante
+		Ajout de couleur, de fonts, et de CSS sur les elements de l'HUD
+	Corrections :
+		Suppression de quelques envois réseaux inutiles
+		Edition de CSS, modification de placements, couleurs, tailles...
+
+--- v 0.5.4 alpha (20130205)
+	Nouveautés :
+		Ajout de la ghostcam
+	Corrections :
+		Passage des envois en "dur" et pas en volatile (devrait corriger les tirs invisibles et les problèmes de vie qui se met mal à jour, mais entrainera peut-etre des lag)
+		Modification de l'outil de latence
+
+--- v 0.5.3 alpha (20130205)
+	Nouveautés :
+		Ajout d'un bonus pour celui qui mène en fin de vague. (zombiz slayer => +25 vie et +0.1 vitesse)
+	Corrections :
+		Changement FONT du titre
+		Plusieurs modifications CSS
+		Modifications mineures en optimisations côté client
+
+--- v 0.5.2 alpha (20130205)
+	Nouveautés :
+		Ajout d'un état d'errance sur les zombies trop loin, ils détectent maintenant la présence des joueurs quand ils passent à leur portée ou bien qu'ils se font tirer dessus.
+		Ajout d'un clean sur le sang quand y'a a trop pendant une partie
+		Choix du nom : ZOMBIZ! Team Survival
+	Corrections :
+		Calcul des dégats par secondes des armes et zombies
+		Rééquilibrages des armes et zombies
+		Ajustement de certains calculs de hitbox
+
+--- v 0.5.1 alpha (20130204)
+	Nouveautés :
+		Ajout d'un outil permettant de calculer la latence réseau (touche *)
+		Gain de 25 points de vie si on survit à une vague
+		Ajout d'une rotation aléatoire sur le sang
+	Corrections :
+		Grosses optimisations des échanges réseaux (diminution des tableaux envoyés facteur 5 au moins !)
+		Corrections typo.
+		Protection faille XSS sur pseudo
+		Modification couleurs tchat
+		Rééquilibrage des vagues et de quelques zombies
+		Ajout d'un full clear de la map en fin de vague pour éviter les ralentissements
+		Correction bug fin de partie si on restait cliqué ou appuyé sur une touche au moment de la mort.
+
+
+--- v 0.5.0 alpha (20130203)
+	Nouveautés : 
+		Affichage de sang
+		Affichage du tracé du tir du joueur
+		Premier mode multijoueur totalement fonctionnel
+		Changement d'armes par pallier de zombies tués
+	Modifications :
+		Ajout de 8 types de zombies différents
+		Ajout de 12 types de personnages
+		Modification du système de vagues : 10 vagues programmées avec 8 types de zombies différents
+
+
+** Dans les versions ci-dessous, seules les grandes "idées" sont énumérées. **
+
+--- v 0.4.0 alpha (20130202)
+	Nouveautés :
+		Ajout de graphismes autre que des "carrés"
+		Ajout du tchat
+	Corrections :
+		Evolution du système de vagues
+		Correction du bug "tir vertical impossible"
+		Divers ajustements
+
+--- v 0.3.0 alpha (20130202)
+	Nouveautés :
+		Possibilités de tirer sur les zombies
+		Ajout de la rotation des personnages
+	Corrections :
+		Déplacements de tous les calculs serveurs side pour limiter la triche
+		Divers ajustements
+
+--- v 0.2.0 alpha (20130201)
+	Nouveautés :
+		Prise en charge du mode multijoueur des déplacements
+		Implémentation d'une IA "bête"
+	Correction :
+		Modification de la structure des fichiers
+
+--- v 0.1.0 alpha (20130131)
+	Nouveautés :
+		Création du projet
+		Mode solo uniquement
+		Possibilité de tuer les zombies
+		Première implémentation d'IA
+		Graphismes à base de "carrés"
+
+
+			</textarea>
 		</section><!-- section#content-->
 
 		<footer>
