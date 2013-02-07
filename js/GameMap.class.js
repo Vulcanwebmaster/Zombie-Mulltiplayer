@@ -73,13 +73,22 @@ function GameMap(){
 				player.id='player' + idPerso;
 				player.style.top=datas.listeJoueurs[idPerso].y+ 'px';
 				player.style.left=datas.listeJoueurs[idPerso].x + 'px';
+				player.setAttribute('data-speed', datas.listeJoueurs[idPerso].speed);
 				//Affichage du style
 				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
+				this.rotate(player,datas.listeJoueurs[idPerso].angle);	
 				this.divMap.appendChild(player);
 			}
 			else{
 				player.style.top=datas.listeJoueurs[idPerso].y+ 'px';
 				player.style.left=datas.listeJoueurs[idPerso].x+ 'px';
+				player.setAttribute('data-speed', datas.listeJoueurs[idPerso].speed);
+				/*On ajoute la direction dans la div, pour les calculs en local*/
+				player.setAttribute('data-haut', datas.listeJoueurs[idPerso].directions.haut);
+				player.setAttribute('data-bas', datas.listeJoueurs[idPerso].directions.bas);
+				player.setAttribute('data-gauche', datas.listeJoueurs[idPerso].directions.gauche);
+				player.setAttribute('data-droite', datas.listeJoueurs[idPerso].directions.droite);
+
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
 					player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
@@ -87,16 +96,14 @@ function GameMap(){
 				if(datas.listeJoueurs[idPerso].alive==false){
 					player.style.zIndex=5;
 					player.style.backgroundPosition=this.setBackgroundPosition(12);
+					player.setAttribute('data-speed', 0);
 				}
 			}
 
 			//Si le joueur sur lequel on boucle est le joueur du navigateur, alors on centre la cam sur lui.
 			// + on le fait que si on est pas en ghostCam (donc libre)
 			if(idPerso==gameCore.playerId && this.ghostCam.running==false){
-				var map=document.getElementById('map');
-				map.style.top=(this.heightPlateau/2 - datas.listeJoueurs[idPerso].y) + 'px';
-				map.style.left=(this.widthPlateau/2 - datas.listeJoueurs[idPerso].x) + 'px';
-				player.style.zIndex=10;
+				this.centerMapOn(player);
 			}
 			else
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);				
@@ -106,21 +113,25 @@ function GameMap(){
 		for(var idZombie in datas.listeZombies){
 			zombie=document.getElementById('zombie'+idZombie);
 			if(zombie==null){	
-				var div=document.createElement('div');
-				div.className= div.className+' map-item zombie';
-				div.id='zombie' + idZombie;
-				div.setAttribute('data-life',datas.listeZombies[idZombie].life);
-				div.style.top=datas.listeZombies[idZombie].y+ 'px';
-				div.style.left=datas.listeZombies[idZombie].x + 'px';
-				div.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
-				this.divMap.appendChild(div);
+				var zombie=document.createElement('div');
+				zombie.className= zombie.className+' map-item zombie';
+				zombie.id='zombie' + idZombie;
+				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
+				zombie.style.top=datas.listeZombies[idZombie].y+ 'px';
+				zombie.style.left=datas.listeZombies[idZombie].x + 'px';
+				zombie.setAttribute('data-speed', datas.listeZombies[idZombie].speed);
+				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
+				this.rotate(zombie,datas.listeJoueurs[idPerso].angle);
+				this.divMap.appendChild(zombie);
 			}
 			else{
 				zombie.style.top=datas.listeZombies[idZombie].y+ 'px';
 				zombie.style.left=datas.listeZombies[idZombie].x+ 'px';
+				zombie.setAttribute('data-speed', datas.listeZombies[idZombie].speed);
 				if(datas.listeZombies[idZombie].alive==false){
 					zombie.style.zIndex=5;
 					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+					zombie.setAttribute('data-speed', 0);
 				}
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 			}
@@ -154,7 +165,42 @@ function GameMap(){
 			}
 
 		}
+		//on lance l'update local au cas où le serveur lag
+		var _this=this;
+		/*setTimeout(function(){_this.localUpdate();}, 30);
+		setTimeout(function(){_this.localUpdate();}, 60);
+		setTimeout(function(){_this.localUpdate();}, 90);
+		setTimeout(function(){_this.localUpdate();}, 120);*/
+	}
 
+	this.localUpdate=function(){
+
+		var listeZombies=document.getElementsByClassName('zombie');
+		var zombieTmp;
+		for(var i=0; i< listeZombies.length;i++){
+			zombieTmp=listeZombies[i]
+			zombieTmp.style.top = parseInt((parseFloat(zombieTmp.style.top) + Math.sin(this.getRotateDegree(zombieTmp) / 180 * Math.PI)* parseFloat(zombieTmp.getAttribute('data-speed')))) + 'px' ;
+			zombieTmp.style.left = parseInt((parseFloat(zombieTmp.style.left) + Math.cos(this.getRotateDegree(zombieTmp) / 180 * Math.PI)* parseFloat(zombieTmp.getAttribute('data-speed')))) + 'px';
+		}
+		var listeJoueurs=document.getElementsByClassName('player');
+		var joueurTmp;
+		for(var i=0; i< listeJoueurs.length;i++){
+			joueurTmp=listeJoueurs[i];
+			var coefX=0,coefY=0;
+	         if(joueurTmp.getAttribute('data-haut')=='true' && gameCore.directions.haut){coefY=-1;}
+	         else if(joueurTmp.getAttribute('data-bas')=='true' && gameCore.directions.bas){coefY=1;}
+	         if(joueurTmp.getAttribute('data-gauche')=='true' && gameCore.directions.gauche){coefX=-1;}
+	         else if(joueurTmp.getAttribute('data-droite')=='true' && gameCore.directions.droite){coefX=1;}
+	         //Cas des diagonales
+	         if(coefX!=0 && coefY!=0){
+	         	coefX=coefX > 0 ? this.COSINUS_45 : -this.COSINUS_45;
+	         	coefY=coefY > 0 ? this.COSINUS_45 : -this.COSINUS_45;
+	         }
+			joueurTmp.style.top = parseInt((parseFloat(joueurTmp.style.top) + coefY * parseFloat(joueurTmp.getAttribute('data-speed')))) + 'px';
+			joueurTmp.style.left = parseInt((parseFloat(joueurTmp.style.left) + coefX * parseFloat(joueurTmp.getAttribute('data-speed')))) + 'px';
+			if(gameCore.playerId==parseInt(joueurTmp.getAttribute('id').substring(6, joueurTmp.getAttribute('id').length)))
+				this.centerMapOn(joueurTmp);
+		}
 	}
 
 	this.rotate=function(ent,deg){
@@ -165,6 +211,18 @@ function GameMap(){
 			ent.style.oTransform='rotate('+deg+'deg)';
 			ent.style.msTransform='rotate('+deg+'deg)';
 		}
+	}
+	this.getRotateDegree=function(ent){
+		if(ent==null || ent.style==null || ent.style.transform==null)
+			return 0;
+		return (ent.style.transform.substring(7,ent.style.transform.indexOf("deg",7)));
+	}
+
+	this.centerMapOn=function(ent){
+		var map=document.getElementById('map');
+		map.style.top=(this.heightPlateau/2 - parseInt(ent.style.top)) + 'px';
+		map.style.left=(this.widthPlateau/2 - parseInt(ent.style.left)) + 'px';
+		ent.style.zIndex=10;
 	}
 
 	this.addBlood=function(x,y){
@@ -305,4 +363,6 @@ function GameMap(){
 	this.LARGEUR_PERSO=30;
 	this.lastDegreeSent=0;
 	this.isFiring=false;
+	this.isUpdated=false;
+	this.COSINUS_45=Math.cos(45/180*Math.PI);
 }

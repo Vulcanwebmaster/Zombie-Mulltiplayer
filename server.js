@@ -9,10 +9,11 @@ var characterManager=new CharacterManager();
 var ServerMap = require('./js/ServerMap.class.js');
 var serverMap = new ServerMap(io,characterManager);
 
-app.listen (8000) ;
+app.listen (process.env.PORT || 8000) ;
 
 //stop le flood !
 io.set('log level', 1);
+io.set('transport', ['websocket']);
 
 function handler( request , response ) {
 	var filePath = '.' + request.url;

@@ -33,6 +33,8 @@ module.exports = function ServerMap(io,characterManager)
          this.nbJoueurs=0;
          this.listeJoueurs={};
       }
+      else
+         this.testFinPartie();
    }
 
    this.addZombie=function(type){
@@ -197,7 +199,7 @@ module.exports = function ServerMap(io,characterManager)
 
          //Calcul du coefficient d'aggressivité. Si on est proche, on le met à 0 pour foncer sur le mec.
          var coef=1;
-         if(distancePlusCourte < 50)
+         if(distancePlusCourte <= 55)
             coef=0;
          /*Mise à jour de l'angle avec lequel afficher le zombie*/
          //Cet angle est utilisé pour avancer, donc important :)

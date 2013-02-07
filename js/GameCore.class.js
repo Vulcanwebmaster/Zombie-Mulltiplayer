@@ -34,10 +34,20 @@ function GameCore(pseudo){
 		});
 
 		this.socket.on('connect', function(){
-			gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});
+			if(gameCore.playerId == -1){
+				gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});
+				$('#inscription').append('<h2>Création d\'un personnage en cours...</h2>');
+			}
+			else
+				alert('ERREUR ! C\'est étrange. Merci de me signaler que vous avez eu cette erreur. (erreur "on connect" en cours de partie)');
+		});
+
+		this.socket.on('reconnect', function(){
+			alert('Vous avez perdu votre connexion. Ou tout du moins, votre navigateur est en train de dire ça...');
 		});
 
 		this.socket.on('set_id', function(nbr){
+			$('#inscription').append('<h2>Personnage créé ! Lancement de la partie...</h2>');
 			$('#inscription').fadeOut(1000,function(){$(this).remove()});
 			gameCore.playerId=nbr;
 			gameMap=new GameMap();
@@ -137,7 +147,8 @@ function GameCore(pseudo){
 	this.debug=function(){
 		if(gameCore.lastUpdate!=-1){
 			var now=new Date;
-			var currentPeak=(now-gameCore.lastUpdate); //50 etant le temps mis par le serveur entre les pauses
+			var currentPeak=(now-gameCore.lastUpdate);
+			//console.log(currentPeak + 'ms since last update');
 			if(currentPeak > gameCore.maxPeak) gameCore.maxPeak=currentPeak;
 			gameCore.averageBPS=(gameCore.averageBPS*gameCore.nbrPeak + currentPeak)/ (gameCore.nbrPeak+1);
 			gameCore.nbrPeak++;
@@ -171,7 +182,7 @@ $(document).ready(function(){
 	$('#button-inscription').click(function(){
 		input=$('#champs-pseudo')[0].value;
 		if(input != ''){
-			$('#inscription').html('<div><h2>Connexion en cours...</h2></div>');
+			$('#inscription').html('<div><h2>Connexion au serveur en cours...</h2></div>');
 			$(this).unbind('click');
 			gameCore=new GameCore(input);
 		}

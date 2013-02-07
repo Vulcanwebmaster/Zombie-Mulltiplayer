@@ -182,11 +182,15 @@ module.exports = function CharacterManager(){
             result[id].style=liste[id].style;
             result[id].angle=parseInt(liste[id].angle);
             result[id].alive=liste[id].alive;
+            //on ajoute la vitesse pour les calculs client side (en cas de lag)
+            result[id].speed=liste[id].speed;
+            if(liste[id].directions != undefined)
+                result[id].directions=liste[id].directions;
         }
         return result;
     }
 
-	this.PAS=7;//px
+	this.PAS=9;//px
   	this.DEFAULT_ZOMBIE_SPEED=2;
   	this.LARGEUR_PERSO=30;
   	this.ZOMBIE_NORMAL=1;
