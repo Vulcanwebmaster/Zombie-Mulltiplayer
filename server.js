@@ -1,4 +1,3 @@
-console.log('lancement !!!');
 var app = require ('http'). createServer(handler)
 , fs = require ('fs')
 , io = require ('socket.io').listen(app)
@@ -49,7 +48,6 @@ function handler( request , response ) {
             contentType= 'image/x-icon';
     }
 
-    console.log(filePath);
     fs.stat(filePath, function(err,stat) { 
          if (err==null) {
             fs.readFile(filePath, function(error, content) {

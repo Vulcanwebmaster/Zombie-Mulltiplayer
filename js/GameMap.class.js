@@ -167,10 +167,8 @@ function GameMap(){
 		}
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
-		/*setTimeout(function(){_this.localUpdate();}, 30);
-		setTimeout(function(){_this.localUpdate();}, 60);
-		setTimeout(function(){_this.localUpdate();}, 90);
-		setTimeout(function(){_this.localUpdate();}, 120);*/
+		setTimeout(function(){_this.localUpdate();}, 50);
+		setTimeout(function(){_this.localUpdate();}, 100);
 	}
 
 	this.localUpdate=function(){
