@@ -205,12 +205,12 @@ function GameMap(){
 	this.moveTo=function(ent, x, y){
 		ent.style.left=x+'px';
 		ent.style.top=y+'px';
-		/*$(ent).stop().animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED, 'linear');
+		/*$(ent).stop().animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED, 'linear');*/
 		if(gameCore.playerId==parseInt(ent.getAttribute('id').substring(6, ent.getAttribute('id').length))
 			&& (ent.getAttribute('id').substring(0,1)=='p')){
 				this.centerMapOn(x,y);
 				ent.style.zIndex=10;
-			}*/
+			}
 	}
 
 	this.rotate=function(ent,deg){
@@ -230,8 +230,8 @@ function GameMap(){
 
 	this.centerMapOn=function(x,y){
 		var map=document.getElementById('map');
-		map.style.top=(this.heightPlateau/2 - parseInt(ent.style.top)) + 'px';
-		map.style.left=(this.widthPlateau/2 - parseInt(ent.style.left)) + 'px';
+		map.style.top=(this.heightPlateau/2 - y) + 'px';
+		map.style.left=(this.widthPlateau/2 - x) + 'px';
 		/*$('#map').stop().animate({'top' : (this.heightPlateau/2 - y ) + 'px', 
 							'left':(this.widthPlateau/2 - x ) + 'px'},this.GAME_SPEED, 'linear');*/
 	}
