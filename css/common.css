@@ -10,8 +10,8 @@ body{
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE */
     user-select: none; /* CSS3 */
-    background-color:black;
-    background-image: url('/img/background.jpg');
+    background-color:rgb(100,100,100);
+    background-image: url('/img/background**.jpg');
     background-position: center center;
     background-repeat: no-repeat;
 	height: 100%;
