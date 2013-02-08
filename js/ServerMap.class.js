@@ -130,7 +130,7 @@ module.exports = function ServerMap(io,characterManager)
          }
       }
 
-      this.MODULO_ENVOI = (this.MODULO_ENVOI +1 )%3;
+      this.MODULO_ENVOI = (this.MODULO_ENVOI +1 )%2;
       if( this.MODULO_ENVOI == 0){
 		   this.io.sockets.emit('update',{'timestamp' : new Date, 'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
