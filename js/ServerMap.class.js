@@ -130,15 +130,14 @@ module.exports = function ServerMap(io,characterManager)
          }
       }
 
-      this.MODULO_ENVOI = (this.MODULO_ENVOI +1 )%2;
-      if( this.MODULO_ENVOI == 0){
-		   this.io.sockets.emit('update',{'timestamp' : new Date, 'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
+      //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
+      //if( this.MODULO_ENVOI == 0){
+		   this.io.sockets.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
                                               'listeTemporaryItems': this.temporaryDisplayItem});
          //On réinitialise les item temporaires.
          this.temporaryDisplayItem={};
          this.numberTmpItem=0;	     
-      }
    }  
 	  
    this.validatePositionToMapLimits=function(entite){
@@ -502,5 +501,6 @@ module.exports = function ServerMap(io,characterManager)
    this.currentWave=-1;
    this.totalZombiesKilled=0;
    this.MODULO_ENVOI=0;
+   this.ID_ENVOI=0;
    this.COSINUS_45=Math.cos(Math.PI * 45 / 180 );
 }

@@ -63,7 +63,7 @@ function GameMap(){
 
 
 	this.update=function(datas){
-		this.last_update=parseFloat(datas.timestamp.substr(datas.timestamp.indexOf(':', 15)+1, datas.timestamp.length-1));
+		//this.last_update=datas.id;
 		//Update de tous les zombies
 		var player;
 		for(var idPerso in datas.listeJoueurs){
@@ -168,16 +168,12 @@ function GameMap(){
 		}
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
-		setTimeout(function(){_this.localUpdate();}, 50);
+		//setTimeout(function(){_this.localUpdate(datas.id);}, 50);
 	}
 
-	this.localUpdate=function(){
+	this.localUpdate=function(id){
 		//si y'a eu une update entre temps, on ne fait pas l'update en local
-		var date = new Date;
-		date = JSON.stringify(date);
-		date=(parseFloat(date.substr(date.indexOf(':', 15)+1, date.length-1)));
-		//console.log(date-this.last_update);
-		if(date-this.last_update < 0.05){
+		if(id<this.last_update){
 			return 0;
 		}
 
@@ -193,10 +189,17 @@ function GameMap(){
 		for(var i=0; i< listeJoueurs.length;i++){
 			joueurTmp=listeJoueurs[i];
 			var coefX=0,coefY=0;
-	         if(joueurTmp.getAttribute('data-haut')=='true' && gameCore.directions.haut){coefY=-1;}
-	         else if(joueurTmp.getAttribute('data-bas')=='true' && gameCore.directions.bas){coefY=1;}
-	         if(joueurTmp.getAttribute('data-gauche')=='true' && gameCore.directions.gauche){coefX=-1;}
-	         else if(joueurTmp.getAttribute('data-droite')=='true' && gameCore.directions.droite){coefX=1;}
+	         if(joueurTmp.getAttribute('data-haut')=='true'){coefY=-1;}
+	         else if(joueurTmp.getAttribute('data-bas')=='true'){coefY=1;}
+	         if(joueurTmp.getAttribute('data-gauche')=='true'){coefX=-1;}
+	         else if(joueurTmp.getAttribute('data-droite')=='true'){coefX=1;}
+
+	         if(gameCore.playerId==parseInt(joueurTmp.getAttribute('id').substring(6, joueurTmp.getAttribute('id').length))){
+     	         if(gameCore.directions.haut){coefY=-1;}
+		         else if(gameCore.directions.bas){coefY=1;}
+		         if(gameCore.directions.gauche){coefX=-1;}
+		         else if(gameCore.directions.droite){coefX=1;}
+			}
 	         //Cas des diagonales
 	         if(coefX!=0 && coefY!=0){
 	         	coefX=coefX > 0 ? this.COSINUS_45 : -this.COSINUS_45;
@@ -208,7 +211,7 @@ function GameMap(){
 				this.centerMapOn(joueurTmp);
 		}
 		var _this=this;
-		setTimeout(function(){_this.localUpdate(date);}, 50);
+		setTimeout(function(){_this.localUpdate(id);}, 50);
 
 	}
 
@@ -374,5 +377,5 @@ function GameMap(){
 	this.isFiring=false;
 	this.isUpdated=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
-	this.last_update;
+	this.last_update=0;
 }
