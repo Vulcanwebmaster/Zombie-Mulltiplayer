@@ -63,6 +63,7 @@ function GameMap(){
 
 
 	this.update=function(datas){
+		this.last_update=parseFloat(datas.timestamp.substr(datas.timestamp.indexOf(':', 15)+1, datas.timestamp.length-1));
 		//Update de tous les zombies
 		var player;
 		for(var idPerso in datas.listeJoueurs){
@@ -168,10 +169,17 @@ function GameMap(){
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
 		setTimeout(function(){_this.localUpdate();}, 50);
-		setTimeout(function(){_this.localUpdate();}, 100);
 	}
 
 	this.localUpdate=function(){
+		//si y'a eu une update entre temps, on ne fait pas l'update en local
+		var date = new Date;
+		date = JSON.stringify(date);
+		date=(parseFloat(date.substr(date.indexOf(':', 15)+1, date.length-1)));
+		//console.log(date-this.last_update);
+		if(date-this.last_update < 0.05){
+			return 0;
+		}
 
 		var listeZombies=document.getElementsByClassName('zombie');
 		var zombieTmp;
@@ -199,6 +207,9 @@ function GameMap(){
 			if(gameCore.playerId==parseInt(joueurTmp.getAttribute('id').substring(6, joueurTmp.getAttribute('id').length)))
 				this.centerMapOn(joueurTmp);
 		}
+		var _this=this;
+		setTimeout(function(){_this.localUpdate(date);}, 50);
+
 	}
 
 	this.rotate=function(ent,deg){
@@ -363,4 +374,5 @@ function GameMap(){
 	this.isFiring=false;
 	this.isUpdated=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
+	this.last_update;
 }
