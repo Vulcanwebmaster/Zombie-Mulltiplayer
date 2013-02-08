@@ -63,6 +63,7 @@ function GameMap(){
 
 
 	this.update=function(datas){
+		this.GAME_SPEED=gameCore.averageBPS-10;
 		this.last_update=datas.id;
 		//Update de tous les zombies
 		var player;
@@ -204,7 +205,7 @@ function GameMap(){
 	this.moveTo=function(ent, x, y){
 		//ent.style.left=x+'px';
 		//ent.style.top=y+'px';
-		$(ent).animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED);
+		$(ent).animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED, 'linear');
 		if(gameCore.playerId==parseInt(ent.getAttribute('id').substring(6, ent.getAttribute('id').length))
 			&& (ent.getAttribute('id').substring(0,1)=='p')){
 				this.centerMapOn(x,y);
@@ -232,7 +233,7 @@ function GameMap(){
 		map.style.top=(this.heightPlateau/2 - parseInt(ent.style.top)) + 'px';
 		map.style.left=(this.widthPlateau/2 - parseInt(ent.style.left)) + 'px';*/
 		$('#map').animate({'top' : (this.heightPlateau/2 - y ) + 'px', 
-							'left':(this.widthPlateau/2 - x ) + 'px'},this.GAME_SPEED);
+							'left':(this.widthPlateau/2 - x ) + 'px'},this.GAME_SPEED, 'linear');
 	}
 
 	this.addBlood=function(x,y){
