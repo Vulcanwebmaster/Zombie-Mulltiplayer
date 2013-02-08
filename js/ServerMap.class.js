@@ -116,9 +116,9 @@ module.exports = function ServerMap(io,characterManager)
 		for(var idPerso in this.listeJoueurs){
          var persoTmp=this.listeJoueurs[idPerso];
          if(persoTmp.alive){
-            this.move(persoTmp, 'humain');
-            this.validatePositionToMapLimits(persoTmp);
             this.calculNextEtapeFire(persoTmp);
+            this.move(persoTmp, 'humain');
+            this.validatePositionToMapLimits(persoTmp);       
          }
 		}
       for(var idZombie in this.listeZombies){

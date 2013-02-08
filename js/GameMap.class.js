@@ -63,7 +63,7 @@ function GameMap(){
 
 
 	this.update=function(datas){
-		//this.last_update=datas.id;
+		this.last_update=datas.id;
 		//Update de tous les zombies
 		var player;
 		for(var idPerso in datas.listeJoueurs){
@@ -72,7 +72,8 @@ function GameMap(){
 				player=document.createElement('div');
 				player.className= player.className+' map-item player';
 				player.id='player' + idPerso;
-				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
+				player.style.left=datas.listeJoueurs[idPerso].x +'px';
+				player.style.top=datas.listeJoueurs[idPerso].y+'px';
 				player.setAttribute('data-speed', datas.listeJoueurs[idPerso].speed);
 				//Affichage du style
 				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
@@ -80,13 +81,13 @@ function GameMap(){
 				this.divMap.appendChild(player);
 			}
 			else{
-				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				player.setAttribute('data-speed', datas.listeJoueurs[idPerso].speed);
 				/*On ajoute la direction dans la div, pour les calculs en local*/
 				player.setAttribute('data-haut', datas.listeJoueurs[idPerso].directions.haut);
 				player.setAttribute('data-bas', datas.listeJoueurs[idPerso].directions.bas);
 				player.setAttribute('data-gauche', datas.listeJoueurs[idPerso].directions.gauche);
 				player.setAttribute('data-droite', datas.listeJoueurs[idPerso].directions.droite);
+				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
@@ -98,13 +99,7 @@ function GameMap(){
 					player.setAttribute('data-speed', 0);
 				}
 			}
-
-			//Si le joueur sur lequel on boucle est le joueur du navigateur, alors on centre la cam sur lui.
-			// + on le fait que si on est pas en ghostCam (donc libre)
-			if(idPerso==gameCore.playerId && this.ghostCam.running==false){
-				this.centerMapOn(player);
-			}
-			else
+			if(idPerso!=gameCore.playerId && this.ghostCam.running==false)
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);				
 		}
 
@@ -116,15 +111,16 @@ function GameMap(){
 				zombie.className= zombie.className+' map-item zombie';
 				zombie.id='zombie' + idZombie;
 				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
-				this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y)
+				zombie.style.left=datas.listeZombies[idZombie].x+'px';
+				zombie.style.top=datas.listeZombies[idZombie].y+'px';
 				zombie.setAttribute('data-speed', datas.listeZombies[idZombie].speed);
 				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
 				this.rotate(zombie,datas.listeJoueurs[idPerso].angle);
 				this.divMap.appendChild(zombie);
 			}
 			else{
-				this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y)
 				zombie.setAttribute('data-speed', datas.listeZombies[idZombie].speed);
+				this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y);
 				if(datas.listeZombies[idZombie].alive==false){
 					zombie.style.zIndex=5;
 					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
@@ -164,7 +160,8 @@ function GameMap(){
 		}
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
-		//setTimeout(function(){_this.localUpdate(datas.id);}, 50);
+		/*setTimeout(function(){_this.localUpdate(datas.id);}, this.GAME_SPEED);
+		setTimeout(function(){_this.localUpdate(datas.id);}, this.GAME_SPEED*2);*/
 	}
 
 	this.localUpdate=function(id){
@@ -198,18 +195,21 @@ function GameMap(){
 	         	coefY=coefY > 0 ? this.COSINUS_45 : -this.COSINUS_45;
 	         }
 	         this.moveTo(joueurTmp,parseInt((parseFloat(joueurTmp.style.left) + coefX * parseFloat(joueurTmp.getAttribute('data-speed')))) ,parseInt((parseFloat(joueurTmp.style.top) + coefY * parseFloat(joueurTmp.getAttribute('data-speed')))))
-			if(gameCore.playerId==parseInt(joueurTmp.getAttribute('id').substring(6, joueurTmp.getAttribute('id').length)))
-				this.centerMapOn(joueurTmp);
 		}
 		var _this=this;
-		setTimeout(function(){_this.localUpdate(id);}, 50);
+		//setTimeout(function(){_this.localUpdate(id);}, this.GAME_SPEED);
 
 	}
 
 	this.moveTo=function(ent, x, y){
 		//ent.style.left=x+'px';
 		//ent.style.top=y+'px';
-		$(ent).animate({'top' : y+'px', 'left' : x+'px'}, 150);
+		$(ent).animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED);
+		if(gameCore.playerId==parseInt(ent.getAttribute('id').substring(6, ent.getAttribute('id').length))
+			&& (ent.getAttribute('id').substring(0,1)=='p')){
+				this.centerMapOn(x,y);
+				ent.style.zIndex=10;
+			}
 	}
 
 	this.rotate=function(ent,deg){
@@ -227,13 +227,12 @@ function GameMap(){
 		return (ent.style.transform.substring(7,ent.style.transform.indexOf("deg",7)));
 	}
 
-	this.centerMapOn=function(ent){
+	this.centerMapOn=function(x,y){
 		/*var map=document.getElementById('map');
 		map.style.top=(this.heightPlateau/2 - parseInt(ent.style.top)) + 'px';
 		map.style.left=(this.widthPlateau/2 - parseInt(ent.style.left)) + 'px';*/
-		$('#map').animate({'top' : (this.heightPlateau/2 - parseInt(ent.style.top)) + 'px', 
-							'left':(this.widthPlateau/2 - parseInt(ent.style.left)) + 'px'},150);
-		ent.style.zIndex=10;
+		$('#map').animate({'top' : (this.heightPlateau/2 - y ) + 'px', 
+							'left':(this.widthPlateau/2 - x ) + 'px'},this.GAME_SPEED);
 	}
 
 	this.addBlood=function(x,y){
@@ -351,7 +350,7 @@ function GameMap(){
 
 	this.ghostCamloop=function(){
 		if(gameMap.ghostCam.running)
-			setTimeout(function(){gameMap.ghostCamloop();}, 50);
+			setTimeout(function(){gameMap.ghostCamloop();}, this.GAME_SPEED);
 		var pas=7;
 
 		if(gameMap.ghostCam.haut)
@@ -377,4 +376,5 @@ function GameMap(){
 	this.isUpdated=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
 	this.last_update=0;
+	this.GAME_SPEED=150;//ms
 }
