@@ -1,3 +1,4 @@
+console.log('lancement !!!');
 var app = require ('http'). createServer(handler)
 , fs = require ('fs')
 , io = require ('socket.io').listen(app)
@@ -9,7 +10,7 @@ var characterManager=new CharacterManager();
 var ServerMap = require('./js/ServerMap.class.js');
 var serverMap = new ServerMap(io,characterManager);
 
-app.listen (process.env.PORT || 8000) ;
+app.listen (process.env.PORT || 5000) ;
 
 //stop le flood !
 io.set('log level', 1);
@@ -23,7 +24,6 @@ function handler( request , response ) {
         filePath='./index.html';
     else if(filePath=='./jeu')
         filePath='./jeu.html';
-         
     var extname = path.extname(filePath);
     var contentType = 'text/html';
     switch (extname) {
@@ -45,10 +45,13 @@ function handler( request , response ) {
         case '.ttf':
             contentType= 'font/ttf';
             break;
+        case '.ico':
+            contentType= 'image/x-icon';
     }
-     
-    path.exists(filePath, function(exists) {  
-        if (exists) {
+
+    console.log(filePath);
+    fs.stat(filePath, function(err,stat) { 
+         if (err==null) {
             fs.readFile(filePath, function(error, content) {
                 if (error) {
                     response.writeHead(500);
@@ -61,6 +64,7 @@ function handler( request , response ) {
             });
         }
         else {
+            console.log('Error fs.stat : ' + err);
             response.writeHead(404);
             response.end();
         }
