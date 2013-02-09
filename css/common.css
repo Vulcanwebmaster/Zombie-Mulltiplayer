@@ -11,7 +11,7 @@ body{
     -ms-user-select: none; /* IE */
     user-select: none; /* CSS3 */
     background-color:rgb(100,100,100);
-    background-image: url('/img/background**.jpg');
+    background-image: url('/img/background.jpg');
     background-position: center center;
     background-repeat: no-repeat;
 	height: 100%;

@@ -207,7 +207,8 @@ function GameMap(){
 		ent.style.top=y+'px';
 		/*$(ent).stop().animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED, 'linear');*/
 		if(gameCore.playerId==parseInt(ent.getAttribute('id').substring(6, ent.getAttribute('id').length))
-			&& (ent.getAttribute('id').substring(0,1)=='p')){
+			&& (ent.getAttribute('id').substring(0,1)=='p')
+			&& this.ghostCam.running==false){
 				this.centerMapOn(x,y);
 				ent.style.zIndex=10;
 			}
