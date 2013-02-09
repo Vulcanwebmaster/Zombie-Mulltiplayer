@@ -132,7 +132,7 @@ module.exports = function ServerMap(io,characterManager)
 
       //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
       //if( this.MODULO_ENVOI == 0){
-		   this.io.sockets.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
+		   this.io.sockets.volatile.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
                                               'listeTemporaryItems': this.temporaryDisplayItem});
          //On réinitialise les item temporaires.

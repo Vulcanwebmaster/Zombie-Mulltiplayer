@@ -148,7 +148,7 @@ function GameCore(pseudo){
 		if(gameCore.lastUpdate!=-1){
 			var now=new Date;
 			var currentPeak=(now-gameCore.lastUpdate);
-			//console.log(currentPeak + 'ms since last update');
+			console.log(currentPeak + 'ms since last update');
 			if(currentPeak > gameCore.maxPeak) gameCore.maxPeak=currentPeak;
 			gameCore.averageBPS=(gameCore.averageBPS*gameCore.nbrPeak + currentPeak)/ (gameCore.nbrPeak+1);
 			gameCore.nbrPeak++;
