@@ -8,14 +8,15 @@
 - tchat fonctionnel
 *** - nouveau boss et vagues
 - ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
-- angle où ça bug
-- compteur avant le début des vagues
-- si les zombies errants vont au bord de la map, les remettre au milieu
+*** - angle où ça bug
+*** - compteur avant le début des vagues
+*** - si les zombies errants vont au bord de la map, les remettre au milieu
+*** - trouver pourquoi des fois de la vie reste en fin de partie
 
 Idées :
 
-- ajouter des abilités aux zombies ? (sprint, téléportation, attaque à distance...)
-*** - ajouter un système de "continuité" en local ! (seulement sur les zombies -et le personnage actuel ?)
+*** - ajouter des abilités aux zombies ? (sprint, téléportation, attaque à distance...)
+- ajouter un système de "continuité" en local ! (seulement sur les zombies -et le personnage actuel ?)
 *** - ajouter boss 2 et 3 et eventuellement des types de zombies...
 - ajouter des buff/debuff
 - zombifier les morts ? (ou tout du moins pop un zombie)
@@ -23,6 +24,7 @@ Idées :
 - Agrandir un peu la map :) (là on la voit déjà presque entière...)
 - friendly fire ?
 - stratégies dans l'IA ?
+*** - script de boss / certains zombies
 - A l'avenir il faudra sauvegarder les highscores
 - ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 
