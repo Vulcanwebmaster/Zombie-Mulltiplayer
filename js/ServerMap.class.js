@@ -44,7 +44,7 @@ module.exports = function ServerMap(io,characterManager)
       var nombreDeJoueurs=0;
       for(var id in this.listeJoueurs)
          nombreDeJoueurs++;
-      newZombie.life= newZombie.life * (1 + (nombreDeJoueurs-1)*0.3);
+      newZombie.life= newZombie.life * (1 + (nombreDeJoueurs-1)*0.15);
       this.moveToBorder(newZombie);
       this.listeZombies[newZombie.id]=newZombie;
    }

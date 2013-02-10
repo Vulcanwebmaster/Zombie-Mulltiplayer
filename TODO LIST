@@ -34,3 +34,4 @@ Idées :
 	Corrections :
 		Modification de certaines caractéristiques des zombies (distance de detection pour le zombiz)
 		Quelques corrections de cas oubliés. (par exemple si tout le monde quitte sauf des joueurs déjà morts)
+		Réduction du coef multiplicateur de la vie des zombies en multi
