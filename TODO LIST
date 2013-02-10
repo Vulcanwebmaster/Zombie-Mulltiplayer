@@ -16,7 +16,7 @@
 Idées :
 
 *** - ajouter des abilités aux zombies ? (sprint, téléportation, attaque à distance...)
-- ajouter un système de "continuité" en local ! (seulement sur les zombies -et le personnage actuel ?)
+- ajouter un système de "continuité" en local ! (seulement le personnage actuel ?)
 *** - ajouter boss 2 et 3 et eventuellement des types de zombies...
 - ajouter des buff/debuff
 - zombifier les morts ? (ou tout du moins pop un zombie)
@@ -25,13 +25,12 @@ Idées :
 - friendly fire ?
 - stratégies dans l'IA ?
 *** - script de boss / certains zombies
-- A l'avenir il faudra sauvegarder les highscores
+- A l'avenir il faudra sauvegarder les highscores, et les totaux de zombies tués ^^
 - ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 
 --- v 0.6.0 alpha (20130207)
 	Nouveautés :
 		Nouvelle IA. (devrait éviter la superposition de 50 zombies du même type)
 	Corrections :
-		Ajout de tracker pour mieux suivre l'état de la connexion (objectif : comprendre le comportement étrange de deco à l'IUT)
 		Modification de certaines caractéristiques des zombies (distance de detection pour le zombiz)
 		Quelques corrections de cas oubliés. (par exemple si tout le monde quitte sauf des joueurs déjà morts)
