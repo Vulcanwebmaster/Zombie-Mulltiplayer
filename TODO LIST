@@ -28,6 +28,8 @@ Idées :
 - A l'avenir il faudra sauvegarder les highscores, et les totaux de zombies tués ^^
 - ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 
+*************************************************************************************
+
 --- v 0.6.0 alpha (20130207)
 	Nouveautés :
 		Nouvelle IA. (devrait éviter la superposition de 50 zombies du même type)

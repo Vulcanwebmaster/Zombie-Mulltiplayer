@@ -134,13 +134,13 @@ module.exports = function CharacterManager(){
 		var result={};
 
 		var nombre={};
-		nombre[this.ZOMBIE_NORMAL]= {     0:5 , 1:15, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0};
-		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0};
-		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0};
-		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0};
-		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:0};
-		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:1};
-		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:0};
+		nombre[this.ZOMBIE_NORMAL]= {     0:5 , 1:15, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:100, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:1, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 
 		//Affichage des totaux par vague dans la console, pour vérification.
 		for(var i=0 ; i<=10 ; i++){
@@ -200,6 +200,8 @@ module.exports = function CharacterManager(){
   	this.ZOMBIE_RESISTANT=5;
   	this.ZOMBIE_BOSS1=6;
   	this.ZOMBIE_ARME=7;
+    this.ZOMBIE_BOSS2=-1;
+    this.ZOMBIE_BOSS3=-1;
   	this.DEFAULT_PLAYER_LIFE=100;
     this.MAX_DISTANCE=Math.sqrt(1200*1200 + 700*700);//Distance diagonale de la map du jeu
     this.MIN_DISTANCE_VISIBLE=300;//distance où est raisonnablement visible
