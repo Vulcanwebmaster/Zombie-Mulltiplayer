@@ -30,17 +30,7 @@ Idées :
 
 *************************************************************************************
 
---- v 0.6.0 alpha (20130207)
+--- v 0.6.1 alpha (?????)
 	Nouveautés :
-		Nouvelle IA. (devrait éviter la superposition de 50 zombies du même type)
-		Ajout d'un tchat
-		Ajout d'un compte à rebours avant le début des vagues (encore un clin d'oeil à Flodess)
+
 	Corrections :
-		Modification de certaines caractéristiques des zombies (distance de detection pour le zombiz)
-		Quelques corrections de cas oubliés. (par exemple si tout le monde quitte sauf des joueurs déjà morts)
-		Réduction du coef multiplicateur de la vie des zombies en multi
-		Correction du bug où un petit nombre de point de vie restait affichés alors que le joueur était mort
-		Correction du bug de "l'angle mort"
-		Optimisations de certains calculs côtés serveur
-		Correction du bug où les zombies errants allaient finir leur course contre le mur (TIMMY !!!)
-		Correction du bug de déplacement après une résurrection
