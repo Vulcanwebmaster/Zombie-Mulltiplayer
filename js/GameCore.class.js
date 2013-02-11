@@ -124,19 +124,22 @@ function GameCore(pseudo){
 
 
 	/*functions*/
-	this.bouger=function(direction){
-		direction=direction.keyCode;
-		var directionDifferente=false;
-		if(direction==KEYS.UP || direction==KEYS.Z){directionDifferente=gameCore.directions.haut==true?false:true;gameCore.directions.haut=true;}
-		else if(direction==KEYS.DOWN || direction==KEYS.S){directionDifferente=gameCore.directions.bas==true?false:true;gameCore.directions.bas=true;}
-		else if(direction==KEYS.LEFT || direction==KEYS.Q){directionDifferente=gameCore.directions.gauche==true?false:true;gameCore.directions.gauche=true;}
-		else if(direction==KEYS.RIGHT || direction==KEYS.D){directionDifferente=gameCore.directions.droite==true?false:true;gameCore.directions.droite=true;}
+	this.bouger=function(e){
+		direction=e.keyCode;
+		//On se déplace seulement si le tchat est pas ouvert
+		if(!$("#tchat-input").is(":focus")){
+			var directionDifferente=false;
+			if(direction==KEYS.UP || direction==KEYS.Z){directionDifferente=gameCore.directions.haut==true?false:true;gameCore.directions.haut=true;}
+			else if(direction==KEYS.DOWN || direction==KEYS.S){directionDifferente=gameCore.directions.bas==true?false:true;gameCore.directions.bas=true;}
+			else if(direction==KEYS.LEFT || direction==KEYS.Q){directionDifferente=gameCore.directions.gauche==true?false:true;gameCore.directions.gauche=true;}
+			else if(direction==KEYS.RIGHT || direction==KEYS.D){directionDifferente=gameCore.directions.droite==true?false:true;gameCore.directions.droite=true;}
 
-		//Protection pour éviter d'envoyer 50 messages si on appuie que sur 1 touche
-		if(directionDifferente)
-			gameCore.updateMouvement();
+			//Protection pour éviter d'envoyer 50 messages si on appuie que sur 1 touche
+			if(directionDifferente)
+				gameCore.updateMouvement();
+		}
 
-		return gameCore.gestionTouchesSpeciales(direction);
+		return gameCore.gestionTouchesSpeciales(direction,e);
 	};
 	this.stopBouger=function(direction){
 		direction=direction.keyCode;
@@ -147,7 +150,7 @@ function GameCore(pseudo){
 		gameCore.updateMouvement();
 	};
 
-	this.gestionTouchesSpeciales=function(key){
+	this.gestionTouchesSpeciales=function(key,e){
 		if(key==KEYS.ETOILE){
 			if($('#debug').css('display')=='none')
 				$('#debug').css({'display':'block'});
@@ -159,14 +162,21 @@ function GameCore(pseudo){
 			if($("#tchat-input").is(":focus")) 
 				return true;
 			else{
-			$('#tchat-input').focus();
-			return false;
+				$('#tchat-input').focus();
+				return false;
 			}
 		}
 		if(key==KEYS.ECHAP){
 			$('#tchat-input').blur();
 			$('#map').focus();
 		}
+		//Protection du scrolling de la page
+		if(key==KEYS.UP || key==KEYS.DOWN || key==KEYS.LEFT ||key==KEYS.RIGHT){
+			//on annule l'event par défaut (par exemple scroll avec touches)
+			e.preventDefault();
+			return false;
+		}
+		return true;
 	}
 
 	this.tchat=function(auteur,message,classe){

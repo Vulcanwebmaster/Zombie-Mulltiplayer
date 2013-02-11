@@ -7,7 +7,6 @@
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - nouveau boss et vagues
 - ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
--tchat quand même si on est mort !
 
 Idées :
 
@@ -30,7 +29,5 @@ Idées :
 
 *************************************************************************************
 
---- v 0.6.1 alpha (?????)
-	Nouveautés :
-
-	Corrections :
+--- v 0.6.x alpha (20130211)
+	FIX :

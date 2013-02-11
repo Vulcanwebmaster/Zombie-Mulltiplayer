@@ -148,8 +148,9 @@ function GameMap(){
 					$('#joueur-kills').text(item.kills);
 			}
 			else if(item.type=='compte_a_rebours_vague'){
-				$('#plateau').append($('<div>').attr('id','compteAReboursVague').text(item.value));
-				$('#compteAReboursVague').fadeOut(500, function(){$(this).remove();});
+				var div=$('<div>');
+				$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
+				div.fadeOut(500, function(){$(this).remove();});
 			}
 
 		}
@@ -327,13 +328,16 @@ function GameMap(){
 	    setTimeout(function(){document.getElementById("map").removeChild(div);},25);
 	}
 
-	this.ghostCamKeyDown=function(direction){
-		direction=direction.keyCode;
-		if(direction==KEYS.UP || direction==KEYS.Z){	gameMap.ghostCam.haut=true;}
-		else if(direction==KEYS.DOWN || direction==KEYS.S){	gameMap.ghostCam.bas=true;}
-		else if(direction==KEYS.LEFT || direction==KEYS.Q){	gameMap.ghostCam.gauche=true;}
-		else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameMap.ghostCam.droite=true;}
-		return gameCore.gestionTouchesSpeciales(direction);
+	this.ghostCamKeyDown=function(e){
+		direction=e.keyCode;
+		//On se déplace seulement si le tchat est pas ouvert
+		if(!$("#tchat-input").is(":focus")){
+			if(direction==KEYS.UP || direction==KEYS.Z){	gameMap.ghostCam.haut=true;}
+			else if(direction==KEYS.DOWN || direction==KEYS.S){	gameMap.ghostCam.bas=true;}
+			else if(direction==KEYS.LEFT || direction==KEYS.Q){	gameMap.ghostCam.gauche=true;}
+			else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameMap.ghostCam.droite=true;}
+		}
+		return gameCore.gestionTouchesSpeciales(direction,e);
 	}
 
 	this.ghostCamKeyUp=function(direction){
