@@ -182,6 +182,7 @@ module.exports = function CharacterManager(){
             result[id].style=liste[id].style;
             result[id].angle=parseInt(liste[id].angle);
             result[id].alive=liste[id].alive;
+            result[id].life=liste[id].life;
             //on ajoute la vitesse pour les calculs client side (en cas de lag)
             /*result[id].speed=liste[id].speed;
             if(liste[id].directions != undefined)

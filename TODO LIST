@@ -6,8 +6,11 @@
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - nouveau boss et vagues
-- ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
--tchat quand même si on est mort !
+*** - ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
+- vie qui passe a -13 quand on meurt
+- bug du compteur qui reste ?
+- corriger le bug avec la fleche HAUT et BAS
+- corriger le zqsd quand on tchat
 
 Idées :
 
