@@ -91,18 +91,30 @@ module.exports = function ServerMap(io,characterManager)
                }
             }
          },7000);         
-      },3000);
-
+      },4000);
+      //Fonction qui va faire le compte à rebours client side :
+      var secondes=11;
+      for(var i=secondes; i>0 ; i--){
+         setTimeout(_this.compteAReboursVague(_this, secondes-i), 1000*i);
+      }
+   }
+   this.compteAReboursVague=function(_this, secondesRestantes){
+      return function(){
+         _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
+      };
    }
 
    this.updateJoueurMouvement=function(datas){
-	   	this.listeJoueurs[datas.id].directions.gauche=datas.directions.gauche;
-	   	this.listeJoueurs[datas.id].directions.droite=datas.directions.droite;
-	   	this.listeJoueurs[datas.id].directions.haut=datas.directions.haut;
-	   	this.listeJoueurs[datas.id].directions.bas=datas.directions.bas;
+         if(this.listeJoueurs[datas.id]){
+   	   	this.listeJoueurs[datas.id].directions.gauche=datas.directions.gauche;
+   	   	this.listeJoueurs[datas.id].directions.droite=datas.directions.droite;
+   	   	this.listeJoueurs[datas.id].directions.haut=datas.directions.haut;
+   	   	this.listeJoueurs[datas.id].directions.bas=datas.directions.bas;
+         }
    }
    this.updateJoueurAngle=function(datas){
-      this.listeJoueurs[datas.id].angle=datas.angle;
+      if(this.listeJoueurs[datas.id])
+         this.listeJoueurs[datas.id].angle=datas.angle;
    }
 
    this.update=function(){
@@ -194,15 +206,15 @@ module.exports = function ServerMap(io,characterManager)
                }
                else{
                   this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang',x:parseInt(joueurLePlusProche.x), y:parseInt(joueurLePlusProche.y)};
-                  this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurLePlusProche.id, life:joueurLePlusProche.life};
                }
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurLePlusProche.id, life:joueurLePlusProche.life};
                zombie.attaque.compteAReboursAttaque=zombie.attaque.delaiMax;
             }
          }
 
          //Calcul du coefficient d'aggressivité. Si on est proche, on le met à 0 pour foncer sur le mec.
          var coef=1;
-         if(distancePlusCourte <= 55)
+         if(distancePlusCourte <= 60)
             coef=0;
          /*Mise à jour de l'angle avec lequel afficher le zombie*/
          //Cet angle est utilisé pour avancer, donc important :)
@@ -210,7 +222,12 @@ module.exports = function ServerMap(io,characterManager)
 
       }
       else{
-         zombie.angle = Math.random() < 0.5 ? zombie.angle+1 : zombie.angle-1;
+         //On teste si le zombie se trouve sur un bord, si oui, on le remet vers le milieu
+         var limite=50;
+         if(zombie.x +limite > this.widthMap || zombie.x -limite <0 ||zombie.y+limite > this.heightMap ||zombie.y -limite <0)
+            zombie.angle=Math.atan2(this.heightMap/2 - zombie.y , this.widthMap/2 - zombie.x )*180/Math.PI;
+         else
+            zombie.angle = Math.random() < 0.5 ? zombie.angle+1 : zombie.angle-1;
       }
 
    }
@@ -232,6 +249,8 @@ module.exports = function ServerMap(io,characterManager)
       joueur.attaque.compteAReboursAttaque=Math.max(0,joueur.attaque.compteAReboursAttaque-1);
       if(!joueur.isFiring)
          return;
+      else if(joueur.attaque.compteAReboursAttaque!=0)
+         return;
 
       var joueurX=joueur.x + joueur.taille/2;
       var joueurY=joueur.y + joueur.taille/2;
@@ -241,7 +260,7 @@ module.exports = function ServerMap(io,characterManager)
 
       //On calcul la droite entre la target et le joueur
       //Test du cas où le tir est vertical !! (probleme de division par zéro)
-      if(targetX - joueurX < joueur.taille/1.3 && targetX - joueurX > -joueur.taille/1.3 ){
+      if(targetX - joueurX < joueur.taille/1.2 && targetX - joueurX > -joueur.taille/1.2 ){
          // x=M
          var M=joueurX;
          var zombiePlusProche=null;
@@ -255,8 +274,8 @@ module.exports = function ServerMap(io,characterManager)
             var zombieTmp=this.listeZombies[idZombie];
             var distanceTmp=this.calculDistanceBetween(joueur,zombieTmp);
             if(zombieTmp.alive
-               && zombieTmp.x +zombieTmp.taille/2 > M-zombieTmp.taille/2 
-               && zombieTmp.x +zombieTmp.taille/2 < M+zombieTmp.taille/2
+               && zombieTmp.x +zombieTmp.taille/2 > M-zombieTmp.taille 
+               && zombieTmp.x +zombieTmp.taille/2 < M+zombieTmp.taille
                &&  distanceTmp < distancePlusCourte
                && distanceTmp < joueur.attaque.portee){
                if((viseEnHaut && joueurY > zombieTmp.y ) || (!viseEnHaut && joueurY < zombieTmp.y) ){
@@ -284,8 +303,8 @@ module.exports = function ServerMap(io,characterManager)
             var zombieTmp=this.listeZombies[idZombie];
             var distanceTmp=this.calculDistanceBetween(joueur,zombieTmp);
             if( zombieTmp.alive
-                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) > b-zombieTmp.taille/2
-                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) < b+zombieTmp.taille/2
+                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) > b-zombieTmp.taille
+                && ((zombieTmp.y+zombieTmp.taille/2) - (zombieTmp.x+zombieTmp.taille/2) * a) < b+zombieTmp.taille
                 && distanceTmp < distancePlusCourte
                 && distanceTmp < joueur.attaque.portee ){
                   //sécurité pour pas viser en arrière

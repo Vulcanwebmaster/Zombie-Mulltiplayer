@@ -99,6 +99,18 @@ src: url('HUD.ttf') format('truetype');
 	display: none;
 }
 
+#compteAReboursVague{
+	position:absolute;
+	top:200px;
+	left:350px;
+	height: 150px;
+	width:150px;
+	text-align: right;
+	font-size: 150px;
+	font-family: "HUDFond";
+	color:rgb(162,13,17);
+}
+
 /****************  CSS TCHAT **************** */
 
 #tchat{
@@ -119,10 +131,11 @@ src: url('HUD.ttf') format('truetype');
 	padding:5px;
 	margin:0;
 	position:absolute;
-	bottom:12px;
+	bottom:20px;
 }
-#tchat p.input{
+#tchat-input{
 	background-color:rgba(0,0,0,0.2);
+	width:300px;
 	position:absolute;
 	bottom:0px;
 	padding:0px 0px 2px 5px;

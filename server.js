@@ -100,6 +100,10 @@ io.sockets.on('connection', function(socket) {
         serverMap.stopFire(datas);
     });
 
+    socket.on('broadcast_msg', function(datas){
+        io.sockets.emit('broadcast_msg', datas);
+    });
+
     socket.on('disconnect',function(){
         socket.get('id', function(err,id){
             serverMap.removeJoueur(id);

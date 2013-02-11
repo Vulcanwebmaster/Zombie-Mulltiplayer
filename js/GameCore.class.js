@@ -10,7 +10,8 @@ var KEYS={
 		D:68,
 		Y:89,
 		ENTER:13,
-		ETOILE:220
+		ETOILE:220,
+		ECHAP:27
 		};
 
 //On met des valeurs pour pas que ça plante
@@ -55,6 +56,16 @@ function GameCore(pseudo){
 			gameCore.socket.on('update',function(datas){
 				gameCore.debug();
 				gameMap.update(datas);
+			});
+			//On ajoute la fonctionnalité du tchat
+
+			$('#tchat-form').submit(function(){
+				var message=$('#tchat-input')[0].value;
+				if(message!='')
+					gameCore.sendTchatMessage({'auteur':gameCore.pseudo, 'message':message });
+				$('#tchat-input')[0].value='';
+				$('#tchat-input').blur();
+				$('#map').focus();
 			});
 		});
 
@@ -105,6 +116,9 @@ function GameCore(pseudo){
 	this.stopFire=function(targetX,targetY){
 		this.socket.emit('stop_fire',{'id':gameCore.playerId});
 	}
+	this.sendTchatMessage=function(datas){
+		this.socket.emit('broadcast_msg', datas);
+	}
 
 
 	/*functions*/
@@ -116,15 +130,11 @@ function GameCore(pseudo){
 		else if(direction==KEYS.LEFT || direction==KEYS.Q){directionDifferente=gameCore.directions.gauche==true?false:true;gameCore.directions.gauche=true;}
 		else if(direction==KEYS.RIGHT || direction==KEYS.D){directionDifferente=gameCore.directions.droite==true?false:true;gameCore.directions.droite=true;}
 
-		if(direction==KEYS.ETOILE){
-			if($('#debug').css('display')=='none')
-				$('#debug').css({'display':'block'});
-			else
-				$('#debug').css({'display':'none'});
-		}
 		//Protection pour éviter d'envoyer 50 messages si on appuie que sur 1 touche
 		if(directionDifferente)
 			gameCore.updateMouvement();
+
+		return gameCore.gestionTouchesSpeciales(direction);
 	};
 	this.stopBouger=function(direction){
 		direction=direction.keyCode;
@@ -134,6 +144,28 @@ function GameCore(pseudo){
 		else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameCore.directions.droite=false;}
 		gameCore.updateMouvement();
 	};
+
+	this.gestionTouchesSpeciales=function(key){
+		if(key==KEYS.ETOILE){
+			if($('#debug').css('display')=='none')
+				$('#debug').css({'display':'block'});
+			else
+				$('#debug').css({'display':'none'});
+		}
+		//tchat
+		if(key==KEYS.Y || key==KEYS.ENTER){
+			if($("#tchat-input").is(":focus")) 
+				return true;
+			else{
+			$('#tchat-input').focus();
+			return false;
+			}
+		}
+		if(key==KEYS.ECHAP){
+			$('#tchat-input').blur();
+			$('#map').focus();
+		}
+	}
 
 	this.tchat=function(auteur,message,classe){
 		var debutMessage='';
@@ -148,7 +180,7 @@ function GameCore(pseudo){
 		if(gameCore.lastUpdate!=-1){
 			var now=new Date;
 			var currentPeak=(now-gameCore.lastUpdate);
-			console.log(currentPeak + 'ms since last update');
+			//console.log(currentPeak + 'ms since last update');
 			if(currentPeak > gameCore.maxPeak) gameCore.maxPeak=currentPeak;
 			gameCore.averageBPS=(gameCore.averageBPS*gameCore.nbrPeak + currentPeak)/ (gameCore.nbrPeak+1);
 			gameCore.nbrPeak++;
