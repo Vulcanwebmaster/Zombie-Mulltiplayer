@@ -5,7 +5,7 @@
 	- ajouter un zombie explosif du coup si je fais les mines pour les hommes :)
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
-*** - nouveau boss et vagues
+- nouveau boss et vagues
 - ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
 -tchat quand même si on est mort !
 
@@ -13,7 +13,7 @@ Idées :
 
 *** - ajouter des abilités aux zombies ? (sprint, téléportation, attaque à distance...)
 - ajouter un système de "continuité" en local ! (seulement le personnage actuel ?)
-*** - ajouter boss 2 et 3 et eventuellement des types de zombies...
+- ajouter boss 2 et 3 et eventuellement des types de zombies...
 *** - ajouter des buff/debuff
 - zombifier les morts ? (ou tout du moins pop un zombie)
 - faire un système où on choisi l'arme qu'on veut utiliser ?
@@ -43,3 +43,4 @@ Idées :
 		Correction du bug de "l'angle mort"
 		Optimisations de certains calculs côtés serveur
 		Correction du bug où les zombies errants allaient finir leur course contre le mur (TIMMY !!!)
+		Correction du bug de déplacement après une résurrection

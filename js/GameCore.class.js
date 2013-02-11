@@ -79,6 +79,8 @@ function GameCore(pseudo){
 			if(datas.id==gameCore.playerId){
 				$('#joueur-life').text('0');
 				gameCore.tchat('', 'Vous êtes mort.', 'tchat-game-event');
+				gameCore.directions.gauche=false;gameCore.directions.droite=false;gameCore.directions.haut=false;gameCore.directions.bas=false;
+				gameMap.isFiring=false;
 				gameMap.desinit();
 			}
 			else
