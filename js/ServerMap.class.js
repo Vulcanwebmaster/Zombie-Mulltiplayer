@@ -198,6 +198,7 @@ module.exports = function ServerMap(io,characterManager)
             if(zombie.attaque.compteAReboursAttaque ==0){
                joueurLePlusProche.life-=zombie.attaque.degats;
                if(joueurLePlusProche.life<=0){
+                  joueurLePlusProche.life=0;
                   joueurLePlusProche.alive=false;
                   joueurLePlusProche.isFiring=false;
                   joueurLePlusProche.directions={haut:false,bas:false,gauche:false,droite:false};

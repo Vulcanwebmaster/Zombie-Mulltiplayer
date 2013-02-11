@@ -107,126 +107,137 @@
 			<a href="#" onclick="$('#changelog').show();return false;" style="color:white;margin-left:400px;">Afficher le changelog</a>
 			<textarea id="changelog">*************** PATCH NOTE **************************
 
+--- v 0.6.0.1 alpha (20130211)
+	FIX :
+		Correction du bug où les touches UP et DOWN faisaient bouger la fenêtre sur les petits ecrans
+		Désactivation de ZQSD si on tchat
+		Suppression de l'erreur où le compte à rebours restait sur l'ecran
+		Bugfix de la vie négative quand on meurt
+
 --- v 0.6.0 alpha (20130211)
-	Nouveautés :
+	NEW :
 		Nouvelle IA. (devrait éviter la superposition de 50 zombies du même type)
-		Ajout d'un tchat
-		Ajout d'un compte à rebours avant le début des vagues (encore un clin d'oeil à Flodess)
-	Corrections :
-		Modification de certaines caractéristiques des zombies (distance de detection pour le zombiz)
-		Quelques corrections de cas oubliés. (par exemple si tout le monde quitte sauf des joueurs déjà morts)
+		Tchat fonctionnel
+		Compte à rebours avant le début des vagues (encore un clin d'oeil à Flodess)
+	EDIT :
+		Changement de certaines caractéristiques des zombies (distance de detection pour le zombiz)
 		Réduction du coef multiplicateur de la vie des zombies en multi
-		Correction du bug où un petit nombre de point de vie restait affichés alors que le joueur était mort
-		Correction du bug de "l'angle mort"
 		Optimisations de certains calculs côtés serveur
-		Correction du bug où les zombies errants allaient finir leur course contre le mur (TIMMY !!!)
+	FIX :
+		Quelques corrections de cas oubliés. (par exemple si tout le monde quitte sauf des joueurs déjà morts)
+		Bugfix où un petit nombre de point de vie restait affichés alors que le joueur était mort
+		Bugfix de "l'angle mort"
+		Bugfix du cas où les zombies errants allaient finir leur course contre le mur (TIMMY !!!)
 		Correction du bug de déplacement après une résurrection
 
 --- v 0.5.7 alpha (20130206)
-	Nouveautés :
-		Ajout d'une page d'accueil avec les stats des zombies et patchnote
-		Ajout d'une icone pour la page
-		Ajout d'un coefficient qui adapte la difficulté au nombre de joueurs.
-	Corrections :
+	NEW :
+		Page d'accueil avec les stats des zombies et patchnote
+		Icone pour Zombiz!
+		Coefficient qui adapte la difficulté au nombre de joueurs.
+	EDIT :
+		Suppression du clic droit sur la page
+	FIX :
 		Correction de CSS qui faisait changer le curseur si on cliquait + bougeait
-		Suppression du clic droit !
 
 --- v 0.5.6 alpha (20130205)
-	Nouveautés :
-		Ajout d'une portée maximum sur les armes
-		Ajout de la connexion en appuyant sur "entrée" (dédicasse à Flodess =) )
-	Corrections :
+	NEW :
+		Portée maximum sur les armes
+		Connexion en appuyant sur "entrée" (dédicasse à Flodess =) )
+	FIX :
 		Si tous les joueurs partent d'une partie, le serveur se réinitialise en vague 0
 		Remise à zéro des variables de déplacements quand un joueur meurt (pour éviter qu'il tire/bouge au respawn)
 
 --- v 0.5.5 alpha (20130205)
-	Nouveautés :
+	NEW :
 		Affichage de la vague courante
 		Ajout de couleur, de fonts, et de CSS sur les elements de l'HUD
-	Corrections :
+	EDIT :
+		CSS => modification de placements, couleurs, tailles...
+	FIX :
 		Suppression de quelques envois réseaux inutiles
-		Edition de CSS, modification de placements, couleurs, tailles...
 
 --- v 0.5.4 alpha (20130205)
-	Nouveautés :
-		Ajout de la ghostcam
-	Corrections :
+	NEW :
+		Ghostcam
+	FIX :
 		Passage des envois en "dur" et pas en volatile (devrait corriger les tirs invisibles et les problèmes de vie qui se met mal à jour, mais entrainera peut-etre des lag)
 		Modification de l'outil de latence
 
 --- v 0.5.3 alpha (20130205)
-	Nouveautés :
-		Ajout d'un bonus pour celui qui mène en fin de vague. (zombiz slayer => +25 vie et +0.1 vitesse)
-	Corrections :
+	NEW :
+		Bonus pour celui qui mène en fin de vague. (zombiz slayer => +25 vie et +0.1 vitesse)
+	EDIT :
 		Changement FONT du titre
 		Plusieurs modifications CSS
 		Modifications mineures en optimisations côté client
 
 --- v 0.5.2 alpha (20130205)
-	Nouveautés :
-		Ajout d'un état d'errance sur les zombies trop loin, ils détectent maintenant la présence des joueurs quand ils passent à leur portée ou bien qu'ils se font tirer dessus.
-		Ajout d'un clean sur le sang quand y'a a trop pendant une partie
+	NEW :
+		Etat d'errance sur les zombies trop loin, ils détectent maintenant la présence des joueurs quand ils passent à leur portée ou bien qu'ils se font tirer dessus.
+		Clean sur le sang quand y'a a trop pendant une partie
 		Choix du nom : ZOMBIZ! Team Survival
-	Corrections :
+	EDIT :
 		Calcul des dégats par secondes des armes et zombies
 		Rééquilibrages des armes et zombies
 		Ajustement de certains calculs de hitbox
 
 --- v 0.5.1 alpha (20130204)
-	Nouveautés :
-		Ajout d'un outil permettant de calculer la latence réseau (touche *)
+	NEW :
+		Outil permettant de calculer la latence réseau (touche *)
 		Gain de 25 points de vie si on survit à une vague
 		Ajout d'une rotation aléatoire sur le sang
-	Corrections :
+	EDIT :
 		Grosses optimisations des échanges réseaux (diminution des tableaux envoyés facteur 5 au moins !)
-		Corrections typo.
+		Corrections de diverses typo
 		Protection faille XSS sur pseudo
 		Modification couleurs tchat
 		Rééquilibrage des vagues et de quelques zombies
 		Ajout d'un full clear de la map en fin de vague pour éviter les ralentissements
+	FIX :
 		Correction bug fin de partie si on restait cliqué ou appuyé sur une touche au moment de la mort.
 
 
 --- v 0.5.0 alpha (20130203)
-	Nouveautés : 
+	NEW : 
 		Affichage de sang
 		Affichage du tracé du tir du joueur
 		Premier mode multijoueur totalement fonctionnel
 		Changement d'armes par pallier de zombies tués
-	Modifications :
-		Ajout de 8 types de zombies différents
-		Ajout de 12 types de personnages
+	EDIT :
+		Désormais 8 types de zombies différents
+		Désormais 12 types de personnages
 		Modification du système de vagues : 10 vagues programmées avec 8 types de zombies différents
 
 
 ** Dans les versions ci-dessous, seules les grandes "idées" sont énumérées. **
 
 --- v 0.4.0 alpha (20130202)
-	Nouveautés :
-		Ajout de graphismes autre que des "carrés"
-		Ajout du tchat
-	Corrections :
+	NEW :
+		Graphismes autre que des "carrés"
+		Fenêtre de tchat pour les infos du jeu
+	FIX :
 		Evolution du système de vagues
 		Correction du bug "tir vertical impossible"
 		Divers ajustements
 
 --- v 0.3.0 alpha (20130202)
-	Nouveautés :
+	NEW :
 		Possibilités de tirer sur les zombies
 		Ajout de la rotation des personnages
-	Corrections :
+	FIX :
 		Déplacements de tous les calculs serveurs side pour limiter la triche
 		Divers ajustements
 
 --- v 0.2.0 alpha (20130201)
-	Nouveautés :
+	NEW :
 		Prise en charge du mode multijoueur des déplacements
 		Implémentation d'une IA "bête"
 	Correction :
 		Modification de la structure des fichiers
 
 --- v 0.1.0 alpha (20130131)
-	Nouveautés :
+	NEW :
 		Création du projet
 		Mode solo uniquement
 		Possibilité de tuer les zombies
