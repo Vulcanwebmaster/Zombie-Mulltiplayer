@@ -29,5 +29,8 @@ Idées :
 
 *************************************************************************************
 
---- v 0.6.x alpha (20130211)
+--- v 0.7.x alpha (20130211)
 	FIX :
+		Parfois l'angle ne se mettait pas à jour sur certains joueurs, plus maintenant.
+		La vie se remet bien en vert quand on respawn
+		Correction de l'IA qui restait parfois "coincé" à une distance fixe du joueur

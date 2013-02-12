@@ -93,7 +93,7 @@ function GameMap(){
 					player.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
 			}
-			if(idPerso!=gameCore.playerId && this.ghostCam.running==false)
+			if(idPerso!=gameCore.playerId)
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);				
 		}
 

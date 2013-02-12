@@ -89,7 +89,7 @@ function GameCore(pseudo){
 
 		this.socket.on('player_revive', function(datas){
 			if(datas.id==gameCore.playerId){
-				$('#joueur-life').text(datas.life);
+				$('#joueur-life').text(datas.life).css('color','rgb(70,128,51)');
 				$('#joueur-kills').text(datas.kills);
 				gameCore.tchat('','Nouvelle vie !', 'tchat-game-event');
 				gameMap.init();
