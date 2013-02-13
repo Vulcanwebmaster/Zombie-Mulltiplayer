@@ -232,5 +232,8 @@ $(document).ready(function(){
 		}
 	});
 
+	//Eviter le changement du curseur en text
+	document.onselectstart = function(e){ e.originalEvent.preventDefault();e.preventDefault();return false; }
+
 	$('#champs-pseudo').focus();
 })

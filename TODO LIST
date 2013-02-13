@@ -6,7 +6,6 @@
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - nouveau boss et vagues
-*** - ajouter la vie du mob qu'on vise ? (simple avec jquery !?)
 
 Idées :
 
@@ -29,8 +28,24 @@ Idées :
 
 *************************************************************************************
 
---- v 0.7.x alpha (20130211)
+--- v 0.7.0 alpha (20130212)
+	NEW :
+		La vie du zombie que l'on survole s'affiche désormais
+	EDIT :
+		Le serveur redemarrera si il s'arrête
+		Modification de la vitesse des zombies
+		Changement mineurs côtés serveurs (log)
 	FIX :
 		Parfois l'angle ne se mettait pas à jour sur certains joueurs, plus maintenant.
 		La vie se remet bien en vert quand on respawn
 		Correction de l'IA qui restait parfois "coincé" à une distance fixe du joueur
+		Le curseur ne devrait plus se changer en "surligneur de texte"
+
+
+**********
+TYPE DE BUFF / DEBUFF
+Ralentissement (poison ?)
+Saignement (dot)
+Boost vitesse (zombiz slayer)
+Assomé / emprisonné
+Reduction de dégats pris / augmentation de dégats faits

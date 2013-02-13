@@ -18,6 +18,7 @@ function GameMap(){
 		$('body').keydown(gameCore.bouger);
 		$('body').keyup(gameCore.stopBouger);
 		$('#plateau').mousedown(function(e){
+			e.originalEvent.preventDefault();
 			var offset = $('#map').offset();
 			var relativeX = (e.pageX - offset.left);
 			var relativeY = (e.pageY - offset.top);
@@ -75,7 +76,7 @@ function GameMap(){
 				player.id='player' + idPerso;
 				player.style.left=datas.listeJoueurs[idPerso].x +'px';
 				player.style.top=datas.listeJoueurs[idPerso].y+'px';
-				player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
+				player.setAttribute('data-max-life',datas.listeJoueurs[idPerso].life);
 				//Affichage du style
 				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);	
@@ -104,7 +105,7 @@ function GameMap(){
 				var zombie=document.createElement('div');
 				zombie.className= zombie.className+' map-item zombie';
 				zombie.id='zombie' + idZombie;
-				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
+				zombie.setAttribute('data-max-life',datas.listeZombies[idZombie].life);
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
 				zombie.style.top=datas.listeZombies[idZombie].y+'px';
 				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
@@ -122,8 +123,17 @@ function GameMap(){
 			}
 		}
 		//On ajoute l'event d'affichage de la vie du zombie
-		$('.zombie').unbind('mouseover');
-		$('.zombie').mouseover(function(){/*console.log('click');*/});
+		$('.zombie').unbind('mouseover').unbind('mouseleave')
+			.mouseover(function(){
+				if($(this).attr('data-life') != '0'){
+					$('#zombie-life').stop(true).text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
+									.animate({'opacity':1},200);
+				}
+			})
+			.mouseleave(function(){
+			$('#zombie-life').text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
+								.animate({'opacity':0},1000);
+			});
 
 		var item;
 		for(var idItem in datas.listeTemporaryItems){

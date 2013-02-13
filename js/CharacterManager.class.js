@@ -53,7 +53,7 @@ module.exports = function CharacterManager(){
          }
          //Resistant 26.6 DPS
          if(type==this.ZOMBIE_RESISTANT){
-         	result.maxSpeed=this.DEFAULT_ZOMBIE_SPEED+1;
+         	result.maxSpeed=this.DEFAULT_ZOMBIE_SPEED*2;
             result.life=2000;
             result.attaque.degats=20;
             result.attaque.delaiMax=15;
@@ -62,7 +62,7 @@ module.exports = function CharacterManager(){
          }
          //Mini Boss 300 DPS
          if(type==this.ZOMBIE_BOSS1){
-            result.maxSpeed=this.PAS;
+            result.maxSpeed=this.PAS+2;
             result.life=15000;
             result.attaque.degats=30;
             result.attaque.delaiMax=2;
@@ -91,6 +91,7 @@ module.exports = function CharacterManager(){
 		var result={
    			x:0,
    			y:0,
+            maxLife : this.DEFAULT_PLAYER_LIFE,
    			life:this.DEFAULT_PLAYER_LIFE,
             angle:0,//degrés
    			directions:{haut:false,bas:false,gauche:false,droite:false},
@@ -103,6 +104,7 @@ module.exports = function CharacterManager(){
             target:{targetX:0,targetY:0},
             kills:0,
             speed:this.PAS,
+            maxSpeed : this.PAS,
             taille:this.LARGEUR_PERSO
    		};
    		return result;
@@ -192,7 +194,7 @@ module.exports = function CharacterManager(){
     }
 
 	this.PAS=9;//px
-  	this.DEFAULT_ZOMBIE_SPEED=2;
+  	this.DEFAULT_ZOMBIE_SPEED=3;
   	this.LARGEUR_PERSO=30;
   	this.ZOMBIE_NORMAL=1;
   	this.ZOMBIE_RAPIDE=2;

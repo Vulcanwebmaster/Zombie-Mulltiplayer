@@ -1,4 +1,9 @@
 
+//Masque de dates à utiliser pour les log
+var dateToLog=function(date){
+    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+}
+
 /*Classe qui gère tout les calculs sur la map*/
 module.exports = function ServerMap(io,characterManager)
 {
@@ -25,7 +30,7 @@ module.exports = function ServerMap(io,characterManager)
       for(var id in this.listeJoueurs)
          ilResteDesJoueurs=true;
       if(!ilResteDesJoueurs){
-         console.log('Tous les joueurs ont quitté la partie, on met le serveur en veille.')
+         console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')
          this.stop();
          this.currentWave=-1;
          this.nbZombies=0;
@@ -74,7 +79,7 @@ module.exports = function ServerMap(io,characterManager)
    }
 
    this.spawnWave=function(id){
-      console.log('Lancement de la vague ' + id);
+      console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
          _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'numero_vague', value: _this.currentWave};
@@ -477,7 +482,7 @@ module.exports = function ServerMap(io,characterManager)
       if(fin){
          this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
          this.stop();
-         console.log("La partie est terminée");
+         console.log(dateToLog(new Date) + "La partie est terminée");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
