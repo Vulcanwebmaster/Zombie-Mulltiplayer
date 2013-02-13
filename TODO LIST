@@ -30,13 +30,13 @@ Idées :
 
 --- v 0.7.0 alpha (20130212)
 	NEW :
-		La vie du zombie que l'on survole s'affiche désormais
+		
 	EDIT :
 		Le serveur redemarrera si il s'arrête
 		Modification de la vitesse des zombies
 		Changement mineurs côtés serveurs (log)
 	FIX :
-		Parfois l'angle ne se mettait pas à jour sur certains joueurs, plus maintenant.
+		Parfois l'angle ne se mettait pas à jour sur certains joueurs, plus maintenant
 		La vie se remet bien en vert quand on respawn
 		Correction de l'IA qui restait parfois "coincé" à une distance fixe du joueur
 		Le curseur ne devrait plus se changer en "surligneur de texte"

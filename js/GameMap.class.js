@@ -123,7 +123,7 @@ function GameMap(){
 			}
 		}
 		//On ajoute l'event d'affichage de la vie du zombie
-		$('.zombie').unbind('mouseover').unbind('mouseleave')
+		/*$('.zombie').unbind('mouseover').unbind('mouseleave')
 			.mouseover(function(){
 				if($(this).attr('data-life') != '0'){
 					$('#zombie-life').stop(true).text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
@@ -133,7 +133,7 @@ function GameMap(){
 			.mouseleave(function(){
 			$('#zombie-life').text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
 								.animate({'opacity':0},1000);
-			});
+			});*/
 
 		var item;
 		for(var idItem in datas.listeTemporaryItems){
