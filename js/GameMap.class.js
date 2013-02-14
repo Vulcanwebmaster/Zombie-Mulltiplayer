@@ -355,7 +355,7 @@ function GameMap(){
 	    div.setAttribute('style','z-index:7;border:1px solid white;width:'+width+'px;height:0px;-moz-transform:rotate('+deg+'deg);-webkit-transform:rotate('+deg+'deg);position:absolute;top:'+y+'px;left:'+x+'px;');   
 
 	    document.getElementById("map").appendChild(div);
-	    setTimeout(function(){document.getElementById("map").removeChild(div);},25);
+	    setTimeout(function(){document.getElementById("map").removeChild(div);},50);
 	}
 
 	this.ghostCamKeyDown=function(e){

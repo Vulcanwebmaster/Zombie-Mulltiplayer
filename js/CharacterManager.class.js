@@ -45,7 +45,7 @@ module.exports = function CharacterManager(){
             result.special=function(args){
                 if(args.type=="defense"){
                     //on court un peu plus vite si on prend des dégats
-                    this.speed=this.speed < 13 ? this.speed + 1 : 13;  
+                    this.speed=this.speed < 9 ? this.speed + 1 : 9;  
                 }
             }
          }
