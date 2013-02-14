@@ -81,6 +81,7 @@ function GameCore(pseudo){
 				gameCore.tchat('', 'Vous êtes mort.', 'tchat-game-event');
 				gameCore.directions.gauche=false;gameCore.directions.droite=false;gameCore.directions.haut=false;gameCore.directions.bas=false;
 				gameMap.isFiring=false;
+				$('#buffs').text('');
 				gameMap.desinit();
 			}
 			else
@@ -89,7 +90,7 @@ function GameCore(pseudo){
 
 		this.socket.on('player_revive', function(datas){
 			if(datas.id==gameCore.playerId){
-				$('#joueur-life').text(datas.life);
+				$('#joueur-life').text(datas.life).css('color','rgb(70,128,51)');
 				$('#joueur-kills').text(datas.kills);
 				gameCore.tchat('','Nouvelle vie !', 'tchat-game-event');
 				gameMap.init();
@@ -231,6 +232,9 @@ $(document).ready(function(){
 			gameCore=new GameCore(input);
 		}
 	});
+
+	//Eviter le changement du curseur en text
+	document.onselectstart = function(e){ e.originalEvent.preventDefault();e.preventDefault();return false; }
 
 	$('#champs-pseudo').focus();
 })

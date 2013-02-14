@@ -18,6 +18,7 @@ function GameMap(){
 		$('body').keydown(gameCore.bouger);
 		$('body').keyup(gameCore.stopBouger);
 		$('#plateau').mousedown(function(e){
+			e.originalEvent.preventDefault();
 			var offset = $('#map').offset();
 			var relativeX = (e.pageX - offset.left);
 			var relativeY = (e.pageY - offset.top);
@@ -46,7 +47,7 @@ function GameMap(){
 					gameCore.fire(viseX,viseY);
 				}
 			}
-		})
+		});
 		$('#map').focus();
 	}
 	this.desinit=function(){
@@ -75,6 +76,7 @@ function GameMap(){
 				player.id='player' + idPerso;
 				player.style.left=datas.listeJoueurs[idPerso].x +'px';
 				player.style.top=datas.listeJoueurs[idPerso].y+'px';
+				player.setAttribute('data-max-life',datas.listeJoueurs[idPerso].life);
 				//Affichage du style
 				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);	
@@ -82,7 +84,7 @@ function GameMap(){
 			}
 			else{
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
-
+				player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
 					player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
@@ -90,11 +92,26 @@ function GameMap(){
 				if(datas.listeJoueurs[idPerso].alive==false){
 					player.style.zIndex=5;
 					player.style.backgroundPosition=this.setBackgroundPosition(12);
-					player.setAttribute('data-speed', 0);
 				}
 			}
-			if(idPerso!=gameCore.playerId && this.ghostCam.running==false)
-				this.rotate(player,datas.listeJoueurs[idPerso].angle);				
+			if(idPerso!=gameCore.playerId)
+				this.rotate(player,datas.listeJoueurs[idPerso].angle);
+			else{
+				//Affichage des buff
+				for(var stringBuff in datas.listeJoueurs[idPerso].buffs){
+					var tick=datas.listeJoueurs[idPerso].buffs[stringBuff];
+					var secondes=parseInt(tick*50/1000);
+					if(tick>1){
+						if($('#'+stringBuff).length==0){
+							$('#buffs').append($('<div>').attr('id', stringBuff).text(secondes+'s'));
+						}
+						else
+							$('#'+stringBuff).text(secondes+'s');
+					}
+					else
+						$('#'+stringBuff).remove();
+				}
+			}				
 		}
 
 		var zombie;
@@ -104,7 +121,7 @@ function GameMap(){
 				var zombie=document.createElement('div');
 				zombie.className= zombie.className+' map-item zombie';
 				zombie.id='zombie' + idZombie;
-				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
+				zombie.setAttribute('data-max-life',datas.listeZombies[idZombie].life);
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
 				zombie.style.top=datas.listeZombies[idZombie].y+'px';
 				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
@@ -113,6 +130,7 @@ function GameMap(){
 			}
 			else{
 				this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y);
+				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
 				if(datas.listeZombies[idZombie].alive==false){
 					zombie.style.zIndex=5;
 					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
@@ -120,6 +138,18 @@ function GameMap(){
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 			}
 		}
+		//On ajoute l'event d'affichage de la vie du zombie
+		/*$('.zombie').unbind('mouseover').unbind('mouseleave')
+			.mouseover(function(){
+				if($(this).attr('data-life') != '0'){
+					$('#zombie-life').stop(true).text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
+									.animate({'opacity':1},200);
+				}
+			})
+			.mouseleave(function(){
+			$('#zombie-life').text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
+								.animate({'opacity':0},1000);
+			});*/
 
 		var item;
 		for(var idItem in datas.listeTemporaryItems){
@@ -130,7 +160,7 @@ function GameMap(){
 				this.addBlood(parseInt(item.x), parseInt(item.y));
 			else if(item.type=='player_life'){
 				if(item.id==gameCore.playerId){
-					$('#joueur-life').text(item.life);
+					$('#joueur-life').text(parseInt(item.life));
 					//coloration de la case
 					if(item.life>75)
 						$('#joueur-life').css('color','rgb(70,128,51)');

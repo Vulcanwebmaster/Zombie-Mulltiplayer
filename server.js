@@ -15,6 +15,11 @@ app.listen (process.env.PORT || 5000) ;
 io.set('log level', 1);
 io.set('transport', ['websocket']);
 
+//Masque de dates à utiliser pour les log
+var dateToLog=function(date){
+    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+}
+
 function handler( request , response ) {
 	var filePath = '.' + request.url;
     if (filePath == './')
@@ -71,7 +76,7 @@ function handler( request , response ) {
 
 io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
-        console.log('Un joueur envoi son pseudo');
+        console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
         var joueurId=serverMap.addJoueur(datas.pseudo);
         /*Ici on choisi ou non de lancer la partie*/
         if(serverMap.isRunning==false)
@@ -79,7 +84,7 @@ io.sockets.on('connection', function(socket) {
         socket.emit('set_id', joueurId);
 		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' a rejoint la partie.', 'class': 'tchat-admin'});
 		socket.set('pseudo', datas.pseudo , function () {
-			console.log ( 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');
+			console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');
 		});
         socket.set('id', joueurId);
 	});
@@ -109,7 +114,7 @@ io.sockets.on('connection', function(socket) {
             serverMap.removeJoueur(id);
             socket.broadcast.emit('remove_player', {'id':id});
             socket.get('pseudo', function(err, pseudo){
-                console.log("Joueur '" + pseudo + "' a quitté.");
+                console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
                 socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté la partie.', 'class':'tchat-admin'});
             });
         });

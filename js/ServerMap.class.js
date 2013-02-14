@@ -1,4 +1,9 @@
 
+//Masque de dates à utiliser pour les log
+var dateToLog=function(date){
+    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+}
+
 /*Classe qui gère tout les calculs sur la map*/
 module.exports = function ServerMap(io,characterManager)
 {
@@ -25,7 +30,7 @@ module.exports = function ServerMap(io,characterManager)
       for(var id in this.listeJoueurs)
          ilResteDesJoueurs=true;
       if(!ilResteDesJoueurs){
-         console.log('Tous les joueurs ont quitté la partie, on met le serveur en veille.')
+         console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')
          this.stop();
          this.currentWave=-1;
          this.nbZombies=0;
@@ -39,7 +44,7 @@ module.exports = function ServerMap(io,characterManager)
 
    this.addZombie=function(type){
       //Zombie par défaut (type 0 et 1)
-      var newZombie=characterManager.creationZombie(this.nbZombies++,type);
+      var newZombie=characterManager.creationZombie(this,this.nbZombies++,type);
       //On multiplie la vie du zombie par un coefficient dépendant du nombre de joueurs      
       var nombreDeJoueurs=0;
       for(var id in this.listeJoueurs)
@@ -74,7 +79,7 @@ module.exports = function ServerMap(io,characterManager)
    }
 
    this.spawnWave=function(id){
-      console.log('Lancement de la vague ' + id);
+      console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
          _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'numero_vague', value: _this.currentWave};
@@ -128,9 +133,14 @@ module.exports = function ServerMap(io,characterManager)
 		for(var idPerso in this.listeJoueurs){
          var persoTmp=this.listeJoueurs[idPerso];
          if(persoTmp.alive){
-            this.calculNextEtapeFire(persoTmp);
-            this.move(persoTmp, 'humain');
-            this.validatePositionToMapLimits(persoTmp);       
+            //On applique les buff/debuff avant tout
+            persoTmp.applyBuff(this);
+            //on verifie qu'il est toujours vivant après les debuff
+            if(persoTmp.alive){
+               this.calculNextEtapeFire(persoTmp);
+               this.move(persoTmp, 'humain');
+               this.validatePositionToMapLimits(persoTmp);       
+            }
          }
 		}
       for(var idZombie in this.listeZombies){
@@ -186,7 +196,7 @@ module.exports = function ServerMap(io,characterManager)
       //Dans tous les cas on décompte le fait qu'il puisse mordre à nouveau
        zombie.attaque.compteAReboursAttaque=Math.max(0,zombie.attaque.compteAReboursAttaque-1);
       //Si un personnage passe dans son champs de vision, il se met à courir
-      if(distancePlusCourte< zombie.distanceVision){
+      if(distancePlusCourte< zombie.distanceVision && zombie.aware==false){
          zombie.aware=true;
          zombie.speed=zombie.maxSpeed;
       }
@@ -197,13 +207,9 @@ module.exports = function ServerMap(io,characterManager)
          if(distancePlusCourte < joueurLePlusProche.taille/2 + zombie.taille/2){
             if(zombie.attaque.compteAReboursAttaque ==0){
                joueurLePlusProche.life-=zombie.attaque.degats;
+               zombie.special({'type':'attaque', 'target':joueurLePlusProche});
                if(joueurLePlusProche.life<=0){
-                  joueurLePlusProche.life=0;
-                  joueurLePlusProche.alive=false;
-                  joueurLePlusProche.isFiring=false;
-                  joueurLePlusProche.directions={haut:false,bas:false,gauche:false,droite:false};
-                  this.io.sockets.emit('player_die', joueurLePlusProche);
-                  this.testFinPartie();
+                  joueurLePlusProche.die(this);
                }
                else{
                   this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang',x:parseInt(joueurLePlusProche.x), y:parseInt(joueurLePlusProche.y)};
@@ -215,7 +221,7 @@ module.exports = function ServerMap(io,characterManager)
 
          //Calcul du coefficient d'aggressivité. Si on est proche, on le met à 0 pour foncer sur le mec.
          var coef=1;
-         if(distancePlusCourte <= 60)
+         if(distancePlusCourte <= 75)
             coef=0;
          /*Mise à jour de l'angle avec lequel afficher le zombie*/
          //Cet angle est utilisé pour avancer, donc important :)
@@ -321,8 +327,13 @@ module.exports = function ServerMap(io,characterManager)
          //On enlève la vie au zombie le plus proche
          if(zombiePlusProche!=null){
             zombiePlusProche.life-=joueur.attaque.degats;
-            zombiePlusProche.aware=true;
-            zombiePlusProche.speed=zombiePlusProche.maxSpeed;
+            if(zombiePlusProche.aware==false){
+               zombiePlusProche.aware=true;   
+               zombiePlusProche.speed=zombiePlusProche.maxSpeed;
+            }
+            else
+               zombiePlusProche.special({'type':'defense', 'target':joueur});
+
             if(zombiePlusProche.life<=0){
                zombiePlusProche.life=0;
                zombiePlusProche.alive=false;
@@ -441,6 +452,7 @@ module.exports = function ServerMap(io,characterManager)
             if(!this.listeJoueurs[idPerso].alive){
                this.listeJoueurs[idPerso].alive=true;
                this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
+               this.listeJoueurs[idPerso].speed=this.listeJoueurs[idPerso].maxSpeed;
                this.io.sockets.emit('player_revive', this.listeJoueurs[idPerso]);
             }  
             else{
@@ -458,9 +470,7 @@ module.exports = function ServerMap(io,characterManager)
          //Assignation du bonus Zombiz Slayer
          if(joueurMeneur!=null){
             this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer en menant avec ' + joueurMeneur.kills + ' kills.' , 'class':'tchat-game-info'});
-            joueurMeneur.life+=25;
-            joueurMeneur.speed+=0.2;
-            this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:joueurMeneur.id, life:joueurMeneur.life};
+            joueurMeneur.addBuff('zombizSlayer');
          }
          this.spawnWave(++this.currentWave);
       }
@@ -477,7 +487,7 @@ module.exports = function ServerMap(io,characterManager)
       if(fin){
          this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
          this.stop();
-         console.log("La partie est terminée");
+         console.log(dateToLog(new Date) + "La partie est terminée");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
