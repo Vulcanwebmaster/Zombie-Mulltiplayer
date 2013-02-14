@@ -81,6 +81,7 @@ function GameCore(pseudo){
 				gameCore.tchat('', 'Vous êtes mort.', 'tchat-game-event');
 				gameCore.directions.gauche=false;gameCore.directions.droite=false;gameCore.directions.haut=false;gameCore.directions.bas=false;
 				gameMap.isFiring=false;
+				$('#buffs').text('');
 				gameMap.desinit();
 			}
 			else

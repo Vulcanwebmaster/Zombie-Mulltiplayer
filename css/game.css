@@ -100,6 +100,29 @@ src: url('HUD.ttf') format('truetype');
 	background:rgba(0,0,0,0.3);
 	background-size:50%;
 }
+#buffs{
+	position:absolute;
+	top:0px;
+	left:600px;
+	width:300px;
+	height: 50px;
+}
+#buffs div{
+	float:right;
+	width:40px;
+	margin:0 1px;
+	height: 0px;
+	padding-top:40px;
+	text-align: center;
+	background-image:url('/img/buffs.png');
+}
+#saignementLeger{background-position:0px 0px;}
+#saignementViolent{background-position:0px -40px;}
+#zombizSlayer{background-position:0px -80px;}
+#assomage{background-position:0px -120px;}
+#poison{background-position:0px -160px;}
+
+
 #vague-courante{
 	background-image:url('/img/wave.png');
 	left:200px;

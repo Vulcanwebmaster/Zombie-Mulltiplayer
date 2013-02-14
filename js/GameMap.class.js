@@ -95,7 +95,23 @@ function GameMap(){
 				}
 			}
 			if(idPerso!=gameCore.playerId)
-				this.rotate(player,datas.listeJoueurs[idPerso].angle);				
+				this.rotate(player,datas.listeJoueurs[idPerso].angle);
+			else{
+				//Affichage des buff
+				for(var stringBuff in datas.listeJoueurs[idPerso].buffs){
+					var tick=datas.listeJoueurs[idPerso].buffs[stringBuff];
+					var secondes=parseInt(tick*50/1000);
+					if(tick>1){
+						if($('#'+stringBuff).length==0){
+							$('#buffs').append($('<div>').attr('id', stringBuff).text(secondes+'s'));
+						}
+						else
+							$('#'+stringBuff).text(secondes+'s');
+					}
+					else
+						$('#'+stringBuff).remove();
+				}
+			}				
 		}
 
 		var zombie;
@@ -144,7 +160,7 @@ function GameMap(){
 				this.addBlood(parseInt(item.x), parseInt(item.y));
 			else if(item.type=='player_life'){
 				if(item.id==gameCore.playerId){
-					$('#joueur-life').text(item.life);
+					$('#joueur-life').text(parseInt(item.life));
 					//coloration de la case
 					if(item.life>75)
 						$('#joueur-life').css('color','rgb(70,128,51)');
