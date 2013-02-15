@@ -154,14 +154,16 @@ function GameCore(pseudo){
 
 	this.gestionTouchesSpeciales=function(key,e){
 		//console.log(key);
-		if(key==KEYS.V){
-			OPTIONS.display_names=!OPTIONS.display_names;
-		}
-		if(key==KEYS.ETOILE){
-			if($('#debug').css('display')=='none')
-				$('#debug').css({'display':'block'});
-			else
-				$('#debug').css({'display':'none'});
+		if(!$("#tchat-input").is(":focus")){
+			if(key==KEYS.V){
+				OPTIONS.display_names=!OPTIONS.display_names;
+			}
+			if(key==KEYS.ETOILE){
+				if($('#debug').css('display')=='none')
+					$('#debug').css({'display':'block'});
+				else
+					$('#debug').css({'display':'none'});
+			}
 		}
 		//tchat
 		if(key==KEYS.Y || key==KEYS.ENTER){

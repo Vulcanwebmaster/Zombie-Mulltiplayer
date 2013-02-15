@@ -56,6 +56,7 @@ module.exports = function CharacterManager(){
             result.attaque.degats=50;
             result.attaque.delaiMax=50;
             result.style=type;
+            result.agressivite=0;
             result.distanceVision=this.MIN_DISTANCE_VISIBLE/2;
             //Le zombie gros peut assomer
             result.special=function(args){
@@ -195,6 +196,10 @@ module.exports = function CharacterManager(){
                   }
             },
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
+              //On regarde si il est empoisonné pour pas appliquer le buff zombizSlayer
+              var empoisonner=false;;
+              if(this.buffs['poison']!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
+
                 for(var stringBuff in this.buffs){
                     if(stringBuff=="saignementLeger"){
                         this.life-=0.1;
@@ -229,7 +234,8 @@ module.exports = function CharacterManager(){
                         }
                     }
                     else if(stringBuff=="zombizSlayer"){
-                        this.speed=this.maxSpeed+1;
+                        if(!empoisonner)
+                          this.speed=this.maxSpeed+1;
                         this.buffs[stringBuff].duree--;
                         if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
@@ -237,7 +243,7 @@ module.exports = function CharacterManager(){
                         }
                     }
                     else if(stringBuff=="poison"){
-                        this.speed=this.speed>0.5 ? this.speed - 0.5 : 0 ;
+                        this.speed=this.speed>0.1 ? this.speed - 0.1 : 0 ;
                         this.buffs[stringBuff].duree--;
                         if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
@@ -280,7 +286,7 @@ module.exports = function CharacterManager(){
 		nombre[this.ZOMBIE_NORMAL]= {     0:5 , 1:15, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:200, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:1 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:200, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:1, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
