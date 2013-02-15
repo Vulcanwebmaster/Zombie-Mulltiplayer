@@ -28,6 +28,12 @@ function handler( request , response ) {
         filePath='./index.html';
     else if(filePath=='./jeu')
         filePath='./jeu.html';
+    //On protège tous les dossiers et fichiers interdits
+    else if(filePath=='./server.js'){
+        console.log(dateToLog(new Date) + 'Tentative d\'accès au fichier serveur');
+        response.writeHead(403);
+        response.end('Acces interdit. Petit malin.');
+    }
     var extname = path.extname(filePath);
     var contentType = 'text/html';
     switch (extname) {
@@ -67,7 +73,7 @@ function handler( request , response ) {
             });
         }
         else {
-            console.log('Error fs.stat : ' + err);
+            console.log(dateToLog(new Date) + 'Error fs.stat : ' + err);
             response.writeHead(404);
             response.end();
         }
@@ -84,7 +90,7 @@ io.sockets.on('connection', function(socket) {
         socket.emit('set_id', joueurId);
 		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' a rejoint la partie.', 'class': 'tchat-admin'});
 		socket.set('pseudo', datas.pseudo , function () {
-			console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');
+			/*console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');*/
 		});
         socket.set('id', joueurId);
 	});

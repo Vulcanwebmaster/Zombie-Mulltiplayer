@@ -11,7 +11,8 @@ var KEYS={
 		Y:89,
 		ENTER:13,
 		ETOILE:220,
-		ECHAP:27
+		ECHAP:27,
+		V:86
 		};
 
 //On met des valeurs pour pas que ça plante
@@ -152,6 +153,10 @@ function GameCore(pseudo){
 	};
 
 	this.gestionTouchesSpeciales=function(key,e){
+		//console.log(key);
+		if(key==KEYS.V){
+			OPTIONS.display_names=!OPTIONS.display_names;
+		}
 		if(key==KEYS.ETOILE){
 			if($('#debug').css('display')=='none')
 				$('#debug').css({'display':'block'});
@@ -183,10 +188,11 @@ function GameCore(pseudo){
 	this.tchat=function(auteur,message,classe){
 		var debutMessage='';
 		if(auteur!=undefined && auteur!='')
-			debutMessage=auteur + '> ';
+			debutMessage=$('<span>').addClass('tchat-default-auteur').addClass(classe).text(auteur + '> ');
 		if(classe==undefined)
 			classe='';
-		$('#tchat ul').append($('<li>').text( debutMessage + message).addClass(classe));
+		var corpsMessage=$('<span>').text(message);
+		$('#tchat ul').append($('<li>').append(debutMessage).append(corpsMessage).addClass(classe));
 	};
 
 	this.debug=function(){

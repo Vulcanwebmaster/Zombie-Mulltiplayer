@@ -59,30 +59,39 @@ function GameMap(){
 		$('body').keydown(this.ghostCamKeyDown);
 		$('body').keyup(this.ghostCamKeyUp);
 		this.ghostCam.running=true;
-		this.ghostCamloop();
 	}
 
 
 	this.update=function(datas){
 		this.GAME_SPEED=gameCore.averageBPS;
 		this.last_update=datas.id;
-		//Update de tous les zombies
+		//Update de tous les joueurs
 		var player;
+		var pseudo;
 		for(var idPerso in datas.listeJoueurs){
 			player=document.getElementById('player'+idPerso);
+			pseudo=document.getElementById('player'+idPerso+'-pseudo');
 			if(player==null){
 				player=document.createElement('div');
-				player.className= player.className+' map-item player';
+				player.className= 'map-item player';
 				player.id='player' + idPerso;
-				player.style.left=datas.listeJoueurs[idPerso].x +'px';
-				player.style.top=datas.listeJoueurs[idPerso].y+'px';
+				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				player.setAttribute('data-max-life',datas.listeJoueurs[idPerso].life);
 				//Affichage du style
 				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
-				this.rotate(player,datas.listeJoueurs[idPerso].angle);	
+				pseudo=document.createElement('div');
+				pseudo.id='player'+idPerso+'-pseudo';
+				pseudo.className='map-item player-name';
+				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
+				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
+				pseudo.innerHTML=datas.listeJoueurs[idPerso].pseudo;
+				this.rotate(player,datas.listeJoueurs[idPerso].angle);
+				this.divMap.appendChild(pseudo);
 				this.divMap.appendChild(player);
 			}
 			else{
+				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
+				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
@@ -99,11 +108,11 @@ function GameMap(){
 			else{
 				//Affichage des buff
 				for(var stringBuff in datas.listeJoueurs[idPerso].buffs){
-					var tick=datas.listeJoueurs[idPerso].buffs[stringBuff];
+					var tick=datas.listeJoueurs[idPerso].buffs[stringBuff].duree;
 					var secondes=parseInt(tick*50/1000);
 					if(tick>1){
 						if($('#'+stringBuff).length==0){
-							$('#buffs').append($('<div>').attr('id', stringBuff).text(secondes+'s'));
+							$('#buffs').append($('<div>').attr('id', stringBuff).text(secondes+'s').attr('title', datas.listeJoueurs[idPerso].buffs[stringBuff].description));
 						}
 						else
 							$('#'+stringBuff).text(secondes+'s');
@@ -114,6 +123,10 @@ function GameMap(){
 			}				
 		}
 
+		//On update la position de la cam en freefly
+		if(this.ghostCam.running)
+			this.ghostCamUpdate();
+		//Update des zombies
 		var zombie;
 		for(var idZombie in datas.listeZombies){
 			zombie=document.getElementById('zombie'+idZombie);
@@ -236,6 +249,10 @@ function GameMap(){
 				this.centerMapOn(x,y);
 				ent.style.zIndex=10;
 			}
+	}
+	this.movePseudoTo=function(ent, x, y){
+		ent.style.left=(x-20)+'px';
+		ent.style.top=(y+30)+'px';
 	}
 
 	this.rotate=function(ent,deg){
@@ -378,10 +395,8 @@ function GameMap(){
 		else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameMap.ghostCam.droite=false;}
 	}
 
-	this.ghostCamloop=function(){
-		if(gameMap.ghostCam.running)
-			setTimeout(function(){gameMap.ghostCamloop();}, this.GAME_SPEED);
-		var pas=7;
+	this.ghostCamUpdate=function(){
+		var pas=9;
 
 		if(gameMap.ghostCam.haut)
 			gameMap.divMap.style.top=(parseInt(gameMap.divMap.style.top) + pas)+'px';

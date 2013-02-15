@@ -487,7 +487,7 @@ module.exports = function ServerMap(io,characterManager)
       if(fin){
          this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
          this.stop();
-         console.log(dateToLog(new Date) + "La partie est terminée");
+         console.log(dateToLog(new Date) + "La partie est terminée : tout le monde est mort.");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }

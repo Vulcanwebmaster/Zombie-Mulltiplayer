@@ -1,6 +1,7 @@
 ************* TODO LIST ********************
 
 - si un joueur arrive en cours de partie !
+- ajouter un mode spectateur
 - ajouter un système de mines !! (KABOUM)
 	- ajouter un zombie explosif du coup si je fais les mines pour les hommes :)
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
@@ -26,7 +27,8 @@ Idées :
 - munitions ?
 - FAQ (problème de souris, compatibilité...)
 - systeme d'aide pour remettre debout un ami blessé ?
+- commandes admin IG
 
 *************************************************************************************
 
---- v 0.7.0.1 alpha (20130214)
+--- v 0.7.1 alpha (20130215)

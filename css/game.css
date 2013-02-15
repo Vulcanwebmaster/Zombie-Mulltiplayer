@@ -29,6 +29,14 @@ src: url('HUD.ttf') format('truetype');
 	background-position:-10px -60px;/*10 60 ... etc*/ 
 	background-repeat: no-repeat;
 }
+.player-name{
+	z-index:9;
+	text-align: center;
+	font-size: 10px;
+	width:70px;
+	overflow: hidden;
+	color:white;
+}
 .map-item{
 	position:absolute;
 	top:0px;
@@ -185,12 +193,15 @@ src: url('HUD.ttf') format('truetype');
 	margin:0;
 	padding: 0;
 }
-#tchat ul li.tchat-admin{
+#tchat .tchat-default-auteur{
+	color:rgb(182,43,37);
+}
+#tchat .tchat-admin{
 	color:rgb(200,50,200);
 }
-#tchat ul li.tchat-game-event{
+#tchat .tchat-game-event{
 	color:rgb(210,117,16);
 }
-#tchat ul li.tchat-game-info{
+#tchat .tchat-game-info{
 	color:rgb(50,110,190);
 }

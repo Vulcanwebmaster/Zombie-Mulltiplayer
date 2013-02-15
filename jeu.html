@@ -9,6 +9,7 @@
 	<script src ="/socket.io/socket.io.js"></script>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/Options.js"></script>
 	<script type="text/javascript" src="/js/GameCore.class.js"></script>
 	<script type="text/javascript" src="/js/GameMap.class.js"></script>
 	<meta charset="utf-8"/>
@@ -48,14 +49,14 @@
 				<div>
 					<h2>Choisissez un pseudo</h2>
 					<form onsubmit="return false;">
-						<input id="champs-pseudo" type="text"/>
+						<input id="champs-pseudo" type="text" maxlength="20"/>
 						<button id="button-inscription">Valider</button><br/>
 					</form>
 					<h3>Comment jouer ?</h3>
 					<ul>
 						<li>Utilisez Z,Q,S,D ou les flèches directionnelles pour vous déplacer</li>
 						<li>Clic gauche pour tirer (vous pouvez rester cliqué, chaque arme a sa propre cadence de tir)</li>
-						<li>Touche CTRL pour poser une mine ( 1 vague survécue = +1 mine ) (A VENIR)</li>
+						<li>Touche V pour afficher/cacher les pseudos des joueurs</li>
 						<li>Survivez le plus longtemps possible !</li>
 					</ul>
 				</div>
@@ -68,7 +69,7 @@
 				<span style="font-size:15px;font-weight:bold">Pour éviter tout problème, utilisez <a href="http://www.google.fr/intl/fr/chrome/browser/">Google Chrome</a> </span>! (ou un firefox à jour).
 			</p>
 			<p id="copyright">Copyright 2013 Mikaël B.</p>
-			<p id="version">Version 0.7.0.1 alpha (20130214)</p>
+			<p id="version">Version 0.7.1 alpha (20130215)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 </body>

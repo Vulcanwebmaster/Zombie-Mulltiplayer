@@ -104,6 +104,8 @@ module.exports = function CharacterManager(){
             var _this=this;//on sauvegarde le character manager, pour l'appeler dans la fonction
             result.special=function(args){
                 if(args.type=="defense"){
+                    //On perd un peu de vitesse quand on se fait taper
+                    this.speed-=0.01;
                     //Quand on prend un dégat, on pop une araignée à 10%
                     if(Math.random()*100 < 10){
                       var araignee=_this.creationZombie(this.instance, this.instance.nbZombies, _this.ZOMBIE_TRES_RAPIDE);
@@ -170,63 +172,74 @@ module.exports = function CharacterManager(){
             },
             secondsToTic:function(secondes){return secondes*1000/50;},
             addBuff:function(type){
-                if(type=="saignementLeger")
-                    this.buffs[type]=this.secondsToTic(5);
-                else if(type=="assomage")
-                    this.buffs[type]=this.secondsToTic(1);
-                else if(type=="saignementViolent")
-                    this.buffs[type]=this.secondsToTic(10);
-                else if(type=="zombizSlayer")
-                    this.buffs[type]=this.secondsToTic(180);
-                else if(type=="poison")
-                    this.buffs[type]=this.secondsToTic(5);
+                this.buffs[type]={};
+                if(type=="saignementLeger"){
+                    this.buffs[type].duree=this.secondsToTic(5);
+                    this.buffs[type].description="Saignement léger : votre vie descend lentement";
+                  }
+                else if(type=="assomage"){
+                    this.buffs[type].duree=this.secondsToTic(2);
+                    this.buffs[type].description="Assomage : vous ne pouvez plus bouger";
+                  }
+                else if(type=="saignementViolent"){
+                    this.buffs[type].duree=this.secondsToTic(10);
+                    this.buffs[type].description="Plaie profonde : votre vie descend rapidement";
+                  }
+                else if(type=="zombizSlayer"){
+                    this.buffs[type].duree=this.secondsToTic(180);
+                    this.buffs[type].description="Zombiz Slayer : vous courrez plus vite";
+                  }
+                else if(type=="poison"){
+                    this.buffs[type].duree=this.secondsToTic(5);
+                    this.buffs[type].description="Poison d'araignée : votre vitesse diminue petit à petit";
+                  }
             },
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
                 for(var stringBuff in this.buffs){
                     if(stringBuff=="saignementLeger"){
                         this.life-=0.1;
-                        this.buffs[stringBuff]--;
+                        this.buffs[stringBuff].duree--;
                         instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
                         if(this.life<=0){
                             this.die(instance);
                         }
-                        if(this.buffs[stringBuff]==0){
+                        if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                         }
                     }
                     else if(stringBuff=="assomage"){
                         this.speed=0;
                         this.isFiring=false;
-                        this.buffs[stringBuff]--;
-                        if(this.buffs[stringBuff]==0){
+                        this.buffs[stringBuff].duree--;
+                        if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                             this.speed=this.maxSpeed;
                         }
                     }
                     else if(stringBuff=="saignementViolent"){
                         this.life-=0.5;
-                        this.buffs[stringBuff]--;
+                        this.buffs[stringBuff].duree--;
                         instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
                         instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'sang', x:this.x, y:this.y};
                         if(this.life<=0){
                             this.die(instance);
                         }
-                        if(this.buffs[stringBuff]==0){
+                        if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                         }
                     }
                     else if(stringBuff=="zombizSlayer"){
                         this.speed=this.maxSpeed+1;
-                        this.buffs[stringBuff]--;
-                        if(this.buffs[stringBuff]==0){
+                        this.buffs[stringBuff].duree--;
+                        if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                             this.speed=this.maxSpeed;
                         }
                     }
                     else if(stringBuff=="poison"){
-                        this.speed=this.speed>0.1 ? this.speed - 0.1 : 0 ;
-                        this.buffs[stringBuff]--;
-                        if(this.buffs[stringBuff]==0){
+                        this.speed=this.speed>0.5 ? this.speed - 0.5 : 0 ;
+                        this.buffs[stringBuff].duree--;
+                        if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                             this.speed=this.maxSpeed;
                         }
@@ -313,6 +326,8 @@ module.exports = function CharacterManager(){
             result[id].angle=parseInt(liste[id].angle);
             result[id].alive=liste[id].alive;
             result[id].life=parseInt(liste[id].life);
+            if(liste[id].pseudo != undefined)
+               result[id].pseudo=liste[id].pseudo;
             if(liste[id].buffs != undefined)
                result[id].buffs=liste[id].buffs;//on envoie les buffs pour affichage client side
             //on ajoute la vitesse pour les calculs client side (en cas de lag)
