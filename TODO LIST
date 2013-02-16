@@ -8,7 +8,8 @@
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - nouveau boss et vagues
 - passer en objet pour attaquer/prendre dégat, pour pouvoir ensuite avoir des Stats PAR PERSO
-- A l'avenir il faudra sauvegarder les highscores, et les totaux de zombies tués ^^
+***- Système de compte + connexion
+***- A l'avenir il faudra sauvegarder les highscores, et les totaux de zombies tués ^^
 - ajouter la partie RPG avec des points de compétences
 
 Idées :
@@ -21,7 +22,7 @@ Idées :
 - Agrandir un peu la map :) (là on la voit déjà presque entière...)
 - friendly fire ?
 - stratégies dans l'IA ?
-- ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
+***- ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 - ajouter du son
 - obstacles
 - munitions ?
@@ -31,4 +32,7 @@ Idées :
 
 *************************************************************************************
 
---- v 0.7.1.1 alpha (20130215)
+--- v 0.8.0 alpha (201302??)
+	NEW :
+	EDIT :
+	FIX :
