@@ -158,6 +158,7 @@ module.exports = function CharacterManager(){
             isFiring:false,
             target:{targetX:0,targetY:0},
             kills:0,
+            deaths:0,
             speed:this.PAS,
             maxSpeed : this.PAS,
             taille:this.LARGEUR_PERSO,
@@ -165,6 +166,7 @@ module.exports = function CharacterManager(){
             die:function(instance){
                 this.buffs={};
                 this.life=0;
+                this.deaths++;
                 this.alive=false;
                 this.isFiring=false;
                 this.directions={haut:false,bas:false,gauche:false,droite:false};

@@ -230,15 +230,23 @@ function GameCore(pseudo){
 	this.init();	
 }
 
+function lancerPartie(pseudo){
+	$('#inscription').html('<div><h2>Connexion au serveur en cours...</h2></div>');
+	$('#button-inscription').unbind('click');
+	$('#jouerVisiteur').unbind('click');
+	gameCore=new GameCore(pseudo);
+}
 $(document).ready(function(){
 	//gameCore=new GameCore(pseudo);
 	$('#button-inscription').click(function(){
 		input=$('#champs-pseudo')[0].value;
 		if(input != ''){
-			$('#inscription').html('<div><h2>Connexion au serveur en cours...</h2></div>');
-			$(this).unbind('click');
-			gameCore=new GameCore(input);
+			lancerPartie(input);
 		}
+	});
+
+	$('#jouerVisiteur').click(function(){
+		lancerPartie('Visiteur' + (new Date()%100));
 	});
 
 	//Eviter le changement du curseur en text

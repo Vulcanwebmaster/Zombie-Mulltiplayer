@@ -12,7 +12,7 @@ body{
     user-select: none; /* CSS3 */
     background-color:rgb(100,100,100);
     background-image: url('/img/background.jpg');
-    background-position: center center;
+    background-position: center top;
     background-repeat: no-repeat;
 	height: 100%;
 }
@@ -23,7 +23,9 @@ header{
 	width:1020px;
 	margin-left:-30px;
 }
-a{text-decoration: none;}
+a{color:white;}
+a:visited{color:grey;}
+#header{text-decoration: none;}
 
 #wrapper{
 	width:960px;padding:30px;
@@ -61,12 +63,25 @@ a{text-decoration: none;}
 #inscription div{
 	margin:auto;
 	width:60%;
-	margin-top: 150px;
+	margin-top: 50px;
 	text-align: center;
 }
 #inscription div ul{
 	text-align: left;
 	color:grey;
+}
+#inscription a{
+	display:inline-block;
+	margin:10px;
+	background-color:rgb(162,13,17);
+	padding:5px;
+	border-radius:5px;
+	border:1px white groove;
+}
+#inscription a:hover{
+	background-color:rgb(182,23,37);
+	margin-left:15px;
+	margin-right:5px;
 }
 
 h1{

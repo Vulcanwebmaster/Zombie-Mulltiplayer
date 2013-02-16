@@ -3,6 +3,9 @@ var app = require ('http'). createServer(handler)
 , io = require ('socket.io').listen(app)
 , path = require('path');
 
+ var DBCore= require('./js/DBCore.class.js');
+ var dbCore=new DBCore();
+
 var CharacterManager=require('./js/CharacterManager.class.js');
 var characterManager=new CharacterManager();
 
@@ -28,6 +31,8 @@ function handler( request , response ) {
         filePath='./index.html';
     else if(filePath=='./jeu')
         filePath='./jeu.html';
+    else if(filePath=='./newAccount')
+        filePath='./newAccount.html';
     //On protège tous les dossiers et fichiers interdits
     else if(filePath=='./server.js'){
         console.log(dateToLog(new Date) + 'Tentative d\'accès au fichier serveur');
@@ -117,12 +122,20 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('disconnect',function(){
         socket.get('id', function(err,id){
+            if(id==null) return;
             serverMap.removeJoueur(id);
             socket.broadcast.emit('remove_player', {'id':id});
             socket.get('pseudo', function(err, pseudo){
-                console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
-                socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté la partie.', 'class':'tchat-admin'});
+                if(pseudo!=null){
+                    console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
+                    socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté la partie.', 'class':'tchat-admin'});
+                }
             });
         });
+    });
+
+    //Fonctions de création de compte
+    socket.on('create_account', function(datas){
+        dbCore.createAccount(datas, this);
     });
 });

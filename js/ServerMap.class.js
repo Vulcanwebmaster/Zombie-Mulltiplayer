@@ -502,12 +502,15 @@ module.exports = function ServerMap(io,characterManager)
             _this.listeZombies={};
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
+               //On update toutes les stats des joueurs dans la DB
+               /*TODO*/
                if(!_this.listeJoueurs[idPerso].alive){
                   _this.listeJoueurs[idPerso].alive=true;
                   _this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
                   _this.listeJoueurs[idPerso].speed=_this.listeJoueurs[idPerso].maxSpeed;
                   _this.listeJoueurs[idPerso].attaque=characterManager.creationArme(0);
                   _this.listeJoueurs[idPerso].kills=0;
+                  _this.listeJoueurs[idPerso].deaths=0;
                   _this.listeJoueurs[idPerso].directions={haut:false,bas:false,gauche:false,droite:false};
                   _this.listeJoueurs[idPerso].isFiring=false;
                   _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);

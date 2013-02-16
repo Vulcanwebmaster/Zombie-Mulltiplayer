@@ -16,7 +16,7 @@
 </head>
 <body oncontextmenu="return false">
 	<div id="wrapper">
-		<a href="/index">
+		<a id="header" href="/index">
 			<header>
 				<h1>ZOMBIZ ! Team Survival</h1>
 				<h2>Zombies Massacre, multiplayer team survival</h2>
@@ -47,10 +47,13 @@
 
 			<div id="inscription">
 				<div>
-					<h2>Choisissez un pseudo</h2>
+					<h2>Connectez-vous</h2>
 					<form onsubmit="return false;">
-						<input id="champs-pseudo" type="text" maxlength="20"/>
+						<input id="champs-pseudo" type="text" placeholder="pseudo" maxlength="20"/><br/>
+						<input id="champs-mdp" type="password" placeholder="mot de passe" maxlength="50"/><br/>
 						<button id="button-inscription">Valider</button><br/>
+						<a href="/newAccount" id="creerCompte">Créer un compte</a>
+						<a href="#" onclick="return false;" id="jouerVisiteur">Jouer en visiteur</a>
 					</form>
 					<h3>Comment jouer ?</h3>
 					<ul>
@@ -69,7 +72,7 @@
 				<span style="font-size:15px;font-weight:bold">Pour éviter tout problème, utilisez <a href="http://www.google.fr/intl/fr/chrome/browser/">Google Chrome</a> </span>! (ou un firefox à jour).
 			</p>
 			<p id="copyright">Copyright 2013 Mikaël B.</p>
-			<p id="version">Version 0.7.1.1 alpha (20130215)</p>
+			<p id="version">Version 0.8.0 alpha (201302???)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 </body>
