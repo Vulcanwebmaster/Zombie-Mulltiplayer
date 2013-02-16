@@ -10,7 +10,7 @@ var CharacterManager=require('./js/CharacterManager.class.js');
 var characterManager=new CharacterManager();
 
 var ServerMap = require('./js/ServerMap.class.js');
-var serverMap = new ServerMap(io,characterManager);
+var serverMap = new ServerMap(io,characterManager, dbCore);
 
 app.listen (process.env.PORT || 5000) ;
 
@@ -134,8 +134,11 @@ io.sockets.on('connection', function(socket) {
         });
     });
 
-    //Fonctions de création de compte
+    //Fonctions de création de compte et connexion
     socket.on('create_account', function(datas){
         dbCore.createAccount(datas, this);
+    });
+    socket.on('connection_attempt', function(datas){
+        dbCore.connect(datas, this);
     });
 });

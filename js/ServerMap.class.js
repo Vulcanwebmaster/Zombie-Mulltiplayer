@@ -5,7 +5,7 @@ var dateToLog=function(date){
 }
 
 /*Classe qui gère tout les calculs sur la map*/
-module.exports = function ServerMap(io,characterManager)
+module.exports = function ServerMap(io,characterManager, dbCore)
 {
    var listeJoueurs;
    var listeZombies;
@@ -448,6 +448,8 @@ module.exports = function ServerMap(io,characterManager)
          var joueurMeneur=null;
          var maxKills=0;
          for(var idPerso in this.listeJoueurs){
+            //on met a jour son record
+            this.listeJoueurs[idPerso].record=this.currentWave;
             //si le joueur est mort
             if(!this.listeJoueurs[idPerso].alive){
                this.listeJoueurs[idPerso].alive=true;
@@ -503,7 +505,7 @@ module.exports = function ServerMap(io,characterManager)
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
                //On update toutes les stats des joueurs dans la DB
-               /*TODO*/
+               dbCore.updatePlayerStats(_this.listeJoueurs[idPerso]);
                if(!_this.listeJoueurs[idPerso].alive){
                   _this.listeJoueurs[idPerso].alive=true;
                   _this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
@@ -511,6 +513,7 @@ module.exports = function ServerMap(io,characterManager)
                   _this.listeJoueurs[idPerso].attaque=characterManager.creationArme(0);
                   _this.listeJoueurs[idPerso].kills=0;
                   _this.listeJoueurs[idPerso].deaths=0;
+                  _this.listeJoueurs[idPerso].record=0;
                   _this.listeJoueurs[idPerso].directions={haut:false,bas:false,gauche:false,droite:false};
                   _this.listeJoueurs[idPerso].isFiring=false;
                   _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);

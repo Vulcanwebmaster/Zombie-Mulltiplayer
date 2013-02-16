@@ -159,6 +159,7 @@ module.exports = function CharacterManager(){
             target:{targetX:0,targetY:0},
             kills:0,
             deaths:0,
+            record:0,//meilleure vague atteinte
             speed:this.PAS,
             maxSpeed : this.PAS,
             taille:this.LARGEUR_PERSO,

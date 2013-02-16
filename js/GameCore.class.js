@@ -23,25 +23,36 @@ var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
 
 
 /*Classe qui sera appelée pour gérer les envois/réceptions du serveur*/
-function GameCore(pseudo){
-	var socket;
-	var directions;
-	var playerId;
-	var pseudo;
+function GameCore(pseudo,mdp){
+
+	this.tryConnection=function(pseudo, mdp){
+		this.pseudo=pseudo;
+		this.mdp=mdp;
+		this.socket.emit('connection_attempt', {pseudo:pseudo, mdp:mdp});
+	}
 
 	this.init=function(){
 		this.socket = io.connect(SERVER_ADRESS);
 		this.socket.on('broadcast_msg', function ( data ) {
 			gameCore.tchat(data.auteur, data.message, data.class);
 		});
-
 		this.socket.on('connect', function(){
-			if(gameCore.playerId == -1){
+			gameCore.tryConnection(gameCore.pseudo, gameCore.mdp);
+			/*if(gameCore.playerId == -1){
 				gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});
 				$('#inscription').append('<h2>Création d\'un personnage en cours...</h2>');
 			}
 			else
 				alert('ERREUR ! C\'est étrange. Merci de me signaler que vous avez eu cette erreur. (erreur "on connect" en cours de partie)');
+		*/});
+		this.socket.on('connection_fail', function(datas){
+			$('#inscription h2').text(datas.message);
+			initEventConnexion();
+		});
+		this.socket.on('connection_success', function(datas){
+			$('#inscription h2').text(datas.message);
+			gameCore.pseudo=datas.pseudo;
+			gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});
 		});
 
 		this.socket.on('reconnect', function(){
@@ -49,7 +60,6 @@ function GameCore(pseudo){
 		});
 
 		this.socket.on('set_id', function(nbr){
-			$('#inscription').append('<h2>Personnage créé ! Lancement de la partie...</h2>');
 			$('#inscription').fadeOut(1000,function(){$(this).remove()});
 			gameCore.playerId=nbr;
 			gameMap=new GameMap();
@@ -221,6 +231,7 @@ function GameCore(pseudo){
 	this.directions.bas=false;
 	this.playerId=-1;
 	this.pseudo=pseudo;
+	this.mdp=mdp
 	this.socket=null;	
 	/*variable pour le calcul des FPS*/
 	this.lastUpdate=-1;
@@ -230,25 +241,30 @@ function GameCore(pseudo){
 	this.init();	
 }
 
-function lancerPartie(pseudo){
-	$('#inscription').html('<div><h2>Connexion au serveur en cours...</h2></div>');
+function lancerPartie(pseudo, mdp){
+	$('#inscription h2').text('Connexion au serveur en cours...');
 	$('#button-inscription').unbind('click');
 	$('#jouerVisiteur').unbind('click');
-	gameCore=new GameCore(pseudo);
+	if(gameCore==null)
+		gameCore=new GameCore(pseudo,mdp);
+	else
+		gameCore.tryConnection(pseudo,mdp);
 }
-$(document).ready(function(){
-	//gameCore=new GameCore(pseudo);
+function initEventConnexion(){
 	$('#button-inscription').click(function(){
-		input=$('#champs-pseudo')[0].value;
-		if(input != ''){
-			lancerPartie(input);
+		var inputPseudo=$('#champs-pseudo')[0].value;
+		var inputMDP=$('#champs-mdp')[0].value;
+		if(inputPseudo != '' && inputMDP!=''){
+			lancerPartie(inputPseudo, inputMDP);
 		}
 	});
 
 	$('#jouerVisiteur').click(function(){
-		lancerPartie('Visiteur' + (new Date()%100));
+		lancerPartie('visiteur', '');
 	});
-
+}
+$(document).ready(function(){
+	initEventConnexion();
 	//Eviter le changement du curseur en text
 	document.onselectstart = function(e){ e.originalEvent.preventDefault();e.preventDefault();return false; }
 

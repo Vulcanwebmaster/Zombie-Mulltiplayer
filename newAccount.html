@@ -50,7 +50,7 @@
 		$('#champs-pseudo').focus();
 		$('#envoi').click(function(){
 			//On enleve les potentielles erreurs
-			$('#general-error').text('');
+			$('#general-error').text('');$('#general-ok').text('');
 			//on regarde si les champs sont vides
 			var pseudo=$('#champs-pseudo')[0].value;
 			var mdp=$('#champs-mdp')[0].value;

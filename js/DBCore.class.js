@@ -16,6 +16,12 @@ module.exports = function DBCore(){
 
 
    this.createAccount=function(datas, socket){
+      //On regarde si quelqu'un ne crée pas le compte visiteur
+      if(datas.pseudo=='visiteur'){
+         console.log(dateToLog(new Date) + 'Impossible de créer le compte ' + datas.pseudo);
+         socket.emit('create_account_fail', {'message':'Le compte '+datas.pseudo+' n\'est pas disponible.'});
+         return;
+      }
       //On regarde si on a déjà un compte avec ce pseudo
       var _this=this;
       this.PlayerModel.find({pseudoLowerCase : datas.pseudo.toLowerCase()}, function(err, users){
@@ -31,15 +37,37 @@ module.exports = function DBCore(){
          }
       });
    }
-   this.updatePlayerStats=function(datas){
+   this.connect=function(datas, socket){
+      //On regarde si on se connecte en visiteur
+      if(datas.pseudo=='visiteur'){
+         socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':datas.pseudo});
+         return;
+      }
       var _this=this;
-      this.PlayerModel.find({pseudo : datas.pseudo},function(err, users){
+      this.PlayerModel.find({pseudoLowerCase : datas.pseudo.toLowerCase(), mdp: this.Sha1(datas.mdp)}, function(err, users){
+         if(users.length!=1){
+            socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
+         }
+         else{
+            socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+         }
+      });
+   }
+
+   this.updatePlayerStats=function(datas){
+      if(datas.pseudo=='visiteur') return;
+      var _this=this;
+      console.log("On update le joueur " + datas.pseudo);
+      //on save les datas car l'asynchrone fait que sinon c'est remis à zero avant l'update DB
+      dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
+      this.PlayerModel.find({pseudoLowerCase : dataTmp.pseudo.toLowerCase()},function(err, users){
          var user=users[0];//on récupère le premier enregistrement
          //On calcule les nouvelles valeurs à mettre.
-         var deaths=user.deaths + datas.deaths;
-         var kills=user.kills + datas.kills;
-         var record=user.record > datas.record ? user.record : datas.record;
-         _this.PlayerModel.update({pseudo:datas.pseudo}, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err)throw err;});
+         var deaths=user.deaths + dataTmp.deaths;
+         var kills=user.kills + dataTmp.kills;
+         var record=user.record > dataTmp.record ? user.record : dataTmp.record;
+         console.log('Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
+         _this.PlayerModel.update(user, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err)throw err;});
       });
    }
 
