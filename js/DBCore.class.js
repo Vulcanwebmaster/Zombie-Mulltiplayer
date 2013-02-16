@@ -57,7 +57,6 @@ module.exports = function DBCore(){
    this.updatePlayerStats=function(datas){
       if(datas.pseudo=='visiteur') return;
       var _this=this;
-      console.log("On update le joueur " + datas.pseudo);
       //on save les datas car l'asynchrone fait que sinon c'est remis à zero avant l'update DB
       dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
       this.PlayerModel.find({pseudoLowerCase : dataTmp.pseudo.toLowerCase()},function(err, users){
@@ -66,11 +65,29 @@ module.exports = function DBCore(){
          var deaths=user.deaths + dataTmp.deaths;
          var kills=user.kills + dataTmp.kills;
          var record=user.record > dataTmp.record ? user.record : dataTmp.record;
-         console.log('Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
+         //console.log('Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
          _this.PlayerModel.update(user, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err)throw err;});
       });
    }
 
+   this.getTopPlayerHTML=function(response){
+      this.PlayerModel.find({},null, {sort : {kills : -1}, limit : 10}, function(err, users){
+         response.writeHead(200, {'Content-Type': 'text/html'});
+         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Morts</th><th>Plus longue survie</th></tr>');
+         for(var i=0; i<users.length;i++)
+            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ users[i].deaths +'</td><td>'+ users[i].record +' vague(s)</td></tr>');
+         response.end();
+      });
+   }
+   this.getLeaderboardHTML=function(response){
+      this.PlayerModel.find({},null, {sort : {kills : -1}}, function(err, users){
+         response.writeHead(200, {'Content-Type': 'text/html'});
+         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Morts</th><th>Plus longue survie</th></tr>');
+         for(var i=0; i<users.length;i++)
+            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ users[i].deaths +'</td><td>'+ users[i].record +' vague(s)</td></tr>');
+         response.end();
+      });
+   }
 
    this.mongoose= new require('mongoose');
    this.playerSchema=new this.mongoose.Schema({

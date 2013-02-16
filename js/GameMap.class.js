@@ -68,7 +68,9 @@ function GameMap(){
 		//Update de tous les joueurs
 		var player;
 		var pseudo;
+		var nbrJoueursTmp=0;
 		for(var idPerso in datas.listeJoueurs){
+			nbrJoueursTmp++;
 			player=document.getElementById('player'+idPerso);
 			pseudo=document.getElementById('player'+idPerso+'-pseudo');
 			if(player==null){
@@ -126,6 +128,14 @@ function GameMap(){
 		//On update la position de la cam en freefly
 		if(this.ghostCam.running)
 			this.ghostCamUpdate();
+
+		//On met à jour le nombre de joueurs en ligne si il faut
+		if(this.nbrOnlinePlayers != nbrJoueursTmp){
+			$('#nbr-online-players').text(nbrJoueursTmp);
+			this.nbrOnlinePlayers=nbrJoueursTmp;
+		}
+
+
 		//Update des zombies
 		var zombie;
 		for(var idZombie in datas.listeZombies){
@@ -297,6 +307,7 @@ function GameMap(){
 
 	this.removeJoueur=function(id){
       	this.removeElement('map', 'player'+id);
+      	this.removeElement('map', 'player'+id+'-pseudo');
    }
 
    this.removeElement=function(parentDiv, childDiv){
@@ -409,6 +420,7 @@ function GameMap(){
 	}
 
 	/*constructor*/
+
 	this.widthPlateau=parseInt($('#plateau').css('width'));
 	this.heightPlateau=parseInt($('#plateau').css('height'));
 	this.widthMap=parseInt($('#map').css('width'));
@@ -419,4 +431,5 @@ function GameMap(){
 	this.lastDegreeSent=0;
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
+	this.nbrOnlinePlayers=-1;
 }

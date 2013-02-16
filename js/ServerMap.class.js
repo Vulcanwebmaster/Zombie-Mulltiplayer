@@ -24,6 +24,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    		this.listeJoueurs[newJoueur.id]=newJoueur;
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
+   this.getJoueur=function(id){
+      return this.listeJoueurs[id];
+   }
    this.removeJoueur=function(id){
       delete this.listeJoueurs[id];
       var ilResteDesJoueurs=false;

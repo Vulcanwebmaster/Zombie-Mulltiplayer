@@ -263,10 +263,21 @@ function initEventConnexion(){
 		lancerPartie('visiteur', '');
 	});
 }
+
+function updateLeaderBoard(){
+	//On charge le leaderboard
+	$.get('/top', function(data){
+		$('#leaderboard').html(data);
+	});
+	//On update le leaderboard dans X secondes
+	setTimeout(updateLeaderBoard, 20000);
+}
 $(document).ready(function(){
 	initEventConnexion();
 	//Eviter le changement du curseur en text
 	document.onselectstart = function(e){ e.originalEvent.preventDefault();e.preventDefault();return false; }
 
 	$('#champs-pseudo').focus();
+
+	updateLeaderBoard();
 })

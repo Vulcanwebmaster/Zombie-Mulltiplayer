@@ -117,3 +117,21 @@ footer{
 #version{
 	text-align: right;
 }
+
+
+/*LEADERBOARD*/
+#leaderboard{
+	width: 100%;
+}
+#leaderboard th,#leaderboard td{
+	text-align: center;
+	border:1px solid grey;
+	background-color:rgba(0,0,0,0.6);
+	color:white;
+}
+#leaderboard td{
+	color:rgb(160,10,20);
+}
+#leaderboard tr:nth-child(2n){
+	background-color:rgba(150,150,150,0.5);
+}

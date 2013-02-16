@@ -8,14 +8,7 @@
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - nouveau boss et vagues
 - passer en objet pour attaquer/prendre dégat, pour pouvoir ensuite avoir des Stats PAR PERSO
-***- Système de compte + connexion
-***- A l'avenir il faudra sauvegarder les highscores, et les totaux de zombies tués ^^
 - ajouter la partie RPG avec des points de compétences
-***- afficher le nombre de joueurs connectés quand on rejoint
-***- changer couleur du lien "google chrome" dans le warning du navigateur
-***-compter les morts sur les joueurs aussi
-***- empecher les gens de prendre un pseudo qui commence par visiteur
-***- sauvegarde sur la deconnexion
 
 Idées :
 
@@ -24,10 +17,10 @@ Idées :
 - ajouter boss 2 et 3 et eventuellement des types de zombies...
 - zombifier les morts ? (ou tout du moins pop un zombie)
 - faire un système où on choisi l'arme qu'on veut utiliser ?
-***- Agrandir un peu la map :) (là on la voit déjà presque entière...)
+- Agrandir un peu la map :) (là on la voit déjà presque entière...)
 - friendly fire ?
 - stratégies dans l'IA ?
-***- ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
+- ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 - ajouter du son
 - obstacles
 - munitions ?
@@ -37,8 +30,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.8.0 alpha (201302??)
-	NEW :
-	EDIT :
-	FIX :
-		Le background ne se déplace plus
+--- v 0.8.0 alpha (20130216)

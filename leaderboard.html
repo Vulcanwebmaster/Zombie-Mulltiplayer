@@ -1,0 +1,32 @@
+<html>
+<head>
+	<title>Zombiz ! Team Survival | Leaderboard</title>
+	<meta charset='utf-8'/>
+	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
+	<script type="text/javascript" src="/js/jquery.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<a id="header" href="/jeu">
+			<header>
+				<h1>Zombiz ! Team Survival</h1>
+				<h2>Leaderboard</h2>
+			</header>
+		</a>
+
+		<table id="leaderboard">
+			<th>Chargement en cours...</th>
+		</table>
+	</div>
+	<script>	
+	$(function(){
+		//On charge le leaderboard
+		$.get('/fullLeaderboard', function(data){
+			$('#leaderboard').html(data);
+		});
+	});
+	</script>
+</body>
+</html>

@@ -33,6 +33,17 @@ function handler( request , response ) {
         filePath='./jeu.html';
     else if(filePath=='./newAccount')
         filePath='./newAccount.html';
+    else if(filePath=='./top'){
+        dbCore.getTopPlayerHTML(response);
+        return;
+    }
+    else if(filePath=='./fullLeaderboard'){
+        dbCore.getLeaderboardHTML(response);
+        return;
+    }
+    else if(filePath=='./leaderboard'){
+        filePath='./leaderboard.html';
+    }
     //On protège tous les dossiers et fichiers interdits
     else if(filePath=='./server.js'){
         console.log(dateToLog(new Date) + 'Tentative d\'accès au fichier serveur');
@@ -123,6 +134,8 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect',function(){
         socket.get('id', function(err,id){
             if(id==null) return;
+            //On lance un update de la DB sur ce joueur, pour pas qu'il perde ce qu'il a eu.
+            dbCore.updatePlayerStats(serverMap.getJoueur(id));
             serverMap.removeJoueur(id);
             socket.broadcast.emit('remove_player', {'id':id});
             socket.get('pseudo', function(err, pseudo){
