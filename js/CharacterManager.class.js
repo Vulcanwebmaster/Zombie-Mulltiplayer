@@ -106,9 +106,9 @@ module.exports = function CharacterManager(){
             result.special=function(args){
                 if(args.type=="defense"){
                     //On perd un peu de vitesse quand on se fait taper
-                    this.speed-=0.01;
-                    //Quand on prend un dégat, on pop une araignée à 10%
-                    if(Math.random()*100 < 10){
+                    this.speed-=0.001;
+                    //Quand on prend un dégat, on pop une araignée à 20%
+                    if(Math.random()*100 < 20){
                       var araignee=_this.creationZombie(this.instance, this.instance.nbZombies, _this.ZOMBIE_TRES_RAPIDE);
                       araignee.x=this.x;
                       araignee.y=this.y;

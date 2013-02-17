@@ -65,6 +65,54 @@ function GameMap(){
 	this.update=function(datas){
 		this.GAME_SPEED=gameCore.averageBPS;
 		this.last_update=datas.id;
+
+		//Update de tous les item temporaires
+		var item;
+		for(var idItem in datas.listeTemporaryItems){
+			item=datas.listeTemporaryItems[idItem];
+			if(item.type=='fire')
+				this.drawLine(parseInt(item.x), parseInt(item.y), parseInt(item.targetX), parseInt(item.targetY));
+			else if(item.type=='sang')
+				this.addBlood(parseInt(item.x), parseInt(item.y));
+			else if(item.type=='player_life'){
+				if(item.id==gameCore.playerId){
+					$('#joueur-life').text(parseInt(item.life));
+					//coloration de la case
+					if(item.life>75)
+						$('#joueur-life').css('color','rgb(70,128,51)');
+					else if(item.life>25 && item.life<=75)
+						$('#joueur-life').css('color','rgb(179,121,15)');
+					else
+						$('#joueur-life').css('color','rgb(162,13,17)');
+				}
+			}
+			else if(item.type=='numero_vague'){
+				$('#vague-courante').text(item.value);
+			}
+			else if(item.type=='zombie_killed'){
+				if(item.id==gameCore.playerId)
+					$('#joueur-kills').text(item.kills);
+				if(this.idZombieTarget==item.id){
+					$('#zombie-life-inner').css('width','0%');
+					this.idZombieTarget=-1;
+				}
+
+			}
+			else if(item.type=='player_target' && item.id==gameCore.playerId){
+				this.idZombieTarget=item.id_zombie;
+				if(this.idZombieTarget==-1)
+					$('#zombie-life-inner').css('width','0%');
+				else
+					this.updateBarreDeVieZombie(document.getElementById('zombie'+item.id_zombie), true, false);
+			}
+			else if(item.type=='compte_a_rebours_vague'){
+				var div=$('<div>');
+				$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
+				div.fadeOut(500, function(){$(this).remove();});
+			}
+		}
+
+
 		//Update de tous les joueurs
 		var player;
 		var pseudo;
@@ -131,7 +179,7 @@ function GameMap(){
 
 		//On met à jour le nombre de joueurs en ligne si il faut
 		if(this.nbrOnlinePlayers != nbrJoueursTmp){
-			$('#nbr-online-players').text(nbrJoueursTmp);
+			$('#nbr-online-players').text(nbrJoueursTmp + ' joueur' +(nbrJoueursTmp>1 ? 's' : ''));
 			this.nbrOnlinePlayers=nbrJoueursTmp;
 		}
 
@@ -158,6 +206,10 @@ function GameMap(){
 					zombie.style.zIndex=5;
 					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
+				//si jamais on cible celui ci, on met à jour sa vie
+				if(this.idZombieTarget==idZombie){
+					this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive, true);
+				}
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 			}
 		}
@@ -174,42 +226,29 @@ function GameMap(){
 								.animate({'opacity':0},1000);
 			});*/
 
-		var item;
-		for(var idItem in datas.listeTemporaryItems){
-			item=datas.listeTemporaryItems[idItem];
-			if(item.type=='fire')
-				this.drawLine(parseInt(item.x), parseInt(item.y), parseInt(item.targetX), parseInt(item.targetY));
-			else if(item.type=='sang')
-				this.addBlood(parseInt(item.x), parseInt(item.y));
-			else if(item.type=='player_life'){
-				if(item.id==gameCore.playerId){
-					$('#joueur-life').text(parseInt(item.life));
-					//coloration de la case
-					if(item.life>75)
-						$('#joueur-life').css('color','rgb(70,128,51)');
-					else if(item.life>25 && item.life<=75)
-						$('#joueur-life').css('color','rgb(179,121,15)');
-					else
-						$('#joueur-life').css('color','rgb(162,13,17)');
-				}
-			}
-			else if(item.type=='numero_vague'){
-				$('#vague-courante').text(item.value);
-			}
-			else if(item.type=='zombie_killed'){
-				if(item.id==gameCore.playerId)
-					$('#joueur-kills').text(item.kills);
-			}
-			else if(item.type=='compte_a_rebours_vague'){
-				var div=$('<div>');
-				$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
-				div.fadeOut(500, function(){$(this).remove();});
-			}
-
-		}
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
 		/*setTimeout(function(){_this.localUpdate(datas.id);}, this.GAME_SPEED);*/
+	}
+
+	this.updateBarreDeVieZombie=function(zombie, alive, animation){
+		var pourcentage=parseInt(zombie.getAttribute('data-life')) / parseInt(zombie.getAttribute('data-max-life')) *100;
+		var bgColor;
+		if(pourcentage>60)
+			bgColor='rgb(70,128,51)';
+		else if(pourcentage>25 && pourcentage<=60)
+			bgColor='rgb(179,121,15)';
+		else
+			bgColor='rgb(162,13,17)';
+		$('#zombie-life-inner').css({'background-color':bgColor});
+		if(animation)
+			$('#zombie-life-inner').animate({'width' : pourcentage + '%'},40);
+		else
+			$('#zombie-life-inner').css({'width' : pourcentage + '%'});
+		//Si le zombie qu'on cible est mort, alors on remet à -1 la cible
+		if(!alive){
+			this.idZombieTarget=-1;
+		}
 	}
 
 	this.localUpdate=function(id){
@@ -324,6 +363,8 @@ function GameMap(){
 
 	this.clearMap=function(){
 		//$('#map').html('');
+		this.idZombieTarget=-1;
+		$('#zombie-life-inner').css('width', '0%');
 		$('.zombie').fadeOut(3000, function(){$(this).remove()});
 	}
 
@@ -432,4 +473,5 @@ function GameMap(){
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
 	this.nbrOnlinePlayers=-1;
+	this.idZombieTarget=-1;
 }

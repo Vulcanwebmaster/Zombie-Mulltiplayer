@@ -101,7 +101,7 @@ io.sockets.on('connection', function(socket) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
         var joueurId=serverMap.addJoueur(datas.pseudo);
         /*Ici on choisi ou non de lancer la partie*/
-        if(serverMap.isRunning==false)
+        if(serverMap.isRunning==false && serverMap.getOnlinePlayers()==1)
             serverMap.start();
         socket.emit('set_id', joueurId);
 		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' a rejoint la partie.', 'class': 'tchat-admin'});

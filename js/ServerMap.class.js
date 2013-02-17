@@ -24,6 +24,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    		this.listeJoueurs[newJoueur.id]=newJoueur;
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
+   this.getOnlinePlayers=function(){
+      var cpt=0;
+      for(var id in this.listeJoueurs)
+         cpt++;
+      return cpt;
+   }
    this.getJoueur=function(id){
       return this.listeJoueurs[id];
    }
@@ -344,10 +350,16 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                this.totalZombiesKilled++;
                this.checkWeaponUpdate(joueur);
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:-1};
+            }
+            else{
+               //On lance la mise à jour de la cible pour le joueur
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:zombiePlusProche.id};
             }
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang', x:parseInt(zombiePlusProche.x),y:parseInt(zombiePlusProche.y)};
             //On balance l'event d'affichage du tir
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt(zombiePlusProche.y+zombiePlusProche.taille/2)};
+               
             this.testFinVague();
          }
          else{
@@ -458,6 +470,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                this.listeJoueurs[idPerso].alive=true;
                this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
                this.listeJoueurs[idPerso].speed=this.listeJoueurs[idPerso].maxSpeed;
+               this.listeJoueurs[idPerso].isFiring=false;
                this.io.sockets.emit('player_revive', this.listeJoueurs[idPerso]);
             }  
             else{

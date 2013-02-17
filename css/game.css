@@ -95,18 +95,28 @@ src: url('HUD.ttf') format('truetype');
 	left:100px;
 }
 #zombie-life{
-	opacity:0;
-	top:420px !important;
-	width: 200px !important;
-	height: 25px !important;
-	font-size: 35px !important;
-	box-shadow: 0px 0px 10px rgb(150,150,150);
+	position:absolute;
+	/*opacity:0;*/
+	top:20px ;
+	width: 200px ;
+	height: 10px;
+	font-size: 20px;
+	box-shadow: 0px 0px 2px rgb(150,150,150);
 	border-radius:10px;
 	border:1px groove black;
-	text-align: center !important;
+	text-align: center;
 	left:350px;
 	background:rgba(0,0,0,0.3);
 	background-size:50%;
+}
+#zombie-life-inner{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:0%;
+	background-color:orange;
+	height: 10px;
+	border-radius:10px;
 }
 #buffs{
 	position:absolute;

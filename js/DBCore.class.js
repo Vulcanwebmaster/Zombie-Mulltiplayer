@@ -2,6 +2,12 @@
 var dateToLog=function(date){
     return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
 }
+var s=function(n){
+   return n>1 ? 's' : '';
+}
+var recordToString=function(n){
+   return n==-1? 'Aucun' : 'Vague ' + n;
+}
 
 /*Classe qui gère toutes les fonctions en rapport avec la DB*/
 module.exports = function DBCore(){
@@ -73,18 +79,24 @@ module.exports = function DBCore(){
    this.getTopPlayerHTML=function(response){
       this.PlayerModel.find({},null, {sort : {kills : -1}, limit : 10}, function(err, users){
          response.writeHead(200, {'Content-Type': 'text/html'});
-         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Morts</th><th>Plus longue survie</th></tr>');
+         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++)
-            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ users[i].deaths +'</td><td>'+ users[i].record +' vague(s)</td></tr>');
+            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
          response.end();
       });
    }
    this.getLeaderboardHTML=function(response){
       this.PlayerModel.find({},null, {sort : {kills : -1}}, function(err, users){
          response.writeHead(200, {'Content-Type': 'text/html'});
-         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Morts</th><th>Plus longue survie</th></tr>');
-         for(var i=0; i<users.length;i++)
-            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ users[i].deaths +'</td><td>'+ users[i].record +' vague(s)</td></tr>');
+         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
+         var totalKills=0;var bestRecord=-1;
+         for(var i=0; i<users.length;i++){
+            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            totalKills+=users[i].kills;
+            bestRecord=Math.max(users[i].record, bestRecord);
+         }
+         response.write('<tr><th>TOTAL</th><th>'+ totalKills +'</th><th>'+ recordToString(bestRecord) +'</th></tr>');
+            
          response.end();
       });
    }
@@ -96,7 +108,7 @@ module.exports = function DBCore(){
       mdp : String,
       kills : {type : Number, default : 0},
       deaths: {type : Number, default : 0},
-      record: {type : Number, default : 0},
+      record: {type : Number, default : -1},
       niveau: {type : Number, default :0},
       xp : {type : Number, default : 0},
       created : {type : Date, default: Date.now}
