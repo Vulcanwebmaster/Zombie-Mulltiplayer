@@ -11,7 +11,6 @@
 - ajouter la partie RPG avec des points de compétences
 - reconnexion si on bug ?
 - cookie pour la connexion ?
-*** bug barre de vie parfois
 - mettre la vie que sur les boss ?
 
 Idées :
@@ -42,3 +41,5 @@ Idées :
 		Correction de typos
 		Les tirs ne devraient plus donner l'impression d'être en retard et décalés
 		Suppression de deux failles de sécurité (permettant de prendre le contrôle des autres joueurs)
+		La barre de vie ne devrait plus ni sautiller ni bugger
+		Correction de certains crash serveur

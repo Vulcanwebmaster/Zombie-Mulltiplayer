@@ -133,6 +133,17 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       if(this.listeJoueurs[datas.id])
          this.listeJoueurs[datas.id].angle=datas.angle;
    }
+   this.stopFire=function(datas){
+      if(this.listeJoueurs[datas.id]){
+         this.listeJoueurs[datas.id].isFiring=false;
+      }
+   }
+   this.fire=function(datas){
+      if(this.listeJoueurs[datas.id]){
+         this.listeJoueurs[datas.id].isFiring=true;
+         this.listeJoueurs[datas.id].target={targetX:datas.targetX,targetY:datas.targetY};
+      }
+   }
 
    this.update=function(){
       var _this=this;
@@ -253,14 +264,6 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
    this.calculDistanceBetween=function(ent1, ent2){
       return Math.sqrt(Math.pow(ent1.x-ent2.x,2)+Math.pow(ent1.y-ent2.y,2));
-   }
-
-   this.stopFire=function(datas){
-      this.listeJoueurs[datas.id].isFiring=false;
-   }
-   this.fire=function(datas){
-      this.listeJoueurs[datas.id].isFiring=true;
-      this.listeJoueurs[datas.id].target={targetX:datas.targetX,targetY:datas.targetY};
    }
 
    this.calculNextEtapeFire=function(joueur){

@@ -242,9 +242,9 @@ function GameMap(){
 			bgColor='rgb(162,13,17)';
 		$('#zombie-life-inner').css({'background-color':bgColor});
 		if(animation)
-			$('#zombie-life-inner').animate({'width' : pourcentage + '%'},40);
+			$('#zombie-life-inner').stop().animate({'width' : pourcentage + '%'},25);
 		else
-			$('#zombie-life-inner').css({'width' : pourcentage + '%'});
+			$('#zombie-life-inner').stop().css({'width' : pourcentage + '%'});
 		//Si le zombie qu'on cible est mort, alors on remet à -1 la cible
 		if(!alive){
 			this.idZombieTarget=-1;

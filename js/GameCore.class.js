@@ -56,7 +56,8 @@ function GameCore(pseudo,mdp){
 		});
 
 		this.socket.on('reconnect', function(){
-			alert('Vous avez perdu votre connexion. Ou tout du moins, votre navigateur est en train de dire ça...');
+			alert('Vous avez perdu votre connexion.');
+			document.location.reload(true);
 		});
 
 		this.socket.on('set_id', function(nbr){
