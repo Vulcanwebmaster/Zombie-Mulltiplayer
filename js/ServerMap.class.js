@@ -579,7 +579,6 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.totalZombiesKilled=0;
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
-               console.log(_this.listeJoueurs[idPerso].pseudo + ' est en ligne');
                //On update toutes les stats des joueurs dans la DB
                dbCore.updatePlayerStats(_this.listeJoueurs[idPerso]);
                _this.listeJoueurs[idPerso].reini(characterManager);
