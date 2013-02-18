@@ -162,8 +162,6 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
    this.compteAReboursVague=function(_this, secondesRestantes){
       return function(){
-         if(!_this.isRunning || _this.getPlayingPlayers()==0)
-               _this.vagueEnTrainDeSeLancer=false;
          if(_this.vagueEnTrainDeSeLancer){
             _this.flushFileAttente();
             _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
@@ -581,18 +579,19 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.totalZombiesKilled=0;
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
+               console.log(_this.listeJoueurs[idPerso].pseudo + ' est en ligne');
                //On update toutes les stats des joueurs dans la DB
                dbCore.updatePlayerStats(_this.listeJoueurs[idPerso]);
                _this.listeJoueurs[idPerso].reini(characterManager);
-                _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
+               _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
             }
-            for(var idPerso in _this.listeSpectateurs){
-                dbCore.updatePlayerStats(_this.listeSpectateurs[idPerso]);
-               _this.listeSpectateurs[idPerso].reini(characterManager);
+            for(var idSpec in _this.listeSpectateurs){
+                dbCore.updatePlayerStats(_this.listeSpectateurs[idSpec]);
+               _this.listeSpectateurs[idSpec].reini(characterManager);
             }
-            for(var idPerso in _this.listeAttente){
-               dbCore.updatePlayerStats(_this.listeAttente[idPerso]);
-               _this.listeAttente[idPerso].reini(characterManager);
+            for(var idAttente in _this.listeAttente){
+               dbCore.updatePlayerStats(_this.listeAttente[idAttente]);
+               _this.listeAttente[idAttente].reini(characterManager);
             } 
             _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-admin'});                    
             _this.flushFileAttente();
@@ -611,11 +610,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
    this.testVeilleServeur=function(){
       var ilResteDesJoueurs=false;
-      for(var id in this.listeJoueurs)
-         ilResteDesJoueurs=true;
-      for(var id in this.listeAttente)
-         ilResteDesJoueurs=true;
-      for(var id in this.listeSpectateurs)
+      if(this.getOnlinePlayers()>0)
          ilResteDesJoueurs=true;
       if(!ilResteDesJoueurs){
          console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')

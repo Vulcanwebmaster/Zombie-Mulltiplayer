@@ -61,18 +61,20 @@ module.exports = function DBCore(){
    }
 
    this.updatePlayerStats=function(datas){
-      if(datas==null || datas==undefined)return;
+      if(datas==null || datas==undefined){
+         console.log(dateToLog(new Date) + 'DBCore::updatePlayerStats : datas = ' + datas);
+      }
       if(datas.pseudo=='visiteur') return;
       var _this=this;
       //on save les datas car l'asynchrone fait que sinon c'est remis à zero avant l'update DB
-      dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
+      var dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
       this.PlayerModel.find({pseudoLowerCase : dataTmp.pseudo.toLowerCase()},function(err, users){
          var user=users[0];//on récupère le premier enregistrement
          //On calcule les nouvelles valeurs à mettre.
          var deaths=user.deaths + dataTmp.deaths;
          var kills=user.kills + dataTmp.kills;
          var record=user.record > dataTmp.record ? user.record : dataTmp.record;
-         //console.log('Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
+         //console.log(dateToLog(new Date) + 'DBCore::updatePlayerStats : ' + user.pseudo + ' => Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
          _this.PlayerModel.update(user, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err)throw err;});
       });
    }
