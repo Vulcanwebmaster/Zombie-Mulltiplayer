@@ -107,6 +107,21 @@
 			<a href="#" onclick="$('#changelog').show();return false;" style="color:white;margin-left:400px;">Afficher le changelog</a>
 			<textarea id="changelog">*************** PATCH NOTE **************************
 
+--- v 0.8.2 alpha (20130218)
+	NEW :
+		Possibilité de passer en "spectateur"
+		Les joueurs ne pourront plus rejoindre en plein milieu d'une vague
+			- cela évite le "cheat" qui consiste à revenir en chaine
+			- cela évite de mourir d'un coup en se prenant 50 zombies sans rien comprendre
+	EDIT :
+		Le "top des joueurs de Zombiz!" n'affiche plus que les 5 premiers joueurs
+	FIX :
+		Correction de typos
+		Les tirs ne devraient plus donner l'impression d'être en retard et décalés
+		Suppression de deux failles de sécurité (permettant de prendre le contrôle des autres joueurs)
+		La barre de vie ne devrait plus ni sautiller ni bugger
+		Correction de certains crash serveur
+
 --- v 0.8.1 alpha (20130217)
 	ADD :
 		Ajout d'un total sur le leaderboard
@@ -313,7 +328,7 @@
 
 		<footer>
 			<p id="copyright">Copyright 2013 Mikaël B.</p>
-			<p id="version">Version 0.8.1 alpha (20130217)</p>
+			<p id="version">Version 0.8.2 alpha (20130218)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 </body>

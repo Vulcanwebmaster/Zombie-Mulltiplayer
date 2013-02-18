@@ -10,9 +10,8 @@ function GameMap(){
 	/*functions*/
 	this.init=function(){
 		this.isFiring=false;
-		this.clearMap();
 		//On enleve la ghostMap si elle est là
-		this.ghostCam.running=false;
+		this.ghostCam={running:false,haut:false,bas:false,gauche:false,droite:false};
 		$('body').unbind('keydown');
 		$('body').unbind('keyup');
 		$('body').keydown(gameCore.bouger);
@@ -59,6 +58,8 @@ function GameMap(){
 		$('body').keydown(this.ghostCamKeyDown);
 		$('body').keyup(this.ghostCamKeyUp);
 		this.ghostCam.running=true;
+		this.isFiring=false;
+		gameCore.directions={haut:false,bas:false,gauche:false,droite:false};
 	}
 
 
@@ -93,7 +94,7 @@ function GameMap(){
 				if(item.id==gameCore.playerId)
 					$('#joueur-kills').text(item.kills);
 				if(this.idZombieTarget==item.id){
-					$('#zombie-life-inner').css('width','0%');
+					$('#zombie-life-inner').stop().css('width','0%');
 					this.idZombieTarget=-1;
 				}
 
@@ -101,7 +102,7 @@ function GameMap(){
 			else if(item.type=='player_target' && item.id==gameCore.playerId){
 				this.idZombieTarget=item.id_zombie;
 				if(this.idZombieTarget==-1)
-					$('#zombie-life-inner').css('width','0%');
+					$('#zombie-life-inner').stop().css('width','0%');
 				else
 					this.updateBarreDeVieZombie(document.getElementById('zombie'+item.id_zombie), true, false);
 			}
@@ -110,15 +111,16 @@ function GameMap(){
 				$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
 				div.fadeOut(500, function(){$(this).remove();});
 			}
+			else if(item.type=='online_players_number'){
+				$('#nbr-online-players').text(item.value + ' joueur' +(item.value>1 ? 's' : ''));
+			}
 		}
 
 
 		//Update de tous les joueurs
 		var player;
 		var pseudo;
-		var nbrJoueursTmp=0;
 		for(var idPerso in datas.listeJoueurs){
-			nbrJoueursTmp++;
 			player=document.getElementById('player'+idPerso);
 			pseudo=document.getElementById('player'+idPerso+'-pseudo');
 			if(player==null){
@@ -177,13 +179,6 @@ function GameMap(){
 		if(this.ghostCam.running)
 			this.ghostCamUpdate();
 
-		//On met à jour le nombre de joueurs en ligne si il faut
-		if(this.nbrOnlinePlayers != nbrJoueursTmp){
-			$('#nbr-online-players').text(nbrJoueursTmp + ' joueur' +(nbrJoueursTmp>1 ? 's' : ''));
-			this.nbrOnlinePlayers=nbrJoueursTmp;
-		}
-
-
 		//Update des zombies
 		var zombie;
 		for(var idZombie in datas.listeZombies){
@@ -196,7 +191,7 @@ function GameMap(){
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
 				zombie.style.top=datas.listeZombies[idZombie].y+'px';
 				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
-				this.rotate(zombie,datas.listeJoueurs[idPerso].angle);
+				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				this.divMap.appendChild(zombie);
 			}
 			else{
@@ -213,18 +208,6 @@ function GameMap(){
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 			}
 		}
-		//On ajoute l'event d'affichage de la vie du zombie
-		/*$('.zombie').unbind('mouseover').unbind('mouseleave')
-			.mouseover(function(){
-				if($(this).attr('data-life') != '0'){
-					$('#zombie-life').stop(true).text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
-									.animate({'opacity':1},200);
-				}
-			})
-			.mouseleave(function(){
-			$('#zombie-life').text($(this).attr('data-life') +'/' + $(this).attr('data-max-life'))
-								.animate({'opacity':0},1000);
-			});*/
 
 		//on lance l'update local au cas où le serveur lag
 		var _this=this;
@@ -364,7 +347,7 @@ function GameMap(){
 	this.clearMap=function(){
 		//$('#map').html('');
 		this.idZombieTarget=-1;
-		$('#zombie-life-inner').css('width', '0%');
+		$('#zombie-life-inner').stop().css('width', '0%');
 		$('.zombie').fadeOut(3000, function(){$(this).remove()});
 	}
 
@@ -449,7 +432,6 @@ function GameMap(){
 
 	this.ghostCamUpdate=function(){
 		var pas=9;
-
 		if(gameMap.ghostCam.haut)
 			gameMap.divMap.style.top=(parseInt(gameMap.divMap.style.top) + pas)+'px';
 		else if(gameMap.ghostCam.bas)
@@ -467,11 +449,11 @@ function GameMap(){
 	this.widthMap=parseInt($('#map').css('width'));
 	this.heightMap=parseInt($('#map').css('height'));
 	this.divMap=document.getElementById('map');
+	this.divMap.style.top='0px';this.divMap.style.left='0px';
 	this.ghostCam={running:false,haut:false,bas:false,gauche:false,droite:false};
 	this.LARGEUR_PERSO=30;
 	this.lastDegreeSent=0;
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
-	this.nbrOnlinePlayers=-1;
 	this.idZombieTarget=-1;
 }

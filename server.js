@@ -99,9 +99,8 @@ function handler( request , response ) {
 io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
-        var joueurId=serverMap.addJoueur(datas.pseudo);
-        socket.emit('set_id', joueurId);
-		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' a rejoint la partie.', 'class': 'tchat-admin'});
+        var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-admin'});
 		socket.set('pseudo', datas.pseudo , function () {
 			/*console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');*/
 		});
@@ -129,6 +128,14 @@ io.sockets.on('connection', function(socket) {
         socket.get('pseudo', function(err, pseudo){datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);});
     });
 
+    socket.on('spect_mode_on', function(){
+        socket.get('id', function(err, id){serverMap.switchSpectateur(id);})
+    });
+
+    socket.on('spect_mode_off',function(){
+        socket.get('id', function(err, id){serverMap.switchInGame(id);})
+    });
+
     socket.on('disconnect',function(){
         socket.get('id', function(err,id){
             if(id==null) return;
@@ -139,7 +146,7 @@ io.sockets.on('connection', function(socket) {
             socket.get('pseudo', function(err, pseudo){
                 if(pseudo!=null){
                     console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
-                    socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté la partie.', 'class':'tchat-admin'});
+                    socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté le jeu.', 'class':'tchat-admin'});
                 }
             });
         });

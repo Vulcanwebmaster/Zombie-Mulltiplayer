@@ -164,6 +164,18 @@ module.exports = function CharacterManager(){
             maxSpeed : this.PAS,
             taille:this.LARGEUR_PERSO,
             buffs:{},
+            reini:function(characterManager){
+              this.alive=true;
+              this.life=characterManager.DEFAULT_PLAYER_LIFE;
+              this.speed=this.maxSpeed;
+              this.attaque=characterManager.creationArme(0);
+              this.buff={};
+              this.kills=0;
+              this.deaths=0;
+              this.record=0;
+              this.directions={haut:false,bas:false,gauche:false,droite:false};
+              this.isFiring=false;
+            },
             die:function(instance){
                 this.buffs={};
                 this.life=0;
@@ -201,7 +213,7 @@ module.exports = function CharacterManager(){
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
               //On regarde si il est empoisonné pour pas appliquer le buff zombizSlayer
               var empoisonner=false;;
-              if(this.buffs['poison']!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
+              if(this.buffs['poison']!=undefined && this.buffs['poison'].duree!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
 
                 for(var stringBuff in this.buffs){
                     if(stringBuff=="saignementLeger"){

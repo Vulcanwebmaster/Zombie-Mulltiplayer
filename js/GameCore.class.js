@@ -64,7 +64,7 @@ function GameCore(pseudo,mdp){
 			$('#inscription').fadeOut(1000,function(){$(this).remove()});
 			gameCore.playerId=nbr;
 			gameMap=new GameMap();
-			gameMap.init(); //on lance que quand tout ça marche
+			//gameMap.desinit(); //on lance que quand tout ça marche
 			gameCore.socket.on('update',function(datas){
 				gameCore.debug();
 				gameMap.update(datas);
@@ -78,6 +78,14 @@ function GameCore(pseudo,mdp){
 				$('#tchat-input')[0].value='';
 				$('#tchat-input').blur();
 				$('#map').focus();
+			});
+
+			//On ajoute les fonctionnalités des options
+			$('#passerSpectateur').click(function(){
+				gameCore.spectateurOn();gameMap.desinit();
+			});
+			$('#rejoindrePartie').click(function(){
+				gameCore.spectateurOff();
 			});
 		});
 
@@ -100,11 +108,15 @@ function GameCore(pseudo,mdp){
 				gameCore.tchat('', datas.pseudo + ' est mort.', 'tchat-game-event');
 		});
 
+		this.socket.on('player_spectateur', function(datas){
+			if(datas.id==gameCore.playerId){
+				gameMap.desinit();
+			}
+		});
 		this.socket.on('player_revive', function(datas){
 			if(datas.id==gameCore.playerId){
 				$('#joueur-life').text(datas.life).css('color','rgb(70,128,51)');
 				$('#joueur-kills').text(datas.kills);
-				gameCore.tchat('','Nouvelle vie !', 'tchat-game-event');
 				gameMap.init();
 			}
 		});
@@ -133,6 +145,12 @@ function GameCore(pseudo,mdp){
 	}
 	this.sendTchatMessage=function(datas){
 		this.socket.emit('broadcast_msg', datas);
+	}
+	this.spectateurOn=function(){
+		this.socket.emit('spect_mode_on');
+	}
+	this.spectateurOff=function(){
+		this.socket.emit('spect_mode_off');
 	}
 
 
@@ -273,6 +291,7 @@ function updateLeaderBoard(){
 	//On update le leaderboard dans X secondes
 	setTimeout(updateLeaderBoard, 20000);
 }
+
 $(document).ready(function(){
 	initEventConnexion();
 	//Eviter le changement du curseur en text
@@ -281,4 +300,8 @@ $(document).ready(function(){
 	$('#champs-pseudo').focus();
 
 	updateLeaderBoard();
+
+	//On met les events sur le menu à droite
+	$('#menu').mouseover(function(){$(this).stop().animate({'right':'0px'}, 500)});
+	$('#menu').mouseout(function(){$(this).stop().animate({'right': (-$(this).width()+20-parseInt($(this).css('padding'))*2)}, 500)});
 })

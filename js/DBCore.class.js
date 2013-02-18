@@ -61,6 +61,7 @@ module.exports = function DBCore(){
    }
 
    this.updatePlayerStats=function(datas){
+      if(datas==null || datas==undefined)return;
       if(datas.pseudo=='visiteur') return;
       var _this=this;
       //on save les datas car l'asynchrone fait que sinon c'est remis à zero avant l'update DB

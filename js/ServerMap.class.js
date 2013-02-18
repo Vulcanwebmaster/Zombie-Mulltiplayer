@@ -19,39 +19,79 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    var isRunning;
    var DEFAULT_ZOMBIE_SPEED;
 
-   this.addJoueur=function(pseudo){
+   this.addJoueur=function(pseudo, socket){
    		var newJoueur=characterManager.creationJoueur(this.nbJoueurs++,pseudo);
-   		this.listeJoueurs[newJoueur.id]=newJoueur;
+   		this.listeAttente[newJoueur.id]=newJoueur;
+         socket.emit('set_id', newJoueur.id);
          /*Ici on choisi ou non de lancer la partie*/
-         if(this.isRunning==false && this.getOnlinePlayers()==1)
+         if(this.isRunning==false && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
             this.start();
+         else
+            socket.emit('player_spectateur', {id:newJoueur.id});
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
+   }
+   this.getPlayingPlayers=function(){
+      var cpt=0;
+      for(var id in this.listeJoueurs)   cpt++;
+      return cpt;
+   }
+   this.getWaitingPlayers=function(){
+      var cpt=0;
+      for(var id in this.listeAttente)  cpt++;
+      return cpt;
    }
    this.getOnlinePlayers=function(){
       var cpt=0;
-      for(var id in this.listeJoueurs)
-         cpt++;
+      for(var id in this.listeSpectateurs)   cpt++;
+      cpt+=this.getPlayingPlayers();
+      cpt+=this.getWaitingPlayers();
       return cpt;
    }
    this.getJoueur=function(id){
-      return this.listeJoueurs[id];
+      return this.listeJoueurs[id] || this.listeSpectateurs[id] || this.listeAttente[id];
    }
    this.removeJoueur=function(id){
-      delete this.listeJoueurs[id];
-      var ilResteDesJoueurs=false;
-      for(var id in this.listeJoueurs)
-         ilResteDesJoueurs=true;
-      if(!ilResteDesJoueurs){
-         console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')
-         this.stop();
-         this.currentWave=-1;
-         this.nbZombies=0;
-         this.listeZombies={};
-         this.nbJoueurs=0;
-         this.listeJoueurs={};
-      }
-      else
+      if(this.listeJoueurs[id])
+         delete this.listeJoueurs[id];
+      if(this.listeSpectateurs[id])
+         delete this.listeSpectateurs[id];
+      if(this.listeAttente[id])
+         delete this.listeAttente[id];
+      this.testVeilleServeur();
+   }
+   this.switchSpectateur=function(id){
+      if(this.listeJoueurs[id] || this.listeAttente[id]){
+         this.listeSpectateurs[id]=this.listeJoueurs[id] || this.listeAttente[id];
+         delete this.listeJoueurs[id];
+         delete this.listeAttente[id];
+         this.listeSpectateurs[id].directions={haut:false,bas:false,gauche:false,droite:false};
+         this.listeSpectateurs[id].isFiring=false;
+         this.io.sockets.emit('remove_player', {'id':id});
+         this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeSpectateurs[id].pseudo + ' passe en spectateur.', class:'tchat-admin'});
          this.testFinPartie();
+      }
+   }
+   this.switchInGame=function(id){
+      if(this.listeSpectateurs[id]){
+         this.listeAttente[id]=this.listeSpectateurs[id];
+         delete this.listeSpectateurs[id];
+         /*Ici on choisi ou non de lancer la partie*/
+         if(this.isRunning==false  && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
+            this.start();
+         else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1){
+            this.currentWave=0;
+            this.spawnWave(this.currentWave)
+         };
+      }
+   }
+   this.flushFileAttente=function(){
+      for(var id in this.listeAttente){
+         console.log('on ajoute un joueur au jeu');
+         this.listeJoueurs[id]=this.listeAttente[id];
+         delete this.listeAttente[id];
+         this.io.sockets.emit('player_revive', this.listeJoueurs[id]);
+         this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeJoueurs[id].pseudo + ' rejoint la partie.', class:'tchat-admin'});
+      }
    }
 
    this.addZombie=function(type){
@@ -91,15 +131,20 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
 
    this.spawnWave=function(id){
+      if(this.vagueEnTrainDeSeLancer==true)return;
+      this.flushFileAttente();
+      if(!this.isRunning || this.getPlayingPlayers()==0)
+         return;
+      this.vagueEnTrainDeSeLancer=true;
       console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
-         _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'numero_vague', value: _this.currentWave};
          _this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
-         //Pour le moment on fait juste "numéro de la vague * 10 +1 mais faudra faire un switch plus tard".
          setTimeout(function(){
-            if(!_this.isRunning)
+            if(!_this.isRunning || _this.getPlayingPlayers()==0){
+               _this.vagueEnTrainDeSeLancer=false;
                return;
+            }
             _this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
             var jSONVague=characterManager.getWave(id);
             for(var zombieType in jSONVague){
@@ -107,6 +152,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                   _this.addZombie(zombieType);
                }
             }
+            _this.vagueEnTrainDeSeLancer=false;
          },7000);         
       },4000);
       //Fonction qui va faire le compte à rebours client side :
@@ -117,6 +163,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
    this.compteAReboursVague=function(_this, secondesRestantes){
       return function(){
+         _this.flushFileAttente();
          _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
       };
    }
@@ -175,6 +222,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
 
+      this.temporaryDisplayItem[this.numberTmpItem++]={type:'numero_vague', value: this.currentWave};
+      this.temporaryDisplayItem[this.numberTmpItem++]={type:'online_players_number', value: this.getOnlinePlayers()};
       //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
       //if( this.MODULO_ENVOI == 0){
 		   this.io.sockets.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
@@ -510,42 +559,70 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       }
       if(fin){
          this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
-         this.stop();
          console.log(dateToLog(new Date) + "La partie est terminée : tout le monde est mort.");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
-
+         this.stop();
+         this.io.sockets.emit('clear_map_full');
          //On relance une partie
+         //On met un mini timeout pour que la boucle actuelle ait le temps de finir
          var _this=this;
          setTimeout(function(){
-            _this.io.sockets.emit('clear_map_full');
-            _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Pourrez-vous mieux faire? Je vous donne une nouvelle chance !', 'class':'tchat-admin'});
-            _this.currentWave=-1;
             _this.nbZombies=0;
             _this.listeZombies={};
+            _this.totalZombiesKilled=0;
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
                //On update toutes les stats des joueurs dans la DB
                dbCore.updatePlayerStats(_this.listeJoueurs[idPerso]);
-               if(!_this.listeJoueurs[idPerso].alive){
-                  _this.listeJoueurs[idPerso].alive=true;
-                  _this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
-                  _this.listeJoueurs[idPerso].speed=_this.listeJoueurs[idPerso].maxSpeed;
-                  _this.listeJoueurs[idPerso].attaque=characterManager.creationArme(0);
-                  _this.listeJoueurs[idPerso].kills=0;
-                  _this.listeJoueurs[idPerso].deaths=0;
-                  _this.listeJoueurs[idPerso].record=0;
-                  _this.listeJoueurs[idPerso].directions={haut:false,bas:false,gauche:false,droite:false};
-                  _this.listeJoueurs[idPerso].isFiring=false;
-                  _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
-                  _this.totalZombiesKilled=0;
-               }           
+               _this.listeJoueurs[idPerso].reini(characterManager);
+                _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
             }
+            for(var idPerso in _this.listeSpectateurs){
+                dbCore.updatePlayerStats(_this.listeSpectateurs[idPerso]);
+               _this.listeSpectateurs[idPerso].reini(characterManager);
+            }
+            for(var idPerso in _this.listeAttente){
+               dbCore.updatePlayerStats(_this.listeAttente[idPerso]);
+               _this.listeAttente[idPerso].reini(characterManager);
+            } 
+            _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-admin'});                    
+            _this.flushFileAttente();
             _this.start();
+         },500);
+      
+         var _this;
+         setTimeout(function(){
+            _this.currentWave=0;
+            _this.spawnWave(_this.currentWave);
          },10000);
       }
    }
+
+   this.testVeilleServeur=function(){
+      var ilResteDesJoueurs=false;
+      for(var id in this.listeJoueurs)
+         ilResteDesJoueurs=true;
+      for(var id in this.listeAttente)
+         ilResteDesJoueurs=true;
+      for(var id in this.listeSpectateurs)
+         ilResteDesJoueurs=true;
+      if(!ilResteDesJoueurs){
+         console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')
+         this.stop();
+         this.currentWave=-1;
+         this.nbZombies=0;
+         this.listeZombies={};
+         this.nbJoueurs=0;
+         this.listeJoueurs={};
+         this.listeSpectateurs={};
+         this.listeAttente={};
+      }
+      else
+         this.testFinPartie();
+   }
+
    this.widthMap=1200;
    this.heightMap=700;
    this.DIAGONALE_MAP=Math.sqrt(Math.pow(this.heightMap,2)+Math.pow(this.widthMap,2));
@@ -557,8 +634,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.listeZombies={};
    this.numberTmpItem=0;
    this.temporaryDisplayItem={}; //such as blood, shots, ...
+   this.listeSpectateurs={};
+   this.listeAttente={};
    this.isRunning=false;
    this.currentWave=-1;
+   this.vagueEnTrainDeSeLancer=false;
    this.totalZombiesKilled=0;
    this.MODULO_ENVOI=0;
    this.ID_ENVOI=0;
