@@ -1,7 +1,7 @@
 ************* TODO LIST ********************
 
 - si un joueur arrive en cours de partie !
-- ajouter un mode spectateur
+***- ajouter un mode spectateur
 - ajouter un système de mines !! (KABOUM)
 	- ajouter un zombie explosif du coup si je fais les mines pour les hommes :)
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
@@ -9,6 +9,12 @@
 - nouveau boss et vagues
 - passer en objet pour attaquer/prendre dégat, pour pouvoir ensuite avoir des Stats PAR PERSO
 - ajouter la partie RPG avec des points de compétences
+- reconnexion si on bug ?
+- cookie pour la connexion ?
+*** bug barre de vie parfois
+- mettre la vie que sur les boss ?
+*** ajouter une sécurité serverside sur les envois clients pour pas qu'il puisse changer son ID (utiliser l'id sauvegardé dans la socket plutôt non ?)
+***corriger le fait que le tir se fait sur notre ancienne position
 
 Idées :
 
@@ -30,4 +36,9 @@ Idées :
 
 *************************************************************************************
 
---- v 0.8.1 alpha (20130217)
+--- v 0.8.2 alpha (201302?)
+	NEW :
+	EDIT :
+		Le "top des joueurs de Zombiz!" n'affiche plus que les 5 premiers joueurs
+	FIX :
+		Correction de typos

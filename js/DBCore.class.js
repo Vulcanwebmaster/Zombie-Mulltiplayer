@@ -77,7 +77,7 @@ module.exports = function DBCore(){
    }
 
    this.getTopPlayerHTML=function(response){
-      this.PlayerModel.find({},null, {sort : {kills : -1}, limit : 10}, function(err, users){
+      this.PlayerModel.find({},null, {sort : {kills : -1}, limit : 5}, function(err, users){
          response.writeHead(200, {'Content-Type': 'text/html'});
          response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++)
