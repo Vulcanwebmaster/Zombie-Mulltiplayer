@@ -26,6 +26,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          /*Ici on choisi ou non de lancer la partie*/
          if(this.isRunning==false && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
             this.start();
+         else if(this.getPlayingPlayers()==0)
+            this.start();
          else
             socket.emit('player_spectateur', {id:newJoueur.id});
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
@@ -78,15 +80,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          /*Ici on choisi ou non de lancer la partie*/
          if(this.isRunning==false  && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
             this.start();
-         else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1){
-            this.currentWave=0;
-            this.spawnWave(this.currentWave)
-         };
+         else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
+            this.start();
       }
    }
    this.flushFileAttente=function(){
       for(var id in this.listeAttente){
-         console.log('on ajoute un joueur au jeu');
          this.listeJoueurs[id]=this.listeAttente[id];
          delete this.listeAttente[id];
          this.io.sockets.emit('player_revive', this.listeJoueurs[id]);
@@ -163,8 +162,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
    this.compteAReboursVague=function(_this, secondesRestantes){
       return function(){
-         _this.flushFileAttente();
-         _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
+         if(!_this.isRunning || _this.getPlayingPlayers()==0)
+               _this.vagueEnTrainDeSeLancer=false;
+         if(_this.vagueEnTrainDeSeLancer){
+            _this.flushFileAttente();
+            _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
+         }
       };
    }
 
@@ -493,6 +496,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.spawnWave(++this.currentWave);
    		this.update();
       }
+      else if(this.getPlayingPlayers()==0){
+         this.currentWave=0;
+         this.spawnWave(this.currentWave);
+      }
 	}
    this.stop=function(){
       this.isRunning=false;
@@ -590,12 +597,14 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-admin'});                    
             _this.flushFileAttente();
             _this.start();
-         },500);
+         },1000);
       
          var _this;
          setTimeout(function(){
-            _this.currentWave=0;
-            _this.spawnWave(_this.currentWave);
+            if(_this.getPlayingPlayers!=0){
+               _this.currentWave=0;
+               _this.spawnWave(_this.currentWave);
+            }
          },10000);
       }
    }
