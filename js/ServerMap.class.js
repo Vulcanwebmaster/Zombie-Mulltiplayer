@@ -22,6 +22,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.addJoueur=function(pseudo){
    		var newJoueur=characterManager.creationJoueur(this.nbJoueurs++,pseudo);
    		this.listeJoueurs[newJoueur.id]=newJoueur;
+         /*Ici on choisi ou non de lancer la partie*/
+         if(this.isRunning==false && this.getOnlinePlayers()==1)
+            this.start();
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
    this.getOnlinePlayers=function(){
@@ -146,9 +149,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             persoTmp.applyBuff(this);
             //on verifie qu'il est toujours vivant après les debuff
             if(persoTmp.alive){
-               this.calculNextEtapeFire(persoTmp);
                this.move(persoTmp, 'humain');
-               this.validatePositionToMapLimits(persoTmp);       
+               this.validatePositionToMapLimits(persoTmp);  
+               this.calculNextEtapeFire(persoTmp);     
             }
          }
 		}

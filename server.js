@@ -100,9 +100,6 @@ io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
         var joueurId=serverMap.addJoueur(datas.pseudo);
-        /*Ici on choisi ou non de lancer la partie*/
-        if(serverMap.isRunning==false && serverMap.getOnlinePlayers()==1)
-            serverMap.start();
         socket.emit('set_id', joueurId);
 		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' a rejoint la partie.', 'class': 'tchat-admin'});
 		socket.set('pseudo', datas.pseudo , function () {
@@ -112,23 +109,24 @@ io.sockets.on('connection', function(socket) {
 	});
 
     socket.on('update_player_mouvement', function(datas){
-        serverMap.updateJoueurMouvement(datas);
+        //On protège en prenant l'id sauvegardé serverside
+        socket.get('id', function(err, id){datas.id=id;serverMap.updateJoueurMouvement(datas);});
     });
 
     socket.on('update_player_angle', function(datas){
-        serverMap.updateJoueurAngle(datas);
+        socket.get('id', function(err, id){datas.id=id;serverMap.updateJoueurAngle(datas);});
     });
 
     socket.on('fire',function(datas){
-        serverMap.fire(datas);
+        socket.get('id', function(err, id){datas.id=id;serverMap.fire(datas);});
     });
 
     socket.on('stop_fire', function(datas){
-        serverMap.stopFire(datas);
+        socket.get('id', function(err, id){datas.id=id;serverMap.stopFire(datas);});
     });
 
     socket.on('broadcast_msg', function(datas){
-        io.sockets.emit('broadcast_msg', datas);
+        socket.get('pseudo', function(err, pseudo){datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);});
     });
 
     socket.on('disconnect',function(){
