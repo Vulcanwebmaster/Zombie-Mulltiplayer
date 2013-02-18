@@ -57,6 +57,7 @@ function GameMap(){
 		$('#plateau').unbind('mouseup');
 		$('body').keydown(this.ghostCamKeyDown);
 		$('body').keyup(this.ghostCamKeyUp);
+		$('#buffs').html('');
 		this.ghostCam.running=true;
 		this.isFiring=false;
 		gameCore.directions={haut:false,bas:false,gauche:false,droite:false};
