@@ -361,7 +361,7 @@ module.exports = function CharacterManager(){
 
 	this.PAS=9;//px
   	this.DEFAULT_ZOMBIE_SPEED=3;
-  	this.LARGEUR_PERSO=30;
+  	this.LARGEUR_PERSO=50;
   	this.ZOMBIE_NORMAL=1;
   	this.ZOMBIE_RAPIDE=2;
   	this.ZOMBIE_GROS=3;

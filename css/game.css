@@ -14,7 +14,8 @@ src: url('HUD.ttf') format('truetype');
 	left:0px;
 	z-index: 0;
 	background-color:grey;
-	background-image:url('/img/map.jpg');
+	background-image:url('/img/map*.jpg');
+	background-color:rgb(100,100,100);
 	-webkit-user-select: none; /* Safari, Chrome */
     -khtml-user-select: none; /* Konqueror */
     -moz-user-select: none; /* Firefox */
@@ -22,11 +23,13 @@ src: url('HUD.ttf') format('truetype');
     user-select: none; /* CSS3 */
 }
 .player{
-	width:30px;/*Changer aussi characterManager et gameMap si on change ça*/
-	height: 30px;
+	width:50px;/*Changer aussi characterManager et gameMap si on change ça*/
+	height: 50px;
 	z-index: 10;
-	background-image: url('/img/players.png');
-	background-position:-10px -60px;/*10 60 ... etc*/ 
+	background-image: url('/img/art/perso1.png');
+	background-size:100%;
+	/*background-color:red;*/
+	/*background-position:0px 10px;/*10 60 ... etc*/ 
 	background-repeat: no-repeat;
 }
 .player-name{
@@ -48,11 +51,13 @@ src: url('HUD.ttf') format('truetype');
     user-select: none; /* CSS3 */
 }
 .zombie{
-	width: 30px;/*Changer aussi characterManager et gameMap si on change ça*/
-	height: 30px;
+	width: 50px;/*Changer aussi characterManager et gameMap si on change ça*/
+	height: 50px;
 	z-index: 11;
-	background-image: url('/img/zombies.png');
-	background-position:-10px -10px; /*10, 60, etc*/
+	background-image: url('/img/art/zombie1.png');
+	/*background-color:yellow;*/
+	/*background-position:0px 10px; /*10, 60, etc*/
+	background-size: 100%;
 	background-repeat: no-repeat;
 }
 .sang{
@@ -121,7 +126,7 @@ src: url('HUD.ttf') format('truetype');
 #buffs{
 	position:absolute;
 	top:0px;
-	left:600px;
+	left:700px;
 	width:300px;
 	height: 50px;
 }
@@ -157,9 +162,9 @@ src: url('HUD.ttf') format('truetype');
 #compteAReboursVague{
 	position:absolute;
 	top:200px;
-	left:350px;
+	left:400px;
 	height: 150px;
-	width:150px;
+	width: 150px;
 	text-align: right;
 	font-size: 150px;
 	font-family: "HUDFond";
@@ -168,11 +173,11 @@ src: url('HUD.ttf') format('truetype');
 
 #online-players{
 	position:absolute;
-	left:800px;
+	left:900px;
 	padding:5px;
 	font-size:12px;
 	width:100px;
-	top:475px;
+	top:620px;
 	color:white;
 }
 #menu{

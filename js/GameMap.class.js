@@ -131,7 +131,7 @@ function GameMap(){
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				player.setAttribute('data-max-life',datas.listeJoueurs[idPerso].life);
 				//Affichage du style
-				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
+				//player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				pseudo=document.createElement('div');
 				pseudo.id='player'+idPerso+'-pseudo';
 				pseudo.className='map-item player-name';
@@ -149,11 +149,11 @@ function GameMap(){
 				player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
-					player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
+					//player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				}
 				if(datas.listeJoueurs[idPerso].alive==false){
 					player.style.zIndex=5;
-					player.style.backgroundPosition=this.setBackgroundPosition(12);
+					//player.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
 			}
 			if(idPerso!=gameCore.playerId)
@@ -191,7 +191,7 @@ function GameMap(){
 				zombie.setAttribute('data-max-life',datas.listeZombies[idZombie].life);
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
 				zombie.style.top=datas.listeZombies[idZombie].y+'px';
-				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
+				//zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				this.divMap.appendChild(zombie);
 			}
@@ -200,7 +200,7 @@ function GameMap(){
 				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
 				if(datas.listeZombies[idZombie].alive==false){
 					zombie.style.zIndex=5;
-					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+					//zombie.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
 				//si jamais on cible celui ci, on met à jour sa vie
 				if(this.idZombieTarget==idZombie){
@@ -284,8 +284,8 @@ function GameMap(){
 			}
 	}
 	this.movePseudoTo=function(ent, x, y){
-		ent.style.left=(x-20)+'px';
-		ent.style.top=(y+30)+'px';
+		ent.style.left=(x-10)+'px';
+		ent.style.top=(y+50)+'px';
 	}
 
 	this.rotate=function(ent,deg){
@@ -452,7 +452,7 @@ function GameMap(){
 	this.divMap=document.getElementById('map');
 	this.divMap.style.top='0px';this.divMap.style.left='0px';
 	this.ghostCam={running:false,haut:false,bas:false,gauche:false,droite:false};
-	this.LARGEUR_PERSO=30;
+	this.LARGEUR_PERSO=50;
 	this.lastDegreeSent=0;
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
