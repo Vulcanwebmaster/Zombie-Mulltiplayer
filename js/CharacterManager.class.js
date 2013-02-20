@@ -18,7 +18,7 @@ module.exports = function CharacterManager(){
             distanceVision:this.MIN_DISTANCE_VISIBLE/2,
             style:parseInt(Math.random()*2),
             taille:this.LARGEUR_PERSO,
-            agressivite:Math.random()*100 -50,
+            agressivite:Math.random()*150 -75,
             instance:instance,
             special:function(){}
          };
@@ -309,14 +309,14 @@ module.exports = function CharacterManager(){
 		//Affichage des totaux par vague dans la console, pour vérification.
 		for(var i=0 ; i<=10 ; i++){
 			var totalTmp=0;
-            var vieTmp=0;
-            var zombieTmp=null;
+      var vieTmp=0;
+      var zombieTmp=null;
 			for(var j=1;j<=7;j++){
 				totalTmp+=nombre[j][i];
-                zombieTmp=this.creationZombie(0,j);
+                zombieTmp=this.creationZombie(null,0,j);
                 vieTmp+=zombieTmp.life * nombre[j][i];
             }
-			//console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV. ' + attaqueTmp + ' DPS');
+			//console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV.');
 		}
 
 		//Ajout des zombies normaux

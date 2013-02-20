@@ -146,7 +146,7 @@ function GameMap(){
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
 				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
-				player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
+				//player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
 					//player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
@@ -196,18 +196,25 @@ function GameMap(){
 				this.divMap.appendChild(zombie);
 			}
 			else{
-				this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y);
-				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
-				if(datas.listeZombies[idZombie].alive==false){
-					zombie.style.zIndex=5;
-					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+				/*On regarde si le zombie est "proche" sinon on le cache et on fait rien*/
+				if(this.calculDistance(datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y) < this.MIN_DISTANCE_SHOW){
+					zombie.style.display="block";
+					this.moveTo(zombie,datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y);
+					zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
+					if(datas.listeZombies[idZombie].alive==false){
+						zombie.style.zIndex=5;
+						zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+					}
+					//si jamais on cible celui ci, on met à jour sa vie
+					if(this.idZombieTarget==idZombie){
+						this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive, true);
+					}
+					this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				}
-				//si jamais on cible celui ci, on met à jour sa vie
-				if(this.idZombieTarget==idZombie){
-					this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive, true);
-				}
-				this.rotate(zombie,datas.listeZombies[idZombie].angle);
+				else
+					zombie.style.display="none";
 			}
+
 		}
 
 		//on lance l'update local au cas où le serveur lag
@@ -233,6 +240,10 @@ function GameMap(){
 		if(!alive){
 			this.idZombieTarget=-1;
 		}
+	}
+
+	this.calculDistance=function(x, y){
+		return Math.sqrt( Math.pow(-parseInt(this.divMap.style.left)+this.widthPlateau/2-x,2)+Math.pow(-parseInt(this.divMap.style.top)+this.heightPlateau/2-y,2));
 	}
 
 	this.localUpdate=function(id){
@@ -349,12 +360,12 @@ function GameMap(){
 		//$('#map').html('');
 		this.idZombieTarget=-1;
 		$('#zombie-life-inner').stop().css('width', '0%');
-		$('.zombie').fadeOut(3000, function(){$(this).remove()});
+		$('.zombie').fadeOut(2000, function(){$(this).remove()});
 	}
 
 	this.clearMapFull=function(){
 		this.clearMap();
-		$('.sang').fadeOut(3000, function(){$(this).remove()});
+		$('.sang').fadeOut(2000, function(){$(this).remove()});
 	}
 
 	this.setBackgroundPosition=function(num){
@@ -363,15 +374,15 @@ function GameMap(){
 			case 1:return '0px -50px';break;
 			case 2:return '0px -100px';break;
 			case 3:return '0px -150px';break;
-			case 4:return '50px 0px';break;
-			case 5:return '50px -50px';break;
-			case 6:return '50px -100pxx';break;
-			case 7:return '50px -150pxx';break;
-			case 8:return '100px 0pxx';break;
-			case 9:return '100px -50pxx';break;
-			case 10:return '100px -100pxpx';break;
-			case 11:return '100px -150pxpx';break;
-			case 12:return '150px 0px';break;
+			case 4:return '-50px 0px';break;
+			case 5:return '-50px -50px';break;
+			case 6:return '-50px -100px';break;
+			case 7:return '-50px -150px';break;
+			case 8:return '-100px 0px';break;
+			case 9:return '-100px -50px';break;
+			case 10:return '-100px -100px';break;
+			case 11:return '-100px -150px';break;
+			case 12:return '-150px 0px';break;
 		}
 	}
 
@@ -453,6 +464,7 @@ function GameMap(){
 	this.divMap.style.top='0px';this.divMap.style.left='0px';
 	this.ghostCam={running:false,haut:false,bas:false,gauche:false,droite:false};
 	this.LARGEUR_PERSO=50;
+	this.MIN_DISTANCE_SHOW=Math.sqrt(this.widthPlateau*this.widthPlateau + this.heightPlateau*this.heightPlateau)/2;
 	this.lastDegreeSent=0;
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);

@@ -294,7 +294,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
          //Calcul du coefficient d'aggressivité. Si on est proche, on le met à 0 pour foncer sur le mec.
          var coef=1;
-         if(distancePlusCourte <= 75)
+         if(distancePlusCourte <= 106)
             coef=0;
          /*Mise à jour de l'angle avec lequel afficher le zombie*/
          //Cet angle est utilisé pour avancer, donc important :)
@@ -303,7 +303,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       }
       else{
          //On teste si le zombie se trouve sur un bord, si oui, on le remet vers le milieu
-         var limite=50;
+         var limite=75;
          if(zombie.x +limite > this.widthMap || zombie.x -limite <0 ||zombie.y+limite > this.heightMap ||zombie.y -limite <0)
             zombie.angle=Math.atan2(this.heightMap/2 - zombie.y , this.widthMap/2 - zombie.x )*180/Math.PI;
          else

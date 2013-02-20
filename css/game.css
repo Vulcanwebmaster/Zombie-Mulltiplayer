@@ -53,6 +53,7 @@ src: url('HUD.ttf') format('truetype');
 	height: 50px;
 	z-index: 11;
 	background-image: url('/img/zombies.png');
+	background-size: 200px; /*actual size / 2 */
 	background-repeat: no-repeat;
 }
 .sang{

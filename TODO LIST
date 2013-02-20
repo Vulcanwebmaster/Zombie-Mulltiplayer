@@ -13,6 +13,7 @@
 - mettre la vie que sur les boss ?
 - ajouter un bandeau avec des petites phrases rigolottes
 - ajouter un scroll sur le div de tchat
+- moteur qui "cache" les zombies hors de l'ecran
 
 Idées :
 
@@ -36,4 +37,7 @@ Idées :
 
 *************************************************************************************
 
---- v 0.8.2.1 alpha (20130218)
+--- v 0.9.0 alpha (20130218)
+	NEW :
+		Nouveaux graphismes
+		Nouveau moteur de rendu client-side ( + optimisations :D )
