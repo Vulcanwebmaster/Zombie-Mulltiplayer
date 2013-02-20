@@ -14,7 +14,7 @@ src: url('HUD.ttf') format('truetype');
 	left:0px;
 	z-index: 0;
 	background-color:grey;
-	background-image:url('/img/map*.jpg');
+	background-image:url('/img/map.jpg');
 	background-color:rgb(100,100,100);
 	-webkit-user-select: none; /* Safari, Chrome */
     -khtml-user-select: none; /* Konqueror */
@@ -28,8 +28,6 @@ src: url('HUD.ttf') format('truetype');
 	z-index: 10;
 	background-image: url('/img/art/perso1.png');
 	background-size:100%;
-	/*background-color:red;*/
-	/*background-position:0px 10px;/*10 60 ... etc*/ 
 	background-repeat: no-repeat;
 }
 .player-name{
@@ -54,10 +52,7 @@ src: url('HUD.ttf') format('truetype');
 	width: 50px;/*Changer aussi characterManager et gameMap si on change ça*/
 	height: 50px;
 	z-index: 11;
-	background-image: url('/img/art/zombie1.png');
-	/*background-color:yellow;*/
-	/*background-position:0px 10px; /*10, 60, etc*/
-	background-size: 100%;
+	background-image: url('/img/zombies.png');
 	background-repeat: no-repeat;
 }
 .sang{

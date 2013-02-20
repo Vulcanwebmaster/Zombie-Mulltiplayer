@@ -191,7 +191,7 @@ function GameMap(){
 				zombie.setAttribute('data-max-life',datas.listeZombies[idZombie].life);
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
 				zombie.style.top=datas.listeZombies[idZombie].y+'px';
-				//zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
+				zombie.style.backgroundPosition=this.setBackgroundPosition(datas.listeZombies[idZombie].style);
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				this.divMap.appendChild(zombie);
 			}
@@ -200,7 +200,7 @@ function GameMap(){
 				zombie.setAttribute('data-life',datas.listeZombies[idZombie].life);
 				if(datas.listeZombies[idZombie].alive==false){
 					zombie.style.zIndex=5;
-					//zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+					zombie.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
 				//si jamais on cible celui ci, on met à jour sa vie
 				if(this.idZombieTarget==idZombie){
@@ -359,19 +359,19 @@ function GameMap(){
 
 	this.setBackgroundPosition=function(num){
 		switch(parseInt(num)){
-			case 0:return '-10px -10px';break;
-			case 1:return '-10px -60px';break;
-			case 2:return '-10px -110px';break;
-			case 3:return '-10px -160px';break;
-			case 4:return '-60px -10px';break;
-			case 5:return '-60px -60px';break;
-			case 6:return '-60px -110px';break;
-			case 7:return '-60px -160px';break;
-			case 8:return '-110px -10px';break;
-			case 9:return '-110px -60px';break;
-			case 10:return '-110px -110px';break;
-			case 11:return '-110px -160px';break;
-			case 12:return '-160px -10px';break;
+			case 0:return '0px 0px';break;
+			case 1:return '0px -50px';break;
+			case 2:return '0px -100px';break;
+			case 3:return '0px -150px';break;
+			case 4:return '50px 0px';break;
+			case 5:return '50px -50px';break;
+			case 6:return '50px -100pxx';break;
+			case 7:return '50px -150pxx';break;
+			case 8:return '100px 0pxx';break;
+			case 9:return '100px -50pxx';break;
+			case 10:return '100px -100pxpx';break;
+			case 11:return '100px -150pxpx';break;
+			case 12:return '150px 0px';break;
 		}
 	}
 
