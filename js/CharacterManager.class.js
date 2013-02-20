@@ -7,8 +7,8 @@ module.exports = function CharacterManager(){
 		var result={
             x:0,
             y:0,
-            speed:0.5,
-            maxSpeed:Math.random()*(this.DEFAULT_ZOMBIE_SPEED-1)+1,
+            speed:1,
+            maxSpeed:Math.random()*(this.PAS*0.3)+1,
             life: this.DEFAULT_PLAYER_LIFE,
             angle:0,//degrés
             id:id,
@@ -36,7 +36,7 @@ module.exports = function CharacterManager(){
          }
          //Rapide 8 DPS
          if(type==this.ZOMBIE_RAPIDE){
-            result.maxSpeed=this.DEFAULT_ZOMBIE_SPEED*2;
+            result.maxSpeed=this.PAS*0.6;
             result.life=150;
             result.attaque.degats=2;
             result.attaque.delaiMax=5;
@@ -45,13 +45,13 @@ module.exports = function CharacterManager(){
             result.special=function(args){
                 if(args.type=="defense"){
                     //on court un peu plus vite si on prend des dégats
-                    this.speed=this.speed < 9 ? this.speed + 1 : 9;  
+                    this.speed=this.speed < 9 ? this.speed + 0.5 : 9;  
                 }
             }
          }
          //Gros 20 DPS mais très lent (1 coup toutes les 2,5 secondes)
          if(type==this.ZOMBIE_GROS){
-            result.maxSpeed=this.DEFAULT_ZOMBIE_SPEED/2;
+            result.maxSpeed=this.PAS*0.2;
             result.life=1000;
             result.attaque.degats=50;
             result.attaque.delaiMax=50;
@@ -86,7 +86,7 @@ module.exports = function CharacterManager(){
          }
          //Resistant 26.6 DPS
          if(type==this.ZOMBIE_RESISTANT){
-         	result.maxSpeed=this.DEFAULT_ZOMBIE_SPEED*2;
+         	result.maxSpeed=this.PAS*0.7;
             result.life=2000;
             result.attaque.degats=20;
             result.attaque.delaiMax=15;
@@ -95,7 +95,7 @@ module.exports = function CharacterManager(){
          }
          //Mini Boss 300 DPS
          if(type==this.ZOMBIE_BOSS1){
-            result.maxSpeed=this.PAS+1;
+            result.maxSpeed=this.PAS*1.1;
             result.life=10000;
             result.attaque.degats=30;
             result.attaque.delaiMax=2;
@@ -119,7 +119,7 @@ module.exports = function CharacterManager(){
          }
          //armé 160 DPS mais tape très fort
          if(type==this.ZOMBIE_ARME){
-         	result.maxSpeed=this.PAS-1;
+         	result.maxSpeed=this.PAS*0.9;
             result.life=1000;
             result.attaque.degats=200;
             result.attaque.delaiMax=25;
@@ -153,7 +153,7 @@ module.exports = function CharacterManager(){
    			id:id,
             pseudo:pseudo,
             alive:true,
-            style:parseInt(Math.random()*12),
+            style:parseInt(Math.random()*4),
             attaque:this.creationArme(0),
             isFiring:false,
             target:{targetX:0,targetY:0},
@@ -298,7 +298,7 @@ module.exports = function CharacterManager(){
 		var result={};
 
 		var nombre={};
-		nombre[this.ZOMBIE_NORMAL]= {     0:5 , 1:15, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_NORMAL]= {     0:10, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:200, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
@@ -359,8 +359,7 @@ module.exports = function CharacterManager(){
         return result;
     }
 
-	this.PAS=9;//px
-  	this.DEFAULT_ZOMBIE_SPEED=3;
+	  this.PAS=10;//px
   	this.LARGEUR_PERSO=50;
   	this.ZOMBIE_NORMAL=1;
   	this.ZOMBIE_RAPIDE=2;
@@ -373,7 +372,7 @@ module.exports = function CharacterManager(){
     this.ZOMBIE_BOSS3=-1;
     this.ZOMBIE_EXPLOSIF=-1;//??
   	this.DEFAULT_PLAYER_LIFE=100;
-    this.MAX_DISTANCE=Math.sqrt(1200*1200 + 700*700);//Distance diagonale de la map du jeu
+    this.MAX_DISTANCE=Math.sqrt(2000*2000 + 1000*1000);//Distance diagonale de la map du jeu
     this.MIN_DISTANCE_VISIBLE=300;//distance où est raisonnablement visible
     this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 250*250); //en gros, dès que le joueur peut le voie, il attaque
 }

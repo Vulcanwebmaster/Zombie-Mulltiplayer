@@ -131,7 +131,7 @@ function GameMap(){
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				player.setAttribute('data-max-life',datas.listeJoueurs[idPerso].life);
 				//Affichage du style
-				//player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
+				player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				pseudo=document.createElement('div');
 				pseudo.id='player'+idPerso+'-pseudo';
 				pseudo.className='map-item player-name';
@@ -149,11 +149,11 @@ function GameMap(){
 				//player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
-					//player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
+					player.style.backgroundPosition=this.setBackgroundPosition(datas.listeJoueurs[idPerso].style);
 				}
 				if(datas.listeJoueurs[idPerso].alive==false){
 					player.style.zIndex=5;
-					//player.style.backgroundPosition=this.setBackgroundPosition(12);
+					player.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
 			}
 			if(idPerso!=gameCore.playerId)

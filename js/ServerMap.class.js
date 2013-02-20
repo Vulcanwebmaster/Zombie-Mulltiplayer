@@ -626,8 +626,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.testFinPartie();
    }
 
-   this.widthMap=1200;
-   this.heightMap=700;
+   this.widthMap=2000;
+   this.heightMap=1000;
    this.DIAGONALE_MAP=Math.sqrt(Math.pow(this.heightMap,2)+Math.pow(this.widthMap,2));
    this.io=io;//io passé en argument du constructeur
    this.GAME_SPEED=50;//ms
