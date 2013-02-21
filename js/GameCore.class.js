@@ -87,6 +87,7 @@ function GameCore(pseudo,mdp){
 			$('#rejoindrePartie').click(function(){
 				gameCore.spectateurOff();
 			});
+			$('#menu').fadeIn(3000);
 		});
 
 		this.socket.on('remove_player', function(datas){
@@ -301,7 +302,4 @@ $(document).ready(function(){
 
 	updateLeaderBoard();
 
-	//On met les events sur le menu à droite
-	$('#menu').mouseover(function(){$(this).stop().animate({'right':'0px'}, 500)});
-	$('#menu').mouseout(function(){$(this).stop().animate({'right': (-$(this).width()+20-parseInt($(this).css('padding'))*2)}, 500)});
-})
+});

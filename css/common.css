@@ -103,6 +103,7 @@ footer{
 	color:rgb(200,200,200);
 	font-size: 11px;
 	font-family: courier;
+	padding:5px;
 }
 #warning-navigateur{
 	/*background-color:rgb(210,150,20);*/
@@ -134,3 +135,5 @@ footer{
 #leaderboard tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);
 }
+
+.preload{display: none;}

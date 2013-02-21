@@ -64,12 +64,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.switchSpectateur=function(id){
       if(this.listeJoueurs[id] || this.listeAttente[id]){
          this.listeSpectateurs[id]=this.listeJoueurs[id] || this.listeAttente[id];
+         if(this.listeJoueurs[id]) this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeSpectateurs[id].pseudo + ' passe en spectateur.', class:'tchat-admin'});
          delete this.listeJoueurs[id];
          delete this.listeAttente[id];
          this.listeSpectateurs[id].directions={haut:false,bas:false,gauche:false,droite:false};
          this.listeSpectateurs[id].isFiring=false;
          this.io.sockets.emit('remove_player', {'id':id});
-         this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeSpectateurs[id].pseudo + ' passe en spectateur.', class:'tchat-admin'});
          this.testFinPartie();
       }
    }
@@ -563,8 +563,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
       if(fin){
-         this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie. Tout le monde est mort.', 'class':'tchat-game-event'});
-         console.log(dateToLog(new Date) + "La partie est terminée : tout le monde est mort.");
+         this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie.', 'class':'tchat-game-event'});
+         console.log(dateToLog(new Date) + "La partie est terminée.");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }

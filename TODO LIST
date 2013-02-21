@@ -13,7 +13,7 @@
 - mettre la vie que sur les boss ?
 - ajouter un bandeau avec des petites phrases rigolottes
 - ajouter un scroll sur le div de tchat
-- moteur qui "cache" les zombies hors de l'ecran
+- selection de skins
 
 Idées :
 
@@ -41,3 +41,8 @@ Idées :
 	NEW :
 		Nouveaux graphismes
 		Nouveau moteur de rendu client-side ( + optimisations :D )
+	EDIT :
+		Changement de plusieurs paramètres dans le comportement des zombies
+		Modification de quelques messages serveurs
+	FIX :
+		Le serveur n'enverra plus plusieurs fois le message "X passe en spectateur"

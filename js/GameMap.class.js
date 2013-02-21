@@ -387,6 +387,8 @@ function GameMap(){
 	}
 
 	this.drawLine=function(x1, y1, x2, y2){
+	    var scaleX=' scaleX(-1)';
+	    y1-=7;y2-=7;//on retire la demi largeur du trait
 	    if(y1 < y2){
 	        var pom = y1;
 	        y1 = y2;
@@ -394,6 +396,7 @@ function GameMap(){
 	        pom = x1;
 	        x1 = x2;
 	        x2 = pom;
+	        scaleX='';
 	    }
 
 	    var a = Math.abs(x1-x2);
@@ -413,11 +416,18 @@ function GameMap(){
 
 	    var cosb = (b*b - a*a - c*c) / (2*a*c);
 	    var rad = Math.acos(cosb);
-	    var deg = (rad*180)/Math.PI
-
+	    var deg = (rad*180)/Math.PI;
+	    if(scaleX==''){
+	   	 	x= x + Math.cos(rad)*20;
+	  	    y = y+ Math.sin(rad)*20;
+		}
+		else{
+		   x= x - Math.cos(rad)*20;
+	    	y = y - Math.sin(rad)*20;
+		}
 	    var div = document.createElement("div");
-	    div.setAttribute('style','z-index:7;border:1px solid white;width:'+width+'px;height:0px;-moz-transform:rotate('+deg+'deg);-webkit-transform:rotate('+deg+'deg);position:absolute;top:'+y+'px;left:'+x+'px;');   
-
+	    div.setAttribute('style','z-index:7;border:0px solid white;width:'+width+'px;height:15px;-moz-transform:rotate('+deg+'deg)'+scaleX+';-webkit-transform:rotate('+deg+'deg)'+scaleX+';position:absolute;top:'+y+'px;left:'+x+'px;');   
+	    div.style.backgroundImage='url(\'/img/simple_bullet.png\')';
 	    document.getElementById("map").appendChild(div);
 	    setTimeout(function(){document.getElementById("map").removeChild(div);},50);
 	}
