@@ -15,7 +15,7 @@ module.exports = function CharacterManager(){
             attaque:{degats:5,compteAReboursAttaque:0,delaiMax:25},
             alive:true,
             aware:false,
-            distanceVision:this.MIN_DISTANCE_VISIBLE/2,
+            distanceVision:this.MIN_DISTANCE_VISIBLE*(2/3),
             style:parseInt(Math.random()*2),
             taille:this.LARGEUR_PERSO,
             agressivite:Math.random()*150 -75,
@@ -57,7 +57,7 @@ module.exports = function CharacterManager(){
             result.attaque.delaiMax=50;
             result.style=type;
             result.agressivite=0;
-            result.distanceVision=this.MIN_DISTANCE_VISIBLE/2;
+            result.distanceVision=this.MIN_DISTANCE_VISIBLE;
             //Le zombie gros peut assomer
             result.special=function(args){
                 if(args.type=="attaque"){
@@ -373,6 +373,6 @@ module.exports = function CharacterManager(){
     this.ZOMBIE_EXPLOSIF=-1;//??
   	this.DEFAULT_PLAYER_LIFE=100;
     this.MAX_DISTANCE=Math.sqrt(2000*2000 + 1000*1000);//Distance diagonale de la map du jeu
-    this.MIN_DISTANCE_VISIBLE=300;//distance où est raisonnablement visible
-    this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 250*250); //en gros, dès que le joueur peut le voie, il attaque
+    this.MIN_DISTANCE_VISIBLE=350;//distance où est raisonnablement visible
+    this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 325*325); //en gros, dès que le joueur peut le voie, il attaque
 }
