@@ -54,7 +54,7 @@ a:visited{color:grey;}
 	cursor: url('/img/viseur.png') 24 24,pointer;
 }
 
-#inscription{
+#inscription, #options{
 	background-color:black;
 	color:white;
 	position:absolute;
@@ -62,6 +62,11 @@ a:visited{color:grey;}
 	left:0px;
 	width:1000px;
 	height: 650px;
+}
+#options div{
+	margin:auto;
+	width:60%;
+	margin-top: 100px;	
 }
 #inscription div{
 	margin:auto;

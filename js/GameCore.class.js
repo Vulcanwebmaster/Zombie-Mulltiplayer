@@ -12,7 +12,8 @@ var KEYS={
 		ENTER:13,
 		ETOILE:220,
 		ECHAP:27,
-		V:86
+		V:86,
+		M:77
 		};
 
 //On met des valeurs pour pas que ça plante
@@ -86,8 +87,24 @@ function GameCore(pseudo,mdp){
 			});
 			$('#rejoindrePartie').click(function(){
 				gameCore.spectateurOff();
+				$('#options').hide();
 			});
-			$('#menu').fadeIn(3000);
+			$('#menu').fadeIn(1000);
+			$('#show_options').click(function(){
+				if(OPTIONS.display_names)
+					$("#checkbox-pseudo").attr("checked", "checked");
+				else
+					$("#checkbox-pseudo").removeAttr("checked"); 
+				if(OPTIONS.sound_enabled)
+					$("#checkbox-audio").attr("checked", "checked");
+				else
+					$("#checkbox-audio").removeAttr("checked"); 
+				$('#options').show();
+			});
+			$('#hide_options').click(function(){
+				$('#options').hide();
+				return false;
+			})
 		});
 
 		this.socket.on('remove_player', function(datas){
@@ -187,6 +204,9 @@ function GameCore(pseudo,mdp){
 		if(!$("#tchat-input").is(":focus")){
 			if(key==KEYS.V){
 				OPTIONS.display_names=!OPTIONS.display_names;
+			}
+			if(key==KEYS.M){
+				OPTIONS.sound_enabled=!OPTIONS.sound_enabled;
 			}
 			if(key==KEYS.ETOILE){
 				if($('#debug').css('display')=='none')
@@ -293,6 +313,7 @@ function updateLeaderBoard(){
 	setTimeout(updateLeaderBoard, 20000);
 }
 
+
 $(document).ready(function(){
 	initEventConnexion();
 	//Eviter le changement du curseur en text
@@ -300,6 +321,18 @@ $(document).ready(function(){
 
 	$('#champs-pseudo').focus();
 
+	$('#checkbox-audio').click(function(){
+		if($(this).is(':checked'))
+			OPTIONS.sound_enabled=true;
+		else
+			OPTIONS.sound_enabled=false;
+	});
+	$('#checkbox-pseudo').click(function(){
+		if($(this).is(':checked'))
+			OPTIONS.display_names=true;
+		else
+			OPTIONS.display_names=false;
+	});
 	updateLeaderBoard();
 
 });

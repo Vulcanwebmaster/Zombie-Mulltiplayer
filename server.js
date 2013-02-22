@@ -73,6 +73,13 @@ function handler( request , response ) {
             break;
         case '.ico':
             contentType= 'image/x-icon';
+            break;
+        case '.wav':
+            contentType= 'audio/wav';
+            break;
+        case '.mp3':
+            contentType= 'audio/mpeg';
+            break;
     }
 
     fs.stat(filePath, function(err,stat) { 

@@ -14,7 +14,6 @@
 - ajouter un bandeau avec des petites phrases rigolottes
 - ajouter un scroll sur le div de tchat
 - selection de skins
-- MAj page d'accueil
 
 Idées :
 
@@ -42,6 +41,8 @@ Idées :
 	NEW :
 		Nouveaux graphismes
 		Nouveau moteur de rendu client-side ( + optimisations :D )
+		Ajout de sons
+		Des options ont été ajoutées
 	EDIT :
 		Changement de plusieurs paramètres dans le comportement des zombies
 		Modification de quelques messages serveurs

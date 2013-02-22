@@ -183,6 +183,13 @@ function GameMap(){
 		//Update des zombies
 		var zombie;
 		for(var idZombie in datas.listeZombies){
+			if(OPTIONS.sound_enabled){
+				if(Math.random()*100 < 0.25){
+					var rand=parseInt(Math.random()*nbZombieSound);
+					if(AUDIO['ZOMBIE_' + rand ].isPaused())
+						AUDIO['ZOMBIE_' + rand].load().setVolume(3).play();
+				}
+			}
 			zombie=document.getElementById('zombie'+idZombie);
 			if(zombie==null){	
 				var zombie=document.createElement('div');
@@ -430,6 +437,9 @@ function GameMap(){
 	    div.style.backgroundImage='url(\'/img/simple_bullet.png\')';
 	    document.getElementById("map").appendChild(div);
 	    setTimeout(function(){document.getElementById("map").removeChild(div);},50);
+	    //On play le bruit du tir
+	    if(OPTIONS.sound_enabled)
+	    	AUDIO['GUN_SHORT'].load().play();
 	}
 
 	this.ghostCamKeyDown=function(e){

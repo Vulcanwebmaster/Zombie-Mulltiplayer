@@ -9,6 +9,7 @@
 	<script src ="/socket.io/socket.io.js"></script>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/buzz.js"></script>
 	<script type="text/javascript" src="/js/Options.js"></script>
 	<script type="text/javascript" src="/js/GameCore.class.js"></script>
 	<script type="text/javascript" src="/js/GameMap.class.js"></script>
@@ -26,7 +27,8 @@
 		<div id="menu">
 			<span id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
-			<span id="boutique">Boutique</span>
+			<span id="show_boutique">Boutique</span>
+			<span id="show_options">Options</span>
 		</div>
 
 		<div id="plateau">
@@ -72,6 +74,15 @@
 				</div>
 			</div>
 
+			<div style="display:none;" id="options">
+				<div>
+					<h2>Options</h2>
+					<input type="checkbox" id="checkbox-audio" checked="true"/>Activer le son (raccourci touche M)<br/>
+					<input type="checkbox" id="checkbox-pseudo" checked="true"/>Afficher les pseudos (raccourci touche V)<br/>
+					<a id="hide_options" href="#">Fermer</a>
+				</div>
+			</div>
+
 		</div><!-- div#plateau-->
 		<h2>Top des joueurs de Zombiz! <a href="/leaderboard" style="font-size:12px" target="_blank">Voir le classement complet</a></h2>
 		<table id="leaderboard">
@@ -85,7 +96,7 @@
 			<p style="float:left">Développement : Mikaël B. aka. WhiteSlash.<br/>
 			Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.8.2.2 alpha (20130219)</p>
+			<p id="version">Version 0.9.0 alpha (20130222)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 </body>
@@ -101,5 +112,20 @@ var preloadImage4 = new Image();
 preloadImage4.src = 'img/sang.png'; 
 var preloadImage5 = new Image(); 
 preloadImage5.src = 'img/simple_bullet.png'; 
+</script>
+<!-- Chargement des sons -->
+<script>
+var nbZombieSound=8;
+var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
+					'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 
+					'ZOMBIE_2':'/sounds/silverstone.wav', 'ZOMBIE_3':'/sounds/zombie_attack.wav',
+					'ZOMBIE_4':'/sounds/Zombie_Brain_Eater.mp3', 'ZOMBIE_5':'/sounds/Zombie_Gets_Attacked.mp3',
+					'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
+					'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
+					'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
+var AUDIO={};
+for(var key in audio_tableau){
+	AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
+}
 </script>
 </html>
