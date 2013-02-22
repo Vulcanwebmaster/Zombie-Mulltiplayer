@@ -206,6 +206,9 @@ function GameCore(pseudo,mdp){
 				OPTIONS.display_names=!OPTIONS.display_names;
 			}
 			if(key==KEYS.M){
+				if(OPTIONS.sound_enabled)
+					for(var key in AUDIO)
+						AUDIO[key].stop();
 				OPTIONS.sound_enabled=!OPTIONS.sound_enabled;
 			}
 			if(key==KEYS.ETOILE){
@@ -324,8 +327,12 @@ $(document).ready(function(){
 	$('#checkbox-audio').click(function(){
 		if($(this).is(':checked'))
 			OPTIONS.sound_enabled=true;
-		else
+		else{
 			OPTIONS.sound_enabled=false;
+			if(OPTIONS.sound_enabled)
+				for(var key in AUDIO)
+					AUDIO[key].stop();
+		}
 	});
 	$('#checkbox-pseudo').click(function(){
 		if($(this).is(':checked'))
