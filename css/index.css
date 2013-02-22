@@ -35,17 +35,25 @@ src: url('zombie.ttf') format('truetype');
 	text-align: justify;
 	vertical-align: top;
 }
+#liste-zombies p{
+}
 
-h4{
+h3{
 	border-bottom:1px solid white;
 }
 .miniature-zombie{
-	width:30px;
-	height: 30px;
+	width:100px;
+	height: 100px;
 	float:left;
+	margin-top:10px;
 	background-image: url('/img/zombies.png');
-	margin-right:10px;
-	margin-top:-10px;
+	-webkit-transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+	transform:rotate(90deg);
+	background-color:rgb(200,200,200);
+	border-radius:5px;
+	border:1px dashed white;
+	margin-right: 10px;
 }
 
 .stats-bonnes{

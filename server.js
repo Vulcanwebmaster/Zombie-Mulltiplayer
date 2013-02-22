@@ -83,7 +83,7 @@ function handler( request , response ) {
                     response.end();
                 }
                 else {
-                    response.writeHead(200, { 'Content-Type': contentType });
+                    response.writeHead(200, { 'Content-Type': contentType, 'Cache-Control':'max-age=3600'});
                     response.end(content, 'utf-8');
                 }
             });
