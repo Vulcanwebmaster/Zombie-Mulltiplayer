@@ -37,15 +37,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.0 alpha (20130218)
-	NEW :
-		Nouveaux graphismes
-		Nouveau moteur de rendu client-side ( + optimisations :D )
-		Ajout de sons
-		Des options ont été ajoutées
-	EDIT :
-		Changement de plusieurs paramètres dans le comportement des zombies
-		Modification de quelques messages serveurs
-	FIX :
-		Le serveur n'enverra plus plusieurs fois le message "X passe en spectateur"
-		Les images se mettent maintenant en cache
+--- v 0.9.0 alpha (20130222)
