@@ -218,7 +218,7 @@ function GameMap(){
 						this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive);
 					}
 					if(this.updateDisplayedAngle)
-					this.rotate(zombie,datas.listeZombies[idZombie].angle);
+						this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				}
 				else
 					zombie.style.display="none";
@@ -329,6 +329,8 @@ function GameMap(){
 	}
 
 	this.addBlood=function(x,y){
+		//Annulation de la fonction
+		return;
 		//comptage du nombre de "sang" déjà présent
 		var numItems = $('.sang').length;
 		if(numItems>100){
@@ -366,13 +368,13 @@ function GameMap(){
 		//$('#map').html('');
 		gameMap.idZombieTarget=-1;
 		$('#zombie-life-inner').stop().css('width', '0%');
-		$('.zombie').fadeOut(1000, function(){$(this).remove()});
+		$('.zombie').remove();
 		/*document.getElementById('map').innerHTML='';*/
 	}
 
 	this.clearMapFull=function(){
 		gameMap.clearMap();
-		$('.sang').fadeOut(2000, function(){$(this).remove()});
+		$('.sang').remove();
 	}
 
 	this.setBackgroundPosition=function(num){
