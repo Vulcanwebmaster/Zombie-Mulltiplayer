@@ -192,7 +192,7 @@ function GameMap(){
 				}
 			}
 			zombie=document.getElementById('zombie'+idZombie);
-			if(zombie==null){	
+			if(zombie==null  && datas.listeZombies[idZombie].alive){	
 				var zombie=document.createElement('div');
 				$(zombie).addClass('map-item').addClass('zombie');
 				zombie.id='zombie' + idZombie;
@@ -203,7 +203,7 @@ function GameMap(){
 				this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				this.divMap.appendChild(zombie);
 			}
-			else{
+			else if(zombie!=null){
 				/*On regarde si le zombie est "proche" sinon on le cache et on fait rien*/
 				if(this.calculDistance(datas.listeZombies[idZombie].x ,datas.listeZombies[idZombie].y) < this.MIN_DISTANCE_SHOW){
 					zombie.style.display="block";
@@ -212,6 +212,9 @@ function GameMap(){
 					if(datas.listeZombies[idZombie].alive==false){
 						zombie.style.zIndex=5;
 						zombie.style.backgroundPosition=this.setBackgroundPosition(12);
+						var _this=this;
+						var idtmp=idZombie;
+						setTimeout(function(){_this.removeElement('map', 'zombie'+idtmp);}, 1000);
 					}
 					//si jamais on cible celui ci, on met à jour sa vie
 					if(this.idZombieTarget==idZombie){
