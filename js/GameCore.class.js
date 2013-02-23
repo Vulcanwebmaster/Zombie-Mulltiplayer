@@ -13,7 +13,8 @@ var KEYS={
 		ETOILE:220,
 		ECHAP:27,
 		V:86,
-		M:77
+		M:77,
+		EFFACER:8
 		};
 
 //On met des valeurs pour pas que ça plante
@@ -216,6 +217,10 @@ function GameCore(pseudo,mdp){
 					$('#debug').css({'display':'block'});
 				else
 					$('#debug').css({'display':'none'});
+			}
+			if(key==KEYS.EFFACER){
+				e.preventDefault();
+				return false;
 			}
 		}
 		//tchat

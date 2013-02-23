@@ -545,9 +545,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
          //On fait aussi revivre les spectateurs si ils sont passés en spectateur pendant la mort
          for(var idSpec in this.listeSpectateurs)
-            this.listeSpectateurs[idSpec].revive(characterManager);
+            if(!this.listeSpectateurs[idSpec].alive)
+               this.listeSpectateurs[idSpec].revive(characterManager);
          for(var idAttente in this.listeAttente)
-            this.listeAttente[idAttente].revive(characterManager);
+            if(!this.listeAttente[idAttente].alive)
+               this.listeAttente[idAttente].revive(characterManager);
 
          //Assignation du bonus Zombiz Slayer
          if(joueurMeneur!=null){

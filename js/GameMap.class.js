@@ -33,9 +33,9 @@ function GameMap(){
 			var relativeX = (e.pageX - offset.left - gameMap.widthPlateau/2 - gameMap.LARGEUR_PERSO/2);
 			var relativeY = (e.pageY - offset.top - gameMap.heightPlateau/2 - gameMap.LARGEUR_PERSO/2);
 			player=document.getElementById('player'+gameCore.playerId);
-			var angle=Math.round(Math.atan2(relativeY,relativeX)*180/Math.PI,0);
-			gameMap.rotate(player,angle);		
-			if(angle < gameMap.lastDegreeSent - 1 || angle>gameMap.lastDegreeSent + 1){
+			var angle=Math.round(Math.atan2(relativeY,relativeX)*180/Math.PI,0);		
+			if(angle < gameMap.lastDegreeSent - 5 || angle>gameMap.lastDegreeSent + 5){
+				gameMap.rotate(player,angle);
 				gameCore.updateAngle(angle);
 				gameMap.lastDegreeSent=angle;
 				//Si on est en train de tirer, alors on met la position target a jour sur le server
@@ -106,7 +106,7 @@ function GameMap(){
 				if(this.idZombieTarget==-1)
 					$('#zombie-life-inner').stop().css('width','0%');
 				else
-					this.updateBarreDeVieZombie(document.getElementById('zombie'+item.id_zombie), true, false);
+					this.updateBarreDeVieZombie(document.getElementById('zombie'+item.id_zombie), true);
 			}
 			else if(item.type=='compte_a_rebours_vague'){
 				var div=$('<div>');
@@ -215,7 +215,7 @@ function GameMap(){
 					}
 					//si jamais on cible celui ci, on met à jour sa vie
 					if(this.idZombieTarget==idZombie){
-						this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive, true);
+						this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive);
 					}
 					if(this.updateDisplayedAngle)
 					this.rotate(zombie,datas.listeZombies[idZombie].angle);
@@ -231,7 +231,7 @@ function GameMap(){
 		/*setTimeout(function(){_this.localUpdate(datas.id);}, this.GAME_SPEED);*/
 	}
 
-	this.updateBarreDeVieZombie=function(zombie, alive, animation){
+	this.updateBarreDeVieZombie=function(zombie, alive){
 		var pourcentage=parseInt(zombie.getAttribute('data-life')) / parseInt(zombie.getAttribute('data-max-life')) *100;
 		var bgColor;
 		if(pourcentage>60)
@@ -241,10 +241,7 @@ function GameMap(){
 		else
 			bgColor='rgb(162,13,17)';
 		$('#zombie-life-inner').css({'background-color':bgColor});
-		if(animation)
-			$('#zombie-life-inner').stop().animate({'width' : pourcentage + '%'},25);
-		else
-			$('#zombie-life-inner').stop().css({'width' : pourcentage + '%'});
+		$('#zombie-life-inner').stop().css({'width' : pourcentage + '%'});
 		//Si le zombie qu'on cible est mort, alors on remet à -1 la cible
 		if(!alive){
 			this.idZombieTarget=-1;
@@ -344,7 +341,7 @@ function GameMap(){
 		div.style.top=y +'px';
 		div.style.left=x +'px';
 		div.style.backgroundPosition=this.setBackgroundPosition(parseInt(Math.random()*12));
-		this.rotate(div, parseInt(Math.random()*360));
+		/*this.rotate(div, parseInt(Math.random()*360));*/
 		this.divMap.appendChild(div);
 	}
 

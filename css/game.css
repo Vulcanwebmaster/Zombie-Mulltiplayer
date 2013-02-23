@@ -15,7 +15,7 @@ src: url('HUD.ttf') format('truetype');
 	z-index: 0;
 	background-color:grey;
 	background-image:url('/img/map.jpg');
-	background-color:rgb(100,100,100);
+	background-repeat: no-repeat;
 	-webkit-user-select: none; /* Safari, Chrome */
     -khtml-user-select: none; /* Konqueror */
     -moz-user-select: none; /* Firefox */
@@ -70,7 +70,7 @@ src: url('HUD.ttf') format('truetype');
 	position:absolute;
 	top:0px;left:0px;'
 	background-image:url('/img/simple_bullet.png');
-	background-color:blue;
+	background-repeat: no-repeat;
 }
 
 /****************  CSS HUD  ***************** */
@@ -142,6 +142,7 @@ src: url('HUD.ttf') format('truetype');
 	padding-top:40px;
 	text-align: center;
 	background-image:url('/img/buffs.png');
+	background-repeat: no-repeat;
 }
 #saignementLeger{background-position:0px 0px;}
 #saignementViolent{background-position:0px -40px;}
