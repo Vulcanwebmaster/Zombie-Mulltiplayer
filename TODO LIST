@@ -14,6 +14,8 @@
 - ajouter un bandeau avec des petites phrases rigolottes
 - ajouter un scroll sur le div de tchat
 - selection de skins
+- faire une option mot de passe oublié
+- empêcher de pouvoir appuyer sur "retour"
 
 Idées :
 
@@ -37,4 +39,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.0 alpha (20130222)
+--- v 0.9.0.1 alpha (20130223)

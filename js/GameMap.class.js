@@ -67,6 +67,7 @@ function GameMap(){
 	this.update=function(datas){
 		this.GAME_SPEED=gameCore.averageBPS;
 		this.last_update=datas.id;
+		this.updateDisplayedAngle=!this.updateDisplayedAngle;
 
 		//Update de tous les item temporaires
 		var item;
@@ -193,7 +194,7 @@ function GameMap(){
 			zombie=document.getElementById('zombie'+idZombie);
 			if(zombie==null){	
 				var zombie=document.createElement('div');
-				zombie.className= zombie.className+' map-item zombie';
+				$(zombie).addClass('map-item').addClass('zombie');
 				zombie.id='zombie' + idZombie;
 				zombie.setAttribute('data-max-life',datas.listeZombies[idZombie].life);
 				zombie.style.left=datas.listeZombies[idZombie].x+'px';
@@ -216,6 +217,7 @@ function GameMap(){
 					if(this.idZombieTarget==idZombie){
 						this.updateBarreDeVieZombie(zombie, datas.listeZombies[idZombie].alive, true);
 					}
+					if(this.updateDisplayedAngle)
 					this.rotate(zombie,datas.listeZombies[idZombie].angle);
 				}
 				else
@@ -332,7 +334,7 @@ function GameMap(){
 	this.addBlood=function(x,y){
 		//comptage du nombre de "sang" déjà présent
 		var numItems = $('.sang').length;
-		if(numItems>200){
+		if(numItems>100){
 			$('.sang:lt(10)').remove();
 			numItems = $('.sang').length;
 		}
@@ -365,13 +367,14 @@ function GameMap(){
 
 	this.clearMap=function(){
 		//$('#map').html('');
-		this.idZombieTarget=-1;
+		gameMap.idZombieTarget=-1;
 		$('#zombie-life-inner').stop().css('width', '0%');
-		$('.zombie').fadeOut(2000, function(){$(this).remove()});
+		$('.zombie').fadeOut(1000, function(){$(this).remove()});
+		/*document.getElementById('map').innerHTML='';*/
 	}
 
 	this.clearMapFull=function(){
-		this.clearMap();
+		gameMap.clearMap();
 		$('.sang').fadeOut(2000, function(){$(this).remove()});
 	}
 
@@ -436,10 +439,12 @@ function GameMap(){
 	    div.setAttribute('style','z-index:7;border:0px solid white;width:'+width+'px;height:15px;-moz-transform:rotate('+deg+'deg)'+scaleX+';-webkit-transform:rotate('+deg+'deg)'+scaleX+';position:absolute;top:'+y+'px;left:'+x+'px;');   
 	    div.style.backgroundImage='url(\'/img/simple_bullet.png\')';
 	    document.getElementById("map").appendChild(div);
-	    setTimeout(function(){document.getElementById("map").removeChild(div);},50);
+	    setTimeout(function(){document.getElementById("map").removeChild(div);},30);
 	    //On play le bruit du tir
-	    if(OPTIONS.sound_enabled)
-	    	AUDIO['GUN_SHORT'].load().play();
+	    if(OPTIONS.sound_enabled){
+	    	if(AUDIO['GUN_SHORT'].isEnded)
+		    	AUDIO['GUN_SHORT'].load().play();
+	    }
 	}
 
 	this.ghostCamKeyDown=function(e){
@@ -463,7 +468,7 @@ function GameMap(){
 	}
 
 	this.ghostCamUpdate=function(){
-		var pas=9;
+		var pas=12;
 		if(gameMap.ghostCam.haut)
 			gameMap.divMap.style.top=(parseInt(gameMap.divMap.style.top) + pas)+'px';
 		else if(gameMap.ghostCam.bas)
@@ -489,4 +494,5 @@ function GameMap(){
 	this.isFiring=false;
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
 	this.idZombieTarget=-1;
+	this.updateDisplayedAngle=true;
 }

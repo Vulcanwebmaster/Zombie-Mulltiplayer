@@ -30,6 +30,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.start();
          else
             socket.emit('player_spectateur', {id:newJoueur.id});
+         newJoueur.x=this.widthMap/2;
+         newJoueur.y=this.heightMap/2;
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
    this.getPlayingPlayers=function(){
@@ -80,7 +82,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          /*Ici on choisi ou non de lancer la partie*/
          if(this.isRunning==false  && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
             this.start();
-         else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
+         else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()>=1)
             this.start();
       }
    }
@@ -527,10 +529,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.listeJoueurs[idPerso].record=this.currentWave;
             //si le joueur est mort
             if(!this.listeJoueurs[idPerso].alive){
-               this.listeJoueurs[idPerso].alive=true;
-               this.listeJoueurs[idPerso].life=characterManager.DEFAULT_PLAYER_LIFE;
-               this.listeJoueurs[idPerso].speed=this.listeJoueurs[idPerso].maxSpeed;
-               this.listeJoueurs[idPerso].isFiring=false;
+               this.listeJoueurs[idPerso].revive(characterManager);
                this.io.sockets.emit('player_revive', this.listeJoueurs[idPerso]);
             }  
             else{
@@ -544,6 +543,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                maxKills=joueurMeneur.kills;
             }
          }
+         //On fait aussi revivre les spectateurs si ils sont passés en spectateur pendant la mort
+         for(var idSpec in this.listeSpectateurs)
+            this.listeSpectateurs[idSpec].revive(characterManager);
+         for(var idAttente in this.listeAttente)
+            this.listeAttente[idAttente].revive(characterManager);
 
          //Assignation du bonus Zombiz Slayer
          if(joueurMeneur!=null){
@@ -569,11 +573,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
          this.stop();
-         this.io.sockets.emit('clear_map_full');
          //On relance une partie
          //On met un mini timeout pour que la boucle actuelle ait le temps de finir
          var _this=this;
          setTimeout(function(){
+            _this.io.sockets.emit('clear_map_full');
             _this.nbZombies=0;
             _this.listeZombies={};
             _this.totalZombiesKilled=0;

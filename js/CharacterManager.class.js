@@ -186,6 +186,12 @@ module.exports = function CharacterManager(){
                 instance.io.sockets.emit('player_die', this);
                 instance.testFinPartie();
             },
+            revive:function(characterManager){
+              this.alive=true;
+              this.life=characterManager.DEFAULT_PLAYER_LIFE;
+              this.speed=this.maxSpeed;
+              this.isFiring=false;
+            },
             secondsToTic:function(secondes){return secondes*1000/50;},
             addBuff:function(type){
                 this.buffs[type]={};
@@ -223,7 +229,7 @@ module.exports = function CharacterManager(){
                         if(this.life<=0){
                             this.die(instance);
                         }
-                        if(this.buffs[stringBuff].duree==0){
+                        if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                         }
                     }
@@ -244,7 +250,7 @@ module.exports = function CharacterManager(){
                         if(this.life<=0){
                             this.die(instance);
                         }
-                        if(this.buffs[stringBuff].duree==0){
+                        if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                         }
                     }
