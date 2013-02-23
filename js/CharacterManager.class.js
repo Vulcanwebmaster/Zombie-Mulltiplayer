@@ -56,7 +56,7 @@ module.exports = function CharacterManager(){
             result.attaque.degats=50;
             result.attaque.delaiMax=50;
             result.style=type;
-            result.agressivite=0;
+            result.agressivite=result.agressivite/2;
             result.distanceVision=this.MIN_DISTANCE_VISIBLE;
             //Le zombie gros peut assomer
             result.special=function(args){

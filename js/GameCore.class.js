@@ -100,6 +100,10 @@ function GameCore(pseudo,mdp){
 					$("#checkbox-audio").attr("checked", "checked");
 				else
 					$("#checkbox-audio").removeAttr("checked"); 
+				if(OPTIONS.display_blood)
+					$("#checkbox-sang").attr("checked", "checked");
+				else
+					$("#checkbox-sang").removeAttr("checked"); 
 				$('#options').show();
 			});
 			$('#hide_options').click(function(){
@@ -345,6 +349,13 @@ $(document).ready(function(){
 		else
 			OPTIONS.display_names=false;
 	});
+	$('#checkbox-sang').click(function(){
+		if($(this).is(':checked'))
+			OPTIONS.display_blood=true;
+		else
+			OPTIONS.display_blood=false;
+	});
+
 	updateLeaderBoard();
 
 });

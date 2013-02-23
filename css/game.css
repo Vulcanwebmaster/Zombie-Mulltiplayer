@@ -209,7 +209,7 @@ src: url('HUD.ttf') format('truetype');
 	bottom:0px;
 	left:0px;
 	width:300px;
-	height: 150px;
+	height: 200px;
 	overflow: hidden;
 	color:white;
 	font-family: courier;

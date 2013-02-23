@@ -122,9 +122,11 @@ function GameMap(){
 		//Update de tous les joueurs
 		var player;
 		var pseudo;
+		var life;
 		for(var idPerso in datas.listeJoueurs){
 			player=document.getElementById('player'+idPerso);
 			pseudo=document.getElementById('player'+idPerso+'-pseudo');
+			life=document.getElementById('player'+idPerso+'-life');
 			if(player==null){
 				player=document.createElement('div');
 				player.className= 'map-item player';
@@ -139,12 +141,17 @@ function GameMap(){
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
 				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				pseudo.innerHTML=datas.listeJoueurs[idPerso].pseudo;
+				life=document.createElement('div');
+				life.id='player'+idPerso+'-life';
+				life.innerHTML=datas.listeJoueurs[idPerso].life;
+				pseudo.appendChild(life);
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);
 				this.divMap.appendChild(pseudo);
 				this.divMap.appendChild(player);
 			}
 			else{
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
+				life.innerHTML=datas.listeJoueurs[idPerso].life;
 				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				//player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
@@ -332,8 +339,8 @@ function GameMap(){
 	}
 
 	this.addBlood=function(x,y){
-		//Annulation de la fonction
-		return;
+		if(!OPTIONS.display_blood)
+			return;
 		//comptage du nombre de "sang" déjà présent
 		var numItems = $('.sang').length;
 		if(numItems>100){
