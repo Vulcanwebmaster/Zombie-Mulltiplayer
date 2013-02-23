@@ -208,7 +208,7 @@ src: url('HUD.ttf') format('truetype');
 	position:absolute;
 	bottom:0px;
 	left:0px;
-	width:300px;
+	width:400px;
 	height: 200px;
 	overflow: hidden;
 	color:white;
@@ -225,7 +225,7 @@ src: url('HUD.ttf') format('truetype');
 }
 #tchat-input{
 	background-color:rgba(0,0,0,0.2);
-	width:300px;
+	width:400px;
 	position:absolute;
 	bottom:0px;
 	padding:0px 0px 2px 5px;

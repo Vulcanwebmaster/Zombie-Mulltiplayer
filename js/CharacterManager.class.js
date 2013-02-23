@@ -284,13 +284,13 @@ module.exports = function CharacterManager(){
 			// 50 DPS
 			case 0:result={nom:'.44 Magnum', degats:37.5,compteAReboursAttaque:0,delaiMax:15, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 75 DPS
-			case 1:result={nom:'Desert Eagle', degats:63.75,compteAReboursAttaque:0,delaiMax:17, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 1:result={nom:'Walther P99', degats:63.75,compteAReboursAttaque:0,delaiMax:17, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 100 DPS
-			case 2:result={nom:'Walther P99', degats:100,compteAReboursAttaque:0,delaiMax:20, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 2:result={nom:'Desert Eagle', degats:100,compteAReboursAttaque:0,delaiMax:20, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 130 DPS
-			case 3:result={nom:'Skorpion VZ61', degats:6.5,compteAReboursAttaque:0,delaiMax:1, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 3:result={nom:'Uzi', degats:13,compteAReboursAttaque:0,delaiMax:2, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 200 DPS
-			case 4:result={nom:'Uzi', degats:20,compteAReboursAttaque:0,delaiMax:2, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 4:result={nom:'Skorpion VZ61', degats:10,compteAReboursAttaque:0,delaiMax:1, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 300 DPS
 			case 5:result={nom:'AK-47', degats:45,compteAReboursAttaque:0,delaiMax:3, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 500 DPS

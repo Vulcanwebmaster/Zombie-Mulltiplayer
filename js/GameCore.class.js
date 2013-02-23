@@ -250,6 +250,10 @@ function GameCore(pseudo,mdp){
 	}
 
 	this.tchat=function(auteur,message,classe){
+		//On supprime si y'a trop de messages
+		if($('#tchat ul li').length>20){
+			$('#tchat ul li:lt(5)').remove();
+		}
 		var debutMessage='';
 		if(auteur!=undefined && auteur!='')
 			debutMessage=$('<span>').addClass('tchat-default-auteur').addClass(classe).text(auteur + '> ');

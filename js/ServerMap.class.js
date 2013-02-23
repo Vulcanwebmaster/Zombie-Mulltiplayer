@@ -66,7 +66,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.switchSpectateur=function(id){
       if(this.listeJoueurs[id] || this.listeAttente[id]){
          this.listeSpectateurs[id]=this.listeJoueurs[id] || this.listeAttente[id];
-         if(this.listeJoueurs[id]) this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeSpectateurs[id].pseudo + ' passe en spectateur.', class:'tchat-admin'});
+         //if(this.listeJoueurs[id]) this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeSpectateurs[id].pseudo + ' passe en spectateur.', class:'tchat-admin'});
          delete this.listeJoueurs[id];
          delete this.listeAttente[id];
          this.listeSpectateurs[id].directions={haut:false,bas:false,gauche:false,droite:false};
@@ -91,7 +91,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.listeJoueurs[id]=this.listeAttente[id];
          delete this.listeAttente[id];
          this.io.sockets.emit('player_revive', this.listeJoueurs[id]);
-         this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeJoueurs[id].pseudo + ' rejoint la partie.', class:'tchat-admin'});
+         //this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeJoueurs[id].pseudo + ' rejoint la partie.', class:'tchat-admin'});
       }
    }
 
@@ -140,13 +140,13 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
-         _this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
+         //_this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
          setTimeout(function(){
             if(!_this.isRunning || _this.getPlayingPlayers()==0){
                _this.vagueEnTrainDeSeLancer=false;
                return;
             }
-            _this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
+            //_this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
             var jSONVague=characterManager.getWave(id);
             for(var zombieType in jSONVague){
                for(var i=0;i<jSONVague[zombieType].nombre;i++){
