@@ -154,7 +154,7 @@ module.exports = function CharacterManager(){
             pseudo:pseudo,
             alive:true,
             style:parseInt(Math.random()*4),
-            attaque:this.creationArme(3),
+            attaque:this.creationArme(0),
             isFiring:false,
             target:{targetX:0,targetY:0},
             kills:0,
@@ -304,8 +304,8 @@ module.exports = function CharacterManager(){
 		var result={};
 
 		var nombre={};
-		nombre[this.ZOMBIE_NORMAL]= {     0:110, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_RAPIDE]= {     0:50 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_NORMAL]= {     0:10, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:200, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
