@@ -271,8 +271,12 @@ function GameCore(pseudo,mdp){
 			if($("#tchat-input").is(":focus")) 
 				return true;
 			else{
-				$('#tchat-input').focus();
-				return false;
+				if(!$('#account-email').is(":focus") && !$('#account-passwd1').is(":focus") && !$('#account-passwd2').is(":focus")){
+					$('#tchat-input').focus();
+					return false;
+				}
+				else
+					return true;
 			}
 		}
 		if(key==KEYS.ECHAP){
