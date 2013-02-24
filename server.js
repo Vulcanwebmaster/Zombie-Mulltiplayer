@@ -166,4 +166,19 @@ io.sockets.on('connection', function(socket) {
     socket.on('connection_attempt', function(datas){
         dbCore.connect(datas, this);
     });
+    socket.on('request_account_informations', function(){
+        socket.get('pseudo', function(err, pseudo){
+            dbCore.getAccountInformations(pseudo, socket);
+        });
+    });
+    socket.on('update_account_email', function(email){
+        socket.get('pseudo', function(err, pseudo){
+            dbCore.updateAccountEmail(pseudo, email, socket);
+        });
+    });
+    socket.on('update_account_passwd', function(passwd){
+        socket.get('pseudo', function(err, pseudo){
+            dbCore.updateAccountPassword(pseudo, passwd, socket);
+        });
+    });
 });

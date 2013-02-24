@@ -105,11 +105,37 @@ function GameCore(pseudo,mdp){
 				else
 					$("#checkbox-sang").removeAttr("checked"); 
 				$('#options').show();
+				return false;
 			});
 			$('#hide_options').click(function(){
 				$('#options').hide();
 				return false;
 			})
+			$('#show_account').click(function(){
+				$('#account').show();
+				//On récupère les infos de la DB
+				gameCore.requestAccountInformations();
+				return false;
+			});
+			$('#account-change-passwd').click(function(){
+				if($('#account-passwd1')[0].value==$('#account-passwd2')[0].value && $('#account-passwd1')[0].value!='')
+					gameCore.updateAccountPassword($('#account-passwd1')[0].value);
+				return false;
+			});
+			$('#account-change-email').click(function(){
+				if($('#account-email')[0].value!='')
+					gameCore.updateAccountEmail($('#account-email')[0].value);
+				return false;
+			});
+			$('#hide_account').click(function(){
+				$('#account').hide();
+				return false;
+			})
+		});
+
+		this.socket.on('response_account_informations', function(datas){
+			$('#account-name')[0].value=datas.pseudo;
+			$('#account-email')[0].value=datas.email;
 		});
 
 		this.socket.on('remove_player', function(datas){
@@ -152,6 +178,9 @@ function GameCore(pseudo,mdp){
 		this.socket.on('clear_map_full', function(){
 			gameMap.clearMapFull();
 		});
+		this.socket.on('success', function(){
+			alert('La mise à jour s\'est bien déroulée.');
+		});
 
 	}
 
@@ -175,6 +204,15 @@ function GameCore(pseudo,mdp){
 	}
 	this.spectateurOff=function(){
 		this.socket.emit('spect_mode_off');
+	}
+	this.requestAccountInformations=function(){
+		this.socket.emit('request_account_informations')
+	}
+	this.updateAccountEmail=function(email){
+		this.socket.emit('update_account_email', email);
+	}
+	this.updateAccountPassword=function(passwd){
+		this.socket.emit('update_account_passwd', passwd);
 	}
 
 
@@ -207,7 +245,7 @@ function GameCore(pseudo,mdp){
 
 	this.gestionTouchesSpeciales=function(key,e){
 		//console.log(key);
-		if(!$("#tchat-input").is(":focus")){
+		if(!$("#tchat-input").is(":focus") && !$('#account-email').is(":focus") && !$('#account-passwd1').is(":focus") && !$('#account-passwd2').is(":focus")){
 			if(key==KEYS.V){
 				OPTIONS.display_names=!OPTIONS.display_names;
 			}
@@ -360,7 +398,10 @@ $(document).ready(function(){
 		else
 			OPTIONS.display_blood=false;
 	});
-
+	//On autorise les clic sur la page de gestion de compte
+	$('#account-email').click(function(){$(this).focus();});
+	$('#account-passwd1').click(function(){$(this).focus();});
+	$('#account-passwd2').click(function(){$(this).focus();});
 	updateLeaderBoard();
 
 });

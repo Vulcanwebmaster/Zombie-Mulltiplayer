@@ -70,12 +70,13 @@ module.exports = function DBCore(){
       var dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
       this.PlayerModel.find({pseudoLowerCase : dataTmp.pseudo.toLowerCase()},function(err, users){
          var user=users[0];//on récupère le premier enregistrement
+         if(user==undefined) return;
          //On calcule les nouvelles valeurs à mettre.
          var deaths=user.deaths + dataTmp.deaths;
          var kills=user.kills + dataTmp.kills;
          var record=user.record > dataTmp.record ? user.record : dataTmp.record;
          //console.log(dateToLog(new Date) + 'DBCore::updatePlayerStats : ' + user.pseudo + ' => Before : ' + user.deaths +':'+user.kills+':'+user.record +'. After : ' + deaths+ ':'+kills+':'+record);
-         _this.PlayerModel.update(user, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err)throw err;});
+         _this.PlayerModel.update(user, {kills : kills, deaths : deaths, record : record}, function(err, data){if(err) console.log(err);});
       });
    }
 
@@ -103,12 +104,36 @@ module.exports = function DBCore(){
          response.end();
       });
    }
+   this.getAccountInformations=function(pseudo, socket){
+      if(pseudo=="visiteur"){
+         socket.emit('response_account_informations', {pseudo:'visiteur', email:'Pas d\'adresse mail'});
+         return;
+      }
+      this.PlayerModel.find({pseudoLowerCase:pseudo.toLowerCase()}, function(err, users){
+         var user=users[0];
+         var reponse={pseudo:'Erreur', email:'Erreur'};
+         if(user!=undefined){
+            reponse.pseudo=user.pseudo;
+            reponse.email=user.email;
+         }
+         socket.emit('response_account_informations', reponse);
+      });
+   }
+
+   this.updateAccountPassword=function(pseudo, passwd, socket){
+      var passwdSha=this.Sha1(passwd);
+      this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {mdp:passwdSha}, function(err, data){if(err) console.log(err); else socket.emit('success');});
+   }
+   this.updateAccountEmail=function(pseudo, email, socket){
+      this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {email:email}, function(err, data){if(err) console.log(err); else socket.emit('success');});
+   }
 
    this.mongoose= new require('mongoose');
    this.playerSchema=new this.mongoose.Schema({
       pseudo: String,
       pseudoLowerCase:String,
       mdp : String,
+      email : {type:String, default : ''},
       kills : {type : Number, default : 0},
       deaths: {type : Number, default : 0},
       record: {type : Number, default : -1},

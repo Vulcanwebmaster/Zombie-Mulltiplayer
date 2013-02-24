@@ -49,6 +49,7 @@ function GameMap(){
 		});
 		$('#map').focus();
 	}
+	
 	this.desinit=function(){
 		$('body').unbind('keydown');
 		$('body').unbind('keyup');
