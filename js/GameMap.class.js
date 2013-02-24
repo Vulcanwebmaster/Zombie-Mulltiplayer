@@ -81,12 +81,7 @@ function GameMap(){
 				if(item.id==gameCore.playerId){
 					$('#joueur-life').text(parseInt(item.life));
 					//coloration de la case
-					if(item.life>75)
-						$('#joueur-life').css('color','rgb(70,128,51)');
-					else if(item.life>25 && item.life<=75)
-						$('#joueur-life').css('color','rgb(179,121,15)');
-					else
-						$('#joueur-life').css('color','rgb(162,13,17)');
+					this.colorationPseudo($('#joueur-life')[0], item.life);
 				}
 			}
 			else if(item.type=='numero_vague'){
@@ -122,7 +117,6 @@ function GameMap(){
 		//Update de tous les joueurs
 		var player;
 		var pseudo;
-		var life;
 		for(var idPerso in datas.listeJoueurs){
 			player=document.getElementById('player'+idPerso);
 			pseudo=document.getElementById('player'+idPerso+'-pseudo');
@@ -139,20 +133,23 @@ function GameMap(){
 				pseudo.id='player'+idPerso+'-pseudo';
 				pseudo.className='map-item player-name';
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
+				pseudo.style.backgroundColor="rgba(0,0,0,0.8)";
+				this.colorationPseudo(pseudo, datas.listeJoueurs[idPerso].life);
 				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				pseudo.innerHTML=datas.listeJoueurs[idPerso].pseudo;
-				life=document.createElement('div');
-				life.id='player'+idPerso+'-life';
-				life.innerHTML=datas.listeJoueurs[idPerso].life;
-				pseudo.appendChild(life);
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);
 				this.divMap.appendChild(pseudo);
 				this.divMap.appendChild(player);
 			}
 			else{
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
-				life.innerHTML=datas.listeJoueurs[idPerso].life;
+				this.colorationPseudo(pseudo, datas.listeJoueurs[idPerso].life);
 				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
+				//On regarde si y'a le zombiezslayer ou pas pour colorer le fond du pseudo
+				if(datas.listeJoueurs[idPerso].buffs['zombizSlayer'] != undefined)
+					pseudo.style.backgroundColor='rgba(3,6,80, 0.8)';
+				else
+					pseudo.style.backgroundColor="rgba(0,0,0,0.8)";
 				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				//player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
@@ -256,6 +253,19 @@ function GameMap(){
 		if(!alive){
 			this.idZombieTarget=-1;
 		}
+	}
+
+	this.colorationPseudo=function(div, pdv){
+		if(pdv>=200)
+			div.style.color='rgb(59,162,106)';
+		else if(pdv>=100 && pdv<200)
+			div.style.color='rgb(70,128,51)';
+		else if(pdv>=50 && pdv<100)
+			div.style.color='rgb(221,190,4)';
+		else if(pdv>25 && pdv<50)
+			div.style.color='rgb(179,121,15)';
+		else
+			div.style.color='rgb(162,13,17)';
 	}
 
 	this.calculDistance=function(x, y){

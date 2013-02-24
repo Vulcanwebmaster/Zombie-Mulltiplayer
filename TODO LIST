@@ -15,13 +15,12 @@
 - ajouter un scroll sur le div de tchat
 - selection de skins
 - faire une option mot de passe oublié
+- accelerer les zombies quand la partie prend du temps
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 personnaliser les touches
-[21:13:02] Elesday: tu met sous le pseudo du joueur un fon noir transpa exactement comme le tchat
-[21:13:20] Elesday: et tu colore le nom en rouge/orange/jaune/vert clair/vert foncé suivant la vie du type
 mettre des numéros aux invités
-ajouter un truc qui dit qu'on est spectateur
+afficher les joueurs en ligne
 
 Idées :
 
@@ -45,4 +44,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.0.5 alpha (20130223)
+--- v 0.9.1 alpha (20130224)

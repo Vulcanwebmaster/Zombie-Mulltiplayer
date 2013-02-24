@@ -134,6 +134,7 @@ function GameCore(pseudo,mdp){
 		this.socket.on('player_spectateur', function(datas){
 			if(datas.id==gameCore.playerId){
 				gameMap.desinit();
+				gameCore.tchat('', 'Vous êtes spectateur, vous pourrez rejoindre à la fin de la manche.');
 			}
 		});
 		this.socket.on('player_revive', function(datas){

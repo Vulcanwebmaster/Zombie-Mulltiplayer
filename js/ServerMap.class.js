@@ -279,7 +279,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       //on test si on a bien un joueur proche (cas où 0 joueurs)
       if(joueurLePlusProche!=null && zombie.aware==true){
 
-         if(distancePlusCourte < joueurLePlusProche.taille/2 + zombie.taille/2){
+         if(distancePlusCourte < joueurLePlusProche.taille/2.1 + zombie.taille/2.1){
             if(zombie.attaque.compteAReboursAttaque ==0){
                joueurLePlusProche.life-=zombie.attaque.degats;
                zombie.special({'type':'attaque', 'target':joueurLePlusProche});

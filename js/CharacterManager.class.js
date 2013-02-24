@@ -20,6 +20,7 @@ module.exports = function CharacterManager(){
             taille:this.LARGEUR_PERSO,
             agressivite:Math.random()*150 -75,
             instance:instance,
+            PAS:this.PAS,
             special:function(){}
          };
 
@@ -46,6 +47,21 @@ module.exports = function CharacterManager(){
                 if(args.type=="defense"){
                     //on court un peu plus vite si on prend des dégats
                     this.speed=this.speed < 9 ? this.speed + 0.5 : 9;  
+                }
+            }
+         }
+         //Deuxième rapide, 20DPS plus violent que le premier
+          if(type==this.ZOMBIE_RAPIDE2){
+            result.maxSpeed=this.PAS*0.8;
+            result.life=200;
+            result.attaque.degats=5;
+            result.attaque.delaiMax=5;
+            result.style=type;
+            result.distanceVision=this.MAX_DIAGONALE_PLAYER;
+            result.special=function(args){
+                if(args.type=="defense"){
+                    //on court un peu plus vite si on prend des dégats
+                    this.speed=this.speed < this.PAS*1.2 ? this.speed + 0.5 : this.PAS*1.2;  
                 }
             }
          }
@@ -304,25 +320,25 @@ module.exports = function CharacterManager(){
 		var result={};
 
 		var nombre={};
-		nombre[this.ZOMBIE_NORMAL]= {     0:10, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:5,  7:3,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:10, 7:20, 8:10, 9:10, 10:0, 11:200, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:1, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-
+		nombre[this.ZOMBIE_NORMAL]= {     0:10, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0,  11:30, 12:30, 13:30, 14:30, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:20, 9:20, 10:10, 11:10, 12:10, 13:10, 14:10, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:3,  7:3,  8:2,  9:2,  10:0,  11:2, 12:2,   13:2,  14:2,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:1, 10:20, 11:20,12:20,  13:25, 14:30,  15:0, 16:200,17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:1,  11:1, 12:1,   13:1,  14:1,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:0,  11:0, 12:0,   13:0,  14:0,  15:1, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:5,  11:1, 12:1,   13:3,  14:3,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+    nombre[this.ZOMBIE_RAPIDE2]={     0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:5,  7:10, 8:20, 9:20, 10:10,  11:20, 12:20, 13:20, 14:20, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		//Affichage des totaux par vague dans la console, pour vérification.
-		for(var i=0 ; i<=10 ; i++){
+		for(var i=0 ; i<=15 ; i++){
 			var totalTmp=0;
       var vieTmp=0;
       var zombieTmp=null;
-			for(var j=1;j<=7;j++){
+			for(var j=1;j<=8;j++){
 				totalTmp+=nombre[j][i];
                 zombieTmp=this.creationZombie(null,0,j);
                 vieTmp+=zombieTmp.life * nombre[j][i];
             }
-			//console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV.');
+			console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV.');
 		}
 
 		//Ajout des zombies normaux
@@ -339,6 +355,8 @@ module.exports = function CharacterManager(){
 		result[this.ZOMBIE_BOSS1]={type:this.ZOMBIE_BOSS1, nombre:nombre[this.ZOMBIE_BOSS1][level]};
 		//Ajout des zombies armé
 		result[this.ZOMBIE_ARME]={type:this.ZOMBIE_ARME, nombre:nombre[this.ZOMBIE_ARME][level]};
+    //ajout des sprinters un peu plus sprinters
+    result[this.ZOMBIE_RAPIDE2]={type:this.ZOMBIE_RAPIDE2, nombre:nombre[this.ZOMBIE_RAPIDE2][level]};
 		return result;
 	}
 
@@ -374,6 +392,7 @@ module.exports = function CharacterManager(){
   	this.ZOMBIE_RESISTANT=5;
   	this.ZOMBIE_BOSS1=6;
   	this.ZOMBIE_ARME=7;
+    this.ZOMBIE_RAPIDE2=8;
     this.ZOMBIE_BOSS2=-1;
     this.ZOMBIE_BOSS3=-1;
     this.ZOMBIE_EXPLOSIF=-1;//??

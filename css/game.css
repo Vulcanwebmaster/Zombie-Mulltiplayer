@@ -33,10 +33,11 @@ src: url('HUD.ttf') format('truetype');
 .player-name{
 	z-index:9;
 	text-align: center;
-	font-size: 10px;
+	font-size: 11px;
 	width:70px;
 	overflow: hidden;
 	color:white;
+	border-radius:3px;
 }
 .map-item{
 	position:absolute;
