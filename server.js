@@ -12,7 +12,7 @@ var characterManager=new CharacterManager();
 var ServerMap = require('./js/ServerMap.class.js');
 var serverMap = new ServerMap(io,characterManager, dbCore);
 
-app.listen (process.env.PORT || 5000) ;
+app.listen (process.env.PORT || 80) ;
 
 //stop le flood !
 io.set('log level', 1);
