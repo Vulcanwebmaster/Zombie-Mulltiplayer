@@ -36,7 +36,7 @@ module.exports = function DBCore(){
             socket.emit('create_account_fail', {'message':'Le compte '+datas.pseudo+' n\'est pas disponible.'});
          }
          else{
-            var player=new _this.PlayerModel({'pseudo':datas.pseudo, 'pseudoLowerCase' : datas.pseudo.toLowerCase(), 'mdp': _this.Sha1(datas.mdp)});
+            var player=new _this.PlayerModel({'pseudo':datas.pseudo, 'pseudoLowerCase' : datas.pseudo.toLowerCase(), 'mdp': _this.Sha1(datas.mdp), 'email': datas.email});
             player.save();
             console.log(dateToLog(new Date) + 'Création du compte : ' + datas.pseudo);
             socket.emit('create_account_success', {'message':'Le compte '+datas.pseudo+' a bien été créé.'});

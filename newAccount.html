@@ -23,6 +23,7 @@
 
 		<form onsubmit="return false;" style="text-align:center;">
 			<input type="text" id="champs-pseudo" placeholder="Votre pseudo"/></span><br/>
+			<input type="email" id="champs-email" placeholder="Email"/></span><br/>
 			<input type="password" id="champs-mdp" placeholder="Mot de passe"/></span><br/>
 			<input type="password" id="champs-mdp2" placeholder="Vérification mot de passe"/><br/>
 			<button id="envoi">Valider</button><br/>
@@ -55,11 +56,12 @@
 			var pseudo=$('#champs-pseudo')[0].value;
 			var mdp=$('#champs-mdp')[0].value;
 			var mdp2=$('#champs-mdp2')[0].value;
-			if(pseudo != '' && mdp!='' && mdp2!=''){
+			var email=$('#champs-email')[0].value;
+			if(pseudo != '' && mdp!='' && mdp2!='' && email!=''){
 				if(mdp==mdp2){
 					//on essaye d'envoyer au serveur, on voit si il veut bien ou pas.
 					$('#general-ok').text('Demande au serveur en cours...');
-					socket.emit('create_account', {pseudo:pseudo, mdp:mdp});
+					socket.emit('create_account', {pseudo:pseudo, mdp:mdp, email:email});
 				}else{
 					$('#general-error').text('Les deux mots de passe doivent être identiques.');
 				}
