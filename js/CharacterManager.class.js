@@ -231,6 +231,15 @@ module.exports = function CharacterManager(){
                     this.buffs[type].duree=this.secondsToTic(5);
                     this.buffs[type].description="Poison d'araignée : votre vitesse diminue petit à petit";
                   }
+                else if(type=="survivor"){
+                  this.buffs[type].duree=this.secondsToTic(5);
+                  this.buffs[type].description="Survivor : vos dégâts sont amplifiés par la vue de vos amis morts";
+                }
+            },
+            doDamages:function(target){
+              var multiplier=1;
+              if(this.buffs['survivor']!=undefined) multiplier=2;
+              target.life-=this.attaque.degats * multiplier;
             },
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
               //On regarde si il est empoisonné pour pas appliquer le buff zombizSlayer
@@ -287,6 +296,12 @@ module.exports = function CharacterManager(){
                             this.speed=this.maxSpeed;
                         }
                     }
+                    else if(stringBuff=="survivor"){
+                        this.buffs[stringBuff].duree--;
+                        if(this.buffs[stringBuff].duree==0){
+                            delete this.buffs[stringBuff];
+                        }
+                    }
                 }
             }
    		};
@@ -338,7 +353,7 @@ module.exports = function CharacterManager(){
                 zombieTmp=this.creationZombie(null,0,j);
                 vieTmp+=zombieTmp.life * nombre[j][i];
             }
-			console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV.');
+			//console.log('Vague ' + i + ': ' + totalTmp + ' zombies. ' + vieTmp + ' PV.');
 		}
 
 		//Ajout des zombies normaux

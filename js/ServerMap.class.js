@@ -51,6 +51,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       cpt+=this.getWaitingPlayers();
       return cpt;
    }
+   this.getAlivePlayers=function(){
+      var cpt=0;
+      for(var id in this.listeJoueurs) if(this.listeJoueurs[id].alive) cpt++;
+      return cpt;
+   }
    this.getJoueur=function(id){
       return this.listeJoueurs[id] || this.listeSpectateurs[id] || this.listeAttente[id];
    }
@@ -202,10 +207,18 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       else
          return;//ajout de cette sécurité si la partie se finit alors qu'un timeOut est lancé      
 
+      //On regarde combien de joueurs il reste
+      var bonusSurvivor=false;
+      if(this.getPlayingPlayers()>3 && this.getAlivePlayers()==1){
+         bonusSurvivor=true;
+      }
+
 		//Update des joueurs en fonction des directions qu'ils appuyent
 		for(var idPerso in this.listeJoueurs){
          var persoTmp=this.listeJoueurs[idPerso];
          if(persoTmp.alive){
+            if(bonusSurvivor)
+               persoTmp.addBuff('survivor');
             //On applique les buff/debuff avant tout
             persoTmp.applyBuff(this);
             //on verifie qu'il est toujours vivant après les debuff
@@ -393,7 +406,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       if(joueur.attaque.compteAReboursAttaque==0){
          //On enlève la vie au zombie le plus proche
          if(zombiePlusProche!=null){
-            zombiePlusProche.life-=joueur.attaque.degats;
+            joueur.doDamages(zombiePlusProche);
             if(zombiePlusProche.aware==false){
                zombiePlusProche.aware=true;   
                zombiePlusProche.speed=zombiePlusProche.maxSpeed;
