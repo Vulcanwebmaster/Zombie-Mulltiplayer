@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/common.css">
 	<link rel="stylesheet" type="text/css" href="/css/index.css">
 	<meta charset='utf-8'/>
+	<meta name="description" content="Zombiz, le jeu multijoueur par navigateur où l'on tue des zombies en masse !">
 	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
@@ -113,6 +114,14 @@
 
 			<a href="#" onclick="$('#changelog').show();return false;" style="color:white;margin-left:400px;">Afficher le changelog</a>
 			<textarea id="changelog">*************** PATCH NOTE **************************
+--- v 0.9.1.5 alpha (20130225)
+	ADD :
+		Optimisations de quelques balises pour le referencement
+	EDIT :
+		Re-passage des envois des update en volatile (pas sûr que ça change grand chose...)
+	FIX :
+		Correction d'une erreur d'undefined lors d'un "drag" sur le background
+
 --- v 0.9.1.4 alpha (20130224)
 	FIX :
 		On peut mettre des Y dans les adresses mails et mot de passe
@@ -426,7 +435,7 @@
 			<p style="float:left">Développement : Mikaël B. aka. WhiteSlash.<br/>
 			Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.9.1.4 alpha (20130224)</p>
+			<p id="version">Version 0.9.1.5 alpha (20130225)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 </body>

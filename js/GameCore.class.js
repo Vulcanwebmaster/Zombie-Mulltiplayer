@@ -376,7 +376,7 @@ function updateLeaderBoard(){
 $(document).ready(function(){
 	initEventConnexion();
 	//Eviter le changement du curseur en text
-	document.onselectstart = function(e){ e.originalEvent.preventDefault();e.preventDefault();return false; }
+	document.onselectstart = function(e){ if(e.originalEvent!=undefined) e.originalEvent.preventDefault();e.preventDefault();return false; }
 
 	$('#champs-pseudo').focus();
 
