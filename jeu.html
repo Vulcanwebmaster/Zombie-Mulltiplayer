@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Zombiz ! Team Survival | Game</title>
+	<title>Zombiz ! Team Survival | Jouer</title>
 	<meta charset='utf-8'/>
 	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="/css/common.css">
@@ -9,6 +9,7 @@
 	<script src ="/socket.io/socket.io.js"></script>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/mousewheel.js"></script>
 	<script type="text/javascript" src="/js/buzz.js"></script>
 	<script type="text/javascript" src="/js/Options.js"></script>
 	<script type="text/javascript" src="/js/GameCore.class.js"></script>
@@ -20,17 +21,16 @@
 	<div id="wrapper">
 		<a id="header" href="/index">
 			<header>
-				<h1>ZOMBIZ ! Team Survival</h1>
-				<h2>Zombies Massacre, multiplayer team survival</h2>
+				<h1>ZOMBIZ ! Team Survival, jeu de zombie en ligne</h1>
+				<h2>Zombies Massacre, jeu multijoueur zombies</h2>
 			</header>
 		</a>
-		<p style="color:rgb(200,200,200);background-color:black;padding:10px">Salut les tueurs de Zombiz,<br/>
-			La prochaine grosse mise à jour de Zombiz sera celle qui apportera la touche RPG au jeu. En vrac, vous pourrez monter des niveaux sur votre personnage, choisir son skin, choisir ses armes, dépenser des points de compétence (vitesse, esquive...), et plein d'autres choses !<br/>
-			Il est aussi important de noter que le jeu a été simplifié en attendant cette version. En effet, dans le futur, les nouveaux personnages et les visiteurs commenceront avec des statistiques plus faibles (par exemple la vitesse), et devront gagner des niveaux et améliorer leurs compétences, et plus encore.<br/>
-			Pour finir, je vous signale que le jeu est EN COURS DE DEVELOPPEMENT et donc qu'il est possible de rencontrer certains bug et il est loin d'être terminé.<br/>
-			Pour tout bug ou suggestion, m'envoyer un mail @<a href="mailto:mikael.blotin@gmail.com">mikael.blotin@gmail.com</a>
+		<p style="color:rgb(200,200,200);background-color:black;padding:10px">MAJ à venir : mise à jour RPG. Nouveautés : monter des niveaux sur votre personnage, choisir son skin, choisir ses armes, dépenser des points de compétence (vitesse, esquive...), et plein d'autres choses !<br/>
+			Pour suivre l'évolution, retrouvez le <a href="http://www.siteduzero.com/forum/sujet/jeu-web-multijoueur-zombiz-team-survival">topic de Zombiz sur le site du zéro</a>.
 		</p>
-		<p style="color:rgb(200,50,50);background-color:black;padding:10px">MERCI DE METTRE A JOUR VOTRE ADRESSE EMAIL DANS "Votre Compte" QUAND VOUS ETES CONNECTES. CETTE ADRESSE SERVIRA POUR LES MOTS DE PASSE OUBLIES. Les comptes qui n'auront pas d'adresse mail valide dans les jours qui viennent seront supprimés.</p>
+		<p style="color:white;background-color:rgb(130,20,20);padding:5px">Jeu en cours de développement (alpha). Bug ? Suggestions ? Envoyer un mail ici : <a href="mailto:mikael.blotin@gmail.com">mikael.blotin@gmail.com</a> ou ajoutez moi sur skype : <strong>whiteslash28</strong>
+		</p>
+		<p style="color:white;background-color:rgb(130,20,20);padding:5px">Renseigner une adresse mail valide (onglet "mon Compte" quand vous êtes connecté) vous permettra d'être au courant des mises à jours importantes et de faire une récupération de mot de passe en cas d'oubli.</p>
 		<div id="menu">
 			<span id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
@@ -115,7 +115,7 @@
 				<span style="font-size:15px;font-weight:bold">Pour éviter tout problème, utilisez <a href="http://www.google.fr/intl/fr/chrome/browser/">Google Chrome</a> </span>! (ou un firefox à jour).
 			</p>
 			<p style="float:left">Développement : Mikaël Blotin aka. WhiteSlash.<br/>
-			Pour tout bug ou suggestion, m'envoyer un mail @<a href="mailto:mikael.blotin@gmail.com">mikael.blotin@gmail.com</a><br/>
+			Pour tout bug ou suggestion, m'envoyer un mail <a href="mailto:mikael.blotin@gmail.com">mikael.blotin@gmail.com</a><br/>
 			Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).</p>
 			<p id="copyright">Copyright ©2013</p>
 			<p id="version">Version 0.9.1.5 alpha (20130225)</p>

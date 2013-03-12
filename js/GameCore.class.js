@@ -81,6 +81,21 @@ function GameCore(pseudo,mdp){
 				$('#tchat-input').blur();
 				$('#map').focus();
 			});
+			$('#tchat').mousewheel(function(event, delta, deltaX, deltaY) {
+				event.preventDefault();
+				var hauteurActuelle = parseInt($('#tchat ul').css('bottom'));
+				var pas = 15;
+				//si on veut remonter
+			    if(delta>0){
+			    	$('#tchat ul').css('bottom', (hauteurActuelle- pas) +'px');
+			    }
+			    else{
+			    	if(hauteurActuelle+pas < 20)
+			    		$('#tchat ul').css('bottom', (hauteurActuelle + pas) +'px');
+					else
+						$('#tchat ul').css('bottom', '20px');
+			    }
+			});
 
 			//On ajoute les fonctionnalités des options
 			$('#passerSpectateur').click(function(){
@@ -294,7 +309,7 @@ function GameCore(pseudo,mdp){
 
 	this.tchat=function(auteur,message,classe){
 		//On supprime si y'a trop de messages
-		if($('#tchat ul li').length>20){
+		if($('#tchat ul li').length>30){
 			$('#tchat ul li:lt(5)').remove();
 		}
 		var debutMessage='';

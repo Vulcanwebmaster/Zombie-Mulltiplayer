@@ -12,7 +12,6 @@
 - cookie pour la connexion ?
 - mettre la vie que sur les boss ?
 - ajouter un bandeau avec des petites phrases rigolottes
-- ajouter un scroll sur le div de tchat
 - selection de skins
 - faire une option mot de passe oublié
 - accelerer les zombies quand la partie prend du temps
@@ -20,12 +19,20 @@ abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 personnaliser les touches
 mettre des numéros aux invités
-afficher les joueurs en ligne
-bug fin de partie ?
+afficher les joueurs en ligne (/who ?)
+bug fin de partie ? bug quand on se connecte on peut pas jouer
 recup mdp
-baisser aide à la visée
 afficher nombre compte/zombie sur page de jeu?
-empecher multi compte
+systeme pour aider ceux qui rejoignent en cours ?
+page FB
+ajouter armes dessins
+
+*** baisser aide à la visée
+*** problème quand les zombies sont sur nous (tester if distance très proche, alors ça touche ?)
+*** - améliorer fps (mettre un zombie sur deux seulement le maj d'angle ?)
+*** modifier les hitbox des zombies (un peu plus petites je pense, revoir le calcul)
+*** empecher multi compte
+*** kick afk
 
 Idées :
 
@@ -38,7 +45,7 @@ Idées :
 - friendly fire ?
 - stratégies dans l'IA ?
 - ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
-- ajouter du son
+- ajouter du son correct
 - obstacles
 - munitions ?
 - FAQ (problème de souris, compatibilité...)
@@ -49,4 +56,9 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.1.5 alpha (20130225)
+--- v 0.9.1.6 alpha (20130312)
+	NEW :
+		Le tchat est -enfin- scrollable ! A vos molettes !
+	EDIT :
+		Changement de quelques rouges un peu trop pétants
+		Modification de divers textes

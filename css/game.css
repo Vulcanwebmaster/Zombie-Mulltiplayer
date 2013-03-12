@@ -240,7 +240,7 @@ src: url('HUD.ttf') format('truetype');
 	padding: 0;
 }
 #tchat .tchat-default-auteur{
-	color:rgb(182,43,37);
+	color:rgb(200,150,150);
 }
 #tchat .tchat-admin{
 	color:rgb(200,50,200);
