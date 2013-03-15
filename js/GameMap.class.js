@@ -34,7 +34,7 @@ function GameMap(){
 			var relativeY = (e.pageY - offset.top - gameMap.heightPlateau/2 - gameMap.LARGEUR_PERSO/2);
 			player=document.getElementById('player'+gameCore.playerId);
 			var angle=Math.round(Math.atan2(relativeY,relativeX)*180/Math.PI,0);		
-			if(angle < gameMap.lastDegreeSent - 5 || angle>gameMap.lastDegreeSent + 5){
+			if(angle < gameMap.lastDegreeSent - 2 || angle>gameMap.lastDegreeSent + 2){
 				gameMap.rotate(player,angle);
 				gameCore.updateAngle(angle);
 				gameMap.lastDegreeSent=angle;

@@ -15,22 +15,19 @@
 - selection de skins
 - faire une option mot de passe oublié
 - accelerer les zombies quand la partie prend du temps
+- améliorer fps quand y'a beaucoup de zombies
+- numéros aux visiteurs ?
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 personnaliser les touches
 mettre des numéros aux invités
 afficher les joueurs en ligne (/who ?)
-bug fin de partie ? bug quand on se connecte on peut pas jouer
 recup mdp
 afficher nombre compte/zombie sur page de jeu?
 systeme pour aider ceux qui rejoignent en cours ?
 page FB
 ajouter armes dessins
 
-*** baisser aide à la visée
-*** problème quand les zombies sont sur nous (tester if distance très proche, alors ça touche ?)
-*** - améliorer fps (mettre un zombie sur deux seulement le maj d'angle ?)
-*** modifier les hitbox des zombies (un peu plus petites je pense, revoir le calcul)
 *** empecher multi compte
 *** kick afk
 
@@ -56,9 +53,16 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.1.6 alpha (20130312)
+--- v 0.9.1.6 alpha (20130314)
 	NEW :
 		Le tchat est -enfin- scrollable ! A vos molettes !
+		Ajout d'un système de corps à corps pour se débarasser des zombies trop proches
 	EDIT :
 		Changement de quelques rouges un peu trop pétants
 		Modification de divers textes
+		Amélioration de la précision des tirs
+		Réduction hitbox des zombies
+		Réduction de l'effet "visée automatique"
+	FIX :
+		Firefox ne tente plus de faire de l'autocompletion sur les messages du tchat
+		Le bug où rien ne se passait lors de la connexion (et qu'il fallait switcher spectateur puis revenir pour lancer) est corrigé

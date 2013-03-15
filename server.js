@@ -106,7 +106,11 @@ function handler( request , response ) {
 io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
-        var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+        var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
+        if(joueurDejaInGame == null)
+            var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+        else
+           socket.emit('broadcast_msg', {'auteur':'Admin', 'message': 'Le pseudo ' + datas.pseudo + ' est déjà pris.', 'class': 'tchat-admin'});;
 		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-admin'});
 		socket.set('pseudo', datas.pseudo , function () {
 			/*console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');*/
