@@ -68,6 +68,11 @@ function GameCore(pseudo,mdp){
 			gameMap=new GameMap();
 			//gameMap.desinit(); //on lance que quand tout ça marche
 			gameCore.socket.on('update',function(datas){
+				//test auto-kick
+				if(new Date - gameCore.dateLastAction > 1000 * 60 * 4 && gameMap.ghostCam.running==false){
+					gameCore.spectateurOn();gameMap.desinit();
+					alert('Vous avez été placé spectateur suite à une trop longue inactivité.');
+				}
 				gameCore.debug();
 				gameMap.update(datas);
 			});
@@ -104,6 +109,7 @@ function GameCore(pseudo,mdp){
 			$('#rejoindrePartie').click(function(){
 				gameCore.spectateurOff();
 				$('#options').hide();
+				$('#account').hide();
 			});
 			$('#menu').fadeIn(1000);
 			$('#show_options').click(function(){
@@ -200,18 +206,23 @@ function GameCore(pseudo,mdp){
 	}
 
 	this.updateAngle=function(angle){
+		this.dateLastAction=new Date;
 		this.socket.emit('update_player_angle',{'id':gameCore.playerId,'angle':angle});
 	}
 	this.updateMouvement=function(){
+		this.dateLastAction=new Date;
 		this.socket.emit('update_player_mouvement',{'id':gameCore.playerId, 'directions' : gameCore.directions});
 	}
 	this.fire=function(targetX,targetY){
+		this.dateLastAction=new Date;
 		this.socket.emit('fire',{'id':gameCore.playerId, 'targetX' : targetX, 'targetY':targetY});
 	}
 	this.stopFire=function(targetX,targetY){
+		this.dateLastAction=new Date;
 		this.socket.emit('stop_fire',{'id':gameCore.playerId});
 	}
 	this.sendTchatMessage=function(datas){
+		this.dateLastAction=new Date;
 		this.socket.emit('broadcast_msg', datas);
 	}
 	this.spectateurOn=function(){
@@ -338,16 +349,20 @@ function GameCore(pseudo,mdp){
 			gameCore.lastUpdate=new Date;
 	}
 
+	//Variables d'appui de touches
 	this.directions={};
 	this.directions.gauche=false;
 	this.directions.droite=false;
 	this.directions.haut=false;
 	this.directions.bas=false;
+	//info du joueur
 	this.playerId=-1;
 	this.pseudo=pseudo;
 	this.mdp=mdp
-	this.socket=null;	
-	/*variable pour le calcul des FPS*/
+	this.socket=null;
+	//Variable pour l'autokick
+	this.dateLastAction=new Date;
+	/*variables pour le calcul des FPS*/
 	this.lastUpdate=-1;
 	this.maxPeak=0;
 	this.nbrPeak=0;

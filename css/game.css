@@ -251,3 +251,6 @@ src: url('HUD.ttf') format('truetype');
 #tchat .tchat-game-info{
 	color:rgb(50,110,190);
 }
+#tchat .tchat-error{
+	color:rgb(200,30,30);
+}
