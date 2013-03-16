@@ -21,8 +21,8 @@ var KEYS={
 var gameMap;
 var gameCore;
 
-var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
-
+//var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
+var SERVER_ADRESS=document.domain;
 
 /*Classe qui sera appelée pour gérer les envois/réceptions du serveur*/
 function GameCore(pseudo,mdp){
@@ -39,6 +39,7 @@ function GameCore(pseudo,mdp){
 			gameCore.tchat(data.auteur, data.message, data.class);
 		});
 		this.socket.on('connect', function(){
+			$('#inscription h2').text('Liaison avec le serveur OK...');
 			gameCore.tryConnection(gameCore.pseudo, gameCore.mdp);
 			/*if(gameCore.playerId == -1){
 				gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});

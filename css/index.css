@@ -18,9 +18,13 @@ src: url('zombie.ttf') format('truetype');
 	font-family: 'linkFont',courier;
 	font-size: 40px;
 	text-decoration: none;
+	background-image: url('/img/playbutton.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
 }
 #button-jouer:hover{
 	cursor: pointer;
+	background-position: center 5px;
 }
 
 #liste-zombies{
@@ -78,13 +82,15 @@ h3{
 }
 
 #button-jouer{
-	-moz-box-shadow:inset 0px 1px 0px 0px #000000;
+	/*-moz-box-shadow:inset 0px 1px 0px 0px #000000;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #000000;
 	box-shadow:inset 0px 1px 0px 0px #000000;
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bd3535), color-stop(1, #000000) );
 	background:-moz-linear-gradient( center top, #bd3535 5%, #000000 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bd3535', endColorstr='#000000');
-	background-color:#bd3535;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bd3535', endColorstr='#000000');*/
+	width:50%;
+	height: 110px;
+	background-color:rgba(0,0,0,0.5);
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
@@ -97,10 +103,11 @@ h3{
 }
 
 #button-jouer:hover{
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #bd3535) );
+	/*background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #bd3535) );
 	background:-moz-linear-gradient( center top, #000000 5%, #bd3535 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#bd3535');
-	background-color:#000000;
+	background-color:#000000;*/
+	background-color: rgba(50,0,0,0.5);
 }
 
 #button-jouer:active {

@@ -21,17 +21,15 @@ abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 personnaliser les touches
 mettre des numéros aux invités
-afficher les joueurs en ligne (/who ?)
 recup mdp
 afficher nombre compte/zombie sur page de jeu?
 systeme pour aider ceux qui rejoignent en cours ?
 page FB
 ajouter armes dessins
 supprimer un des boutons en trop (spect/pas spec)
-changer le background
 regarder la vie des zombies en spectateur
-tir vertical qui est bug
 tir qui n'apparait pas des fois ?
+pagination sur page leaderboard
 
 Idées :
 
@@ -55,4 +53,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.1.6 alpha (20130315)
+--- v 0.9.1.7 alpha (20130316)

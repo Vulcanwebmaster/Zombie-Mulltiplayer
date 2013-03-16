@@ -41,6 +41,13 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       for(var id in this.listeSpectateurs)  if(this.listeSpectateurs[id].pseudo.toLowerCase()==pseudo.toLowerCase()) joueurEnLigne=this.listeSpectateurs[id];
       return joueurEnLigne;
    }
+   this.getListeJoueursStr=function(){
+      var result="Liste des joueurs : ";
+      for(var id in this.listeJoueurs) result+= " " +  this.listeJoueurs[id].pseudo + " (en ligne) | ";
+      for(var id in this.listeAttente) result+= " " +  this.listeAttente[id].pseudo + " (en attente) | ";
+      for(var id in this.listeSpectateurs) result+= " " +  this.listeSpectateurs[id].pseudo + " (spectateur) | ";
+      return result;
+   }
    this.getPlayingPlayers=function(){
       var cpt=0;
       for(var id in this.listeJoueurs)   cpt++;
@@ -354,8 +361,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
       //On calcul la droite entre la target et le joueur
       //Test du cas où le tir est vertical !! (probleme de division par zéro)
+      var tirVertical=false;
       if(targetX - joueurX < joueur.taille/1.2 && targetX - joueurX > -joueur.taille/1.2 ){
          // x=M
+         tirVertical=true;
          var M=joueurX;
          var zombiePlusProche=null;
          var distancePlusCourte=this.DIAGONALE_MAP;
@@ -441,8 +450,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             }
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang', x:parseInt(zombiePlusProche.x),y:parseInt(zombiePlusProche.y)};
             //On balance l'event d'affichage du tir
-            this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt((zombiePlusProche.x+zombiePlusProche.taille/2) * a + b)};
-               
+            if(!tirVertical)
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt((zombiePlusProche.x+zombiePlusProche.taille/2) * a + b)};
+            else
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:targetX, targetY:joueurY + (viseEnHaut ? -distancePlusCourte : distancePlusCourte)}; 
             this.testFinVague();
          }
          else{

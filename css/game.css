@@ -4,6 +4,7 @@ font-family: 'HUDFond';
 src: url('HUD.ttf') format('truetype');
 }
 
+#topPlayers{color:#E0E0E0;}
 
 /****************  CSS MAP **************** */
 #map{

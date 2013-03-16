@@ -23,6 +23,7 @@ var dateToLog=function(date){
     return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
 }
 
+/* HANDLER DE PREMIERE CONNEXION AVEC UN CLIENT (envoi des pages)*/
 function handler( request , response ) {
 	var filePath = '.' + request.url;
     if (filePath == './')
@@ -103,6 +104,20 @@ function handler( request , response ) {
     });
 }
 
+//Fonction de commandes spéciales IG
+function specialCommandProcessing(string){
+    var result='';
+    if(string=="/help"){
+        result='Liste des commandes : /help (donne la liste des commandes), /who (donne la liste des joueurs en ligne)';
+    }
+    if(string=="/who"){
+        result=serverMap.getListeJoueursStr();
+    }
+    return result;
+}
+
+
+/* GESTION DES ENVOIS RECEPTIONS CLIENTS */
 io.sockets.on('connection', function(socket) {
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
@@ -139,7 +154,16 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('broadcast_msg', function(datas){
-        socket.get('pseudo', function(err, pseudo){datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);});
+        //On regarde si c'est une commande spéciale
+        var specialCommandResult = specialCommandProcessing(datas.message)
+        if( specialCommandResult != ''){
+            socket.emit('broadcast_msg', {message:specialCommandResult});
+        }
+        else
+            socket.get('pseudo', function(err, pseudo){
+                datas.class='';
+                datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);
+            });
     });
 
     socket.on('spect_mode_on', function(){
