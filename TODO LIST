@@ -30,6 +30,9 @@ supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 tir qui n'apparait pas des fois ?
 pagination sur page leaderboard
+Changer le "admin > machin s'est connecté" en "machin c'est connecté"
+pop up qui nous dit qu'on change d'arme
+Faire une page d'avancement / suggestions / infos (whishlist du coup)
 
 Idées :
 
@@ -45,6 +48,7 @@ Idées :
 - ajouter du son correct
 - obstacles
 - munitions ?
+- systeme de succés
 - FAQ (problème de souris, compatibilité...)
 - systeme d'aide pour remettre debout un ami blessé ?
 - commandes admin IG
