@@ -634,7 +634,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                dbCore.updatePlayerStats(_this.listeAttente[idAttente]);
                _this.listeAttente[idAttente].reini(characterManager);
             } 
-            _this.io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message':'Vous avez atteind la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-admin'});                    
+            _this.io.sockets.emit('broadcast_msg', {'message':'Vous avez atteint la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-game-event'});                    
             _this.flushFileAttente();
             _this.start();
             _this.currentWave=-1;

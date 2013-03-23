@@ -81,25 +81,26 @@ module.exports = function DBCore(){
    }
 
    this.getTopPlayerHTML=function(response){
-      this.PlayerModel.find({},null, {sort : {kills : -1}, limit : 10}, function(err, users){
+      var nombreJoueurs=10;
+      this.PlayerModel.find({},null, {sort : {kills : -1}, limit : nombreJoueurs}, function(err, users){
          response.writeHead(200, {'Content-Type': 'text/html'});
-         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
+         response.write('<tr><th>Position</th><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++)
-            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
          response.end();
       });
    }
    this.getLeaderboardHTML=function(response){
       this.PlayerModel.find({},null, {sort : {kills : -1}}, function(err, users){
          response.writeHead(200, {'Content-Type': 'text/html'});
-         response.write('<tr><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
-         var totalKills=0;var bestRecord=-1;
+         response.write('<tr><th>Position</th><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
+         var totalKills=0,bestRecord=-1;
          for(var i=0; i<users.length;i++){
-            response.write('<tr><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
             totalKills+=users[i].kills;
             bestRecord=Math.max(users[i].record, bestRecord);
          }
-         response.write('<tr><th>TOTAL</th><th>'+ totalKills +'</th><th>'+ recordToString(bestRecord) +'</th></tr>');
+         response.write('<tr><th>TOTAL</th><th>'+ users.length + ' comptes</th><th>'+ totalKills +'</th><th>'+ recordToString(bestRecord) +'</th></tr>');
             
          response.end();
       });

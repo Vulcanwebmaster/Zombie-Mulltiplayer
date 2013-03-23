@@ -9,6 +9,8 @@ var KEYS={
 		S:83,
 		D:68,
 		Y:89,
+		W:87,
+		A:65,
 		ENTER:13,
 		ETOILE:220,
 		ECHAP:27,
@@ -250,9 +252,9 @@ function GameCore(pseudo,mdp){
 		//On se déplace seulement si le tchat est pas ouvert
 		if(!$("#tchat-input").is(":focus")){
 			var directionDifferente=false;
-			if(direction==KEYS.UP || direction==KEYS.Z){directionDifferente=gameCore.directions.haut==true?false:true;gameCore.directions.haut=true;}
+			if(direction==KEYS.UP || direction==KEYS.Z || direction==KEYS.W){directionDifferente=gameCore.directions.haut==true?false:true;gameCore.directions.haut=true;}
 			else if(direction==KEYS.DOWN || direction==KEYS.S){directionDifferente=gameCore.directions.bas==true?false:true;gameCore.directions.bas=true;}
-			else if(direction==KEYS.LEFT || direction==KEYS.Q){directionDifferente=gameCore.directions.gauche==true?false:true;gameCore.directions.gauche=true;}
+			else if(direction==KEYS.LEFT || direction==KEYS.Q || direction==KEYS.A){directionDifferente=gameCore.directions.gauche==true?false:true;gameCore.directions.gauche=true;}
 			else if(direction==KEYS.RIGHT || direction==KEYS.D){directionDifferente=gameCore.directions.droite==true?false:true;gameCore.directions.droite=true;}
 
 			//Protection pour éviter d'envoyer 50 messages si on appuie que sur 1 touche
@@ -264,15 +266,15 @@ function GameCore(pseudo,mdp){
 	};
 	this.stopBouger=function(direction){
 		direction=direction.keyCode;
-		if(direction==KEYS.UP || direction==KEYS.Z){	gameCore.directions.haut=false;}
+		if(direction==KEYS.UP || direction==KEYS.Z || direction==KEYS.W){	gameCore.directions.haut=false;}
 		else if(direction==KEYS.DOWN || direction==KEYS.S){	gameCore.directions.bas=false;}
-		else if(direction==KEYS.LEFT || direction==KEYS.Q){	gameCore.directions.gauche=false;}
+		else if(direction==KEYS.LEFT || direction==KEYS.Q || direction==KEYS.A){	gameCore.directions.gauche=false;}
 		else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameCore.directions.droite=false;}
 		gameCore.updateMouvement();
 	};
 
 	this.gestionTouchesSpeciales=function(key,e){
-		//console.log(key);
+		console.log(key);
 		if(!$("#tchat-input").is(":focus") && !$('#account-email').is(":focus") && !$('#account-passwd1').is(":focus") && !$('#account-passwd2').is(":focus")){
 			if(key==KEYS.V){
 				OPTIONS.display_names=!OPTIONS.display_names;
@@ -308,8 +310,12 @@ function GameCore(pseudo,mdp){
 			}
 		}
 		if(key==KEYS.ECHAP){
-			$('#tchat-input').blur();
-			$('#map').focus();
+			if($("#tchat-input").is(":focus")){
+				$('#tchat-input').blur();
+				$('#map').focus();
+			}
+			//protection du reload de page sous FF
+			return false;
 		}
 		//Protection du scrolling de la page
 		if(key==KEYS.UP || key==KEYS.DOWN || key==KEYS.LEFT ||key==KEYS.RIGHT){

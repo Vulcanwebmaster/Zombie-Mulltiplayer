@@ -3,6 +3,11 @@
 font-family: 'headerFont';
 src: url('zombie.ttf') format('truetype');
 }
+@font-face
+{
+font-family: 'mainFont';
+src: url('LinLibertine_R.ttf') format('truetype');
+}
 
 body{
 	-webkit-user-select: none; /* Safari, Chrome */
@@ -18,6 +23,7 @@ body{
     background-attachment: fixed;
     background-repeat: no-repeat;
 	height: 100%;
+	font-family: 'mainFont', arial, times;
 }
 header{
 	margin-bottom: 40px;
@@ -142,7 +148,7 @@ footer{
 	color:white;
 }
 #leaderboard td{
-	color:rgb(160,10,20);
+	color:rgb(220,190,150);
 }
 #leaderboard tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);

@@ -1,16 +1,12 @@
 ************* TODO LIST ********************
 
-- si un joueur arrive en cours de partie !
 - ajouter un système de mines !! (KABOUM)
 	- ajouter un zombie explosif du coup si je fais les mines pour les hommes :)
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
-- nouveau boss et vagues
-- passer en objet pour attaquer/prendre dégat, pour pouvoir ensuite avoir des Stats PAR PERSO
 - ajouter la partie RPG avec des points de compétences
 - reconnexion si on bug ?
 - cookie pour la connexion ?
-- mettre la vie que sur les boss ?
 - ajouter un bandeau avec des petites phrases rigolottes
 - selection de skins
 - faire une option mot de passe oublié
@@ -19,23 +15,22 @@
 - numéros aux visiteurs ?
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
-personnaliser les touches
-mettre des numéros aux invités
 systeme pour aider ceux qui rejoignent en cours ?
 page FB
-*** ajouter armes dessins + changer système d'armes du coup
-*** ajouter des droppables
 supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
+probleme du tir qui ne touche pas, encore et toujours...
 tir qui n'apparait pas des fois ?
 pagination sur page leaderboard
-ajouter la position sur le leaderboard (et le nombre de comptes tout en bas ^^)
-Changer le "admin > machin s'est connecté" en "machin c'est connecté"
 pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
-typo à "vous avez atteinD la vague"
-*** remettre le truc qui dit "vous allez quitter, zetes sûr ?"
-rm le cache pour supprimer sendemail sur le pc fixe
+voir pour enlever des racines carrés si y'a pas besoin (opti)
+sauvegarde des options
+**********  rm le cache pour supprimer sendemail sur le pc fixe
+
+*** ajouter armes dessins + changer système d'armes du coup
+*** ajouter des droppables
+*** - commandes admin IG
 
 Idées :
 
@@ -54,16 +49,20 @@ Idées :
 - systeme de succés
 - FAQ (problème de souris, compatibilité...)
 - systeme d'aide pour remettre debout un ami blessé ?
-*** - commandes admin IG
 - me donner accès aux log ig ?
 - filtre à obscenité
-- changement du systeme de camera pour gerer les bords de map ? (probleme de "sautement" de l'image)
 
 *************************************************************************************
 
 --- v 0.9.2 alpha (201303XX)
 	ADD :
+		Support des claviers qwerty
 	EDIT :
 		Ajout de quelques etapes en plus lors de la connexion (permettra d'identifier plus precisement pourquoi certaines personnes ne peuvent se connecter)
+		Changement de quelques couleurs dans le tchat
+		Le leaderboard montrera maintenant la position du joueur
+		Changement des couleurs du leaderboard pour plus de lisibilité
 	FIX :
 		Le personnage du joueur ne passera plus sous celui des autres
+		Correction de plusieurs typo
+		Appuyer sur echap ne fera plus perdre la connexion sur FF

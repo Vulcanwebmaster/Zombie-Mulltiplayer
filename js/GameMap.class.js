@@ -484,9 +484,9 @@ function GameMap(){
 		direction=e.keyCode;
 		//On se déplace seulement si le tchat est pas ouvert
 		if(!$("#tchat-input").is(":focus")){
-			if(direction==KEYS.UP || direction==KEYS.Z){	gameMap.ghostCam.haut=true;}
+			if(direction==KEYS.UP || direction==KEYS.Z || direction==KEYS.W){	gameMap.ghostCam.haut=true;}
 			else if(direction==KEYS.DOWN || direction==KEYS.S){	gameMap.ghostCam.bas=true;}
-			else if(direction==KEYS.LEFT || direction==KEYS.Q){	gameMap.ghostCam.gauche=true;}
+			else if(direction==KEYS.LEFT || direction==KEYS.Q || direction==KEYS.A){	gameMap.ghostCam.gauche=true;}
 			else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameMap.ghostCam.droite=true;}
 		}
 		return gameCore.gestionTouchesSpeciales(direction,e);
@@ -494,9 +494,9 @@ function GameMap(){
 
 	this.ghostCamKeyUp=function(direction){
 		direction=direction.keyCode;
-		if(direction==KEYS.UP || direction==KEYS.Z){	gameMap.ghostCam.haut=false;}
+		if(direction==KEYS.UP || direction==KEYS.Z || direction==KEYS.W){	gameMap.ghostCam.haut=false;}
 		else if(direction==KEYS.DOWN || direction==KEYS.S){	gameMap.ghostCam.bas=false;}
-		else if(direction==KEYS.LEFT || direction==KEYS.Q){	gameMap.ghostCam.gauche=false;}
+		else if(direction==KEYS.LEFT || direction==KEYS.Q || direction==KEYS.A){	gameMap.ghostCam.gauche=false;}
 		else if(direction==KEYS.RIGHT || direction==KEYS.D){	gameMap.ghostCam.droite=false;}
 	}
 

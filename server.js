@@ -129,7 +129,7 @@ io.sockets.on('connection', function(socket) {
             socket.emit('player_spectateur', {id:-1});
             socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
        }
-		io.sockets.emit('broadcast_msg', {'auteur':'Admin', 'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-admin'});
+		io.sockets.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
 		socket.set('pseudo', datas.pseudo , function () {
 			/*console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');*/
 		});
@@ -184,7 +184,7 @@ io.sockets.on('connection', function(socket) {
             socket.get('pseudo', function(err, pseudo){
                 if(pseudo!=null){
                     console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
-                    socket.broadcast.emit('broadcast_msg', {'auteur':'Admin', 'message': pseudo + ' a quitté le jeu.', 'class':'tchat-admin'});
+                    socket.broadcast.emit('broadcast_msg', {'message': pseudo + ' a quitté le jeu.', 'class':'tchat-game-event'});
                 }
             });
         });
