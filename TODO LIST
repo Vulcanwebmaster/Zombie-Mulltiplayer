@@ -21,18 +21,19 @@ abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 personnaliser les touches
 mettre des numéros aux invités
-recup mdp
-afficher nombre compte/zombie sur page de jeu?
 systeme pour aider ceux qui rejoignent en cours ?
 page FB
-ajouter armes dessins
+*** ajouter armes dessins + changer système d'armes du coup
+*** ajouter des droppables
 supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 tir qui n'apparait pas des fois ?
 pagination sur page leaderboard
+ajouter la position sur le leaderboard (et le nombre de comptes tout en bas ^^)
 Changer le "admin > machin s'est connecté" en "machin c'est connecté"
 pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
+typo à "vous avez atteinD la vague"
 
 Idées :
 
@@ -51,10 +52,16 @@ Idées :
 - systeme de succés
 - FAQ (problème de souris, compatibilité...)
 - systeme d'aide pour remettre debout un ami blessé ?
-- commandes admin IG
+*** - commandes admin IG
 - me donner accès aux log ig ?
 - filtre à obscenité
+- changement du systeme de camera pour gerer les bords de map ? (probleme de "sautement" de l'image)
 
 *************************************************************************************
 
---- v 0.9.1.7 alpha (20130316)
+--- v 0.9.2 alpha (201303XX)
+	ADD :
+	EDIT :
+		Ajout de quelques etapes en plus lors de la connexion (permettra d'identifier plus precisement pourquoi certaines personnes ne peuvent se connecter)
+	FIX :
+		Le personnage du joueur ne passera plus sous celui des autres

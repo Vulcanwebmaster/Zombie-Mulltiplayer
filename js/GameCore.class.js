@@ -41,6 +41,7 @@ function GameCore(pseudo,mdp){
 		this.socket.on('connect', function(){
 			$('#inscription h2').text('Liaison avec le serveur OK...');
 			gameCore.tryConnection(gameCore.pseudo, gameCore.mdp);
+			$('#inscription h2').text('Vérification des identifiants...');
 			/*if(gameCore.playerId == -1){
 				gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});
 				$('#inscription').append('<h2>Création d\'un personnage en cours...</h2>');
@@ -339,8 +340,7 @@ function GameCore(pseudo,mdp){
 			var currentPeak=(now-gameCore.lastUpdate);
 			//console.log(currentPeak + 'ms since last update');
 			if(currentPeak > gameCore.maxPeak) gameCore.maxPeak=currentPeak;
-			gameCore.averageBPS=(gameCore.averageBPS*gameCore.nbrPeak + currentPeak)/ (gameCore.nbrPeak+1);
-			gameCore.nbrPeak++;
+			gameCore.averageBPS=(gameCore.averageBPS*9 + currentPeak)/ 10;
 			$('#debug').html( 'current : ' + currentPeak + 'ms<br/>' +
 							'average : ' + (Math.round(gameCore.averageBPS*100)/100) + 'ms<br/>' +
 							'max : ' + gameCore.maxPeak + 'ms')
@@ -366,7 +366,6 @@ function GameCore(pseudo,mdp){
 	/*variables pour le calcul des FPS*/
 	this.lastUpdate=-1;
 	this.maxPeak=0;
-	this.nbrPeak=0;
 	this.averageBPS=0;
 	this.init();	
 }

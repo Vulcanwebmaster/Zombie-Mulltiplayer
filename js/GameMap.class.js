@@ -30,8 +30,10 @@ function GameMap(){
 		});
 		$('#plateau').mousemove(function(e){
 			var offset = $(this).offset();
-			var relativeX = (e.pageX - offset.left - gameMap.widthPlateau/2 - gameMap.LARGEUR_PERSO/2);
-			var relativeY = (e.pageY - offset.top - gameMap.heightPlateau/2 - gameMap.LARGEUR_PERSO/2);
+			var topPlayer = parseInt($('#player'+gameCore.playerId).css('top'));
+			var leftPlayer = parseInt($('#player'+gameCore.playerId).css('left'));
+			var relativeX = (e.pageX - offset.left - parseInt(gameMap.divMap.style.left) - leftPlayer - gameMap.LARGEUR_PERSO/2);
+			var relativeY = (e.pageY - offset.top - parseInt(gameMap.divMap.style.top) - topPlayer - gameMap.LARGEUR_PERSO/2);
 			player=document.getElementById('player'+gameCore.playerId);
 			var angle=Math.round(Math.atan2(relativeY,relativeX)*180/Math.PI,0);		
 			if(angle < gameMap.lastDegreeSent - 2 || angle>gameMap.lastDegreeSent + 2){
@@ -66,7 +68,7 @@ function GameMap(){
 
 
 	this.update=function(datas){
-		this.GAME_SPEED=gameCore.averageBPS;
+		//this.GAME_SPEED=gameCore.averageBPS;
 		this.last_update=datas.id;
 		this.updateDisplayedAngle=!this.updateDisplayedAngle;
 
@@ -145,13 +147,11 @@ function GameMap(){
 			else{
 				pseudo.style.display=OPTIONS.display_names ? 'block' : 'none';
 				this.colorationPseudo(pseudo, datas.listeJoueurs[idPerso].life);
-				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				//On regarde si y'a le zombiezslayer ou pas pour colorer le fond du pseudo
 				if(datas.listeJoueurs[idPerso].buffs['zombizSlayer'] != undefined)
 					pseudo.style.backgroundColor='rgba(3,6,80, 0.8)';
 				else
 					pseudo.style.backgroundColor="rgba(0,0,0,0.8)";
-				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 				//player.setAttribute('data-life',datas.listeJoueurs[idPerso].life);
 				if(datas.listeJoueurs[idPerso].alive==true){
 					player.style.zIndex=9;
@@ -161,6 +161,8 @@ function GameMap(){
 					player.style.zIndex=5;
 					player.style.backgroundPosition=this.setBackgroundPosition(12);
 				}
+				this.moveTo(player, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
+				this.movePseudoTo(pseudo, datas.listeJoueurs[idPerso].x,datas.listeJoueurs[idPerso].y);
 			}
 			if(idPerso!=gameCore.playerId)
 				this.rotate(player,datas.listeJoueurs[idPerso].angle);
@@ -313,7 +315,7 @@ function GameMap(){
 	this.moveTo=function(ent, x, y){
 		ent.style.left=x+'px';
 		ent.style.top=y+'px';
-		/*$(ent).stop().animate({'top' : y+'px', 'left' : x+'px'}, this.GAME_SPEED, 'linear');*/
+		//$(ent).stop().animate({'top' : y+'px', 'left' : x+'px'}, this.TRANSITION_SPEED, 'linear');
 		if(gameCore.playerId==parseInt(ent.getAttribute('id').substring(6, ent.getAttribute('id').length))
 			&& (ent.getAttribute('id').substring(0,1)=='p')
 			&& this.ghostCam.running==false){
@@ -322,6 +324,8 @@ function GameMap(){
 			}
 	}
 	this.movePseudoTo=function(ent, x, y){
+		//$(ent).stop().animate({'top' : (y+50) + 'px', 
+		//					'left':(x-10) + 'px'},this.TRANSITION_SPEED, 'linear');
 		ent.style.left=(x-10)+'px';
 		ent.style.top=(y+50)+'px';
 	}
@@ -342,11 +346,20 @@ function GameMap(){
 	}
 
 	this.centerMapOn=function(x,y){
-		var map=document.getElementById('map');
-		map.style.top=(this.heightPlateau/2 - y) + 'px';
-		map.style.left=(this.widthPlateau/2 - x) + 'px';
-		/*$('#map').stop().animate({'top' : (this.heightPlateau/2 - y ) + 'px', 
-							'left':(this.widthPlateau/2 - x ) + 'px'},this.GAME_SPEED, 'linear');*/
+		var top=(this.heightPlateau/2 - y);
+		var left=(this.widthPlateau/2 - x);
+		/*if(top > 0)
+			top=0;
+		else if(top < -(this.heightMap-this.heightPlateau))
+			top=-(this.heightMap-this.heightPlateau);
+		if(left > 0)
+			left=0;
+		else if(left < -(this.widthMap-this.widthPlateau))
+			left=-(this.widthMap-this.widthPlateau);*/
+		this.divMap.style.top=top + 'px';
+		this.divMap.style.left=left + 'px';
+		/*$('#map').stop().animate({'top' : top + 'px', 
+							'left':left + 'px'},this.TRANSITION_SPEED, 'linear');*/
 	}
 
 	this.addBlood=function(x,y){
@@ -509,6 +522,7 @@ function GameMap(){
 	this.divMap.style.top='0px';this.divMap.style.left='0px';
 	this.ghostCam={running:false,haut:false,bas:false,gauche:false,droite:false};
 	this.LARGEUR_PERSO=50;
+	this.TRANSITION_SPEED=25;
 	this.MIN_DISTANCE_SHOW=Math.sqrt(this.widthPlateau*this.widthPlateau + this.heightPlateau*this.heightPlateau)/2;
 	this.lastDegreeSent=0;
 	this.isFiring=false;
