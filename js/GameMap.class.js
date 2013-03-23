@@ -17,6 +17,7 @@ function GameMap(){
 		$('body').keydown(gameCore.bouger);
 		$('body').keyup(gameCore.stopBouger);
 		$('#plateau').mousedown(function(e){
+			gameCore.dateLastAction=new Date;
 			e.originalEvent.preventDefault();
 			var offset = $('#map').offset();
 			var relativeX = (e.pageX - offset.left);
@@ -25,10 +26,12 @@ function GameMap(){
 			gameCore.fire(relativeX,relativeY);
 		});
 		$('#plateau').mouseup(function(e){
+			gameCore.dateLastAction=new Date;
 			gameMap.isFiring=false;
 			gameCore.stopFire();
 		});
 		$('#plateau').mousemove(function(e){
+			gameCore.dateLastAction=new Date;
 			var offset = $(this).offset();
 			var topPlayer = parseInt($('#player'+gameCore.playerId).css('top'));
 			var leftPlayer = parseInt($('#player'+gameCore.playerId).css('left'));
@@ -494,6 +497,7 @@ function GameMap(){
 
 	this.ghostCamKeyUp=function(direction){
 		direction=direction.keyCode;
+		gameCore.dateLastAction=new Date;
 		if(direction==KEYS.UP || direction==KEYS.Z || direction==KEYS.W){	gameMap.ghostCam.haut=false;}
 		else if(direction==KEYS.DOWN || direction==KEYS.S){	gameMap.ghostCam.bas=false;}
 		else if(direction==KEYS.LEFT || direction==KEYS.Q || direction==KEYS.A){	gameMap.ghostCam.gauche=false;}

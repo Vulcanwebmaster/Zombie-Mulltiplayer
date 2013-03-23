@@ -114,6 +114,7 @@ function GameCore(pseudo,mdp){
 				gameCore.spectateurOff();
 				$('#options').hide();
 				$('#account').hide();
+				gameCore.dateLastAction=new Date;
 			});
 			$('#menu').fadeIn(1000);
 			$('#show_options').click(function(){
@@ -274,7 +275,8 @@ function GameCore(pseudo,mdp){
 	};
 
 	this.gestionTouchesSpeciales=function(key,e){
-		console.log(key);
+		//console.log(key);
+		this.dateLastAction=new Date;
 		if(!$("#tchat-input").is(":focus") && !$('#account-email').is(":focus") && !$('#account-passwd1').is(":focus") && !$('#account-passwd2').is(":focus")){
 			if(key==KEYS.V){
 				OPTIONS.display_names=!OPTIONS.display_names;

@@ -110,7 +110,7 @@ function specialCommandProcessing(string){
     if(string=="/help"){
         result='Liste des commandes : /help (donne la liste des commandes), /who (donne la liste des joueurs en ligne)';
     }
-    if(string=="/who"){
+    else if(string=="/who"){
         result=serverMap.getListeJoueursStr();
     }
     return result;

@@ -26,11 +26,13 @@ pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
 voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
+il existe toujours un bug qui fait que parfois il se passe rien quand on rejoint
 **********  rm le cache pour supprimer sendemail sur le pc fixe
 
 *** ajouter armes dessins + changer système d'armes du coup
 *** ajouter des droppables
-*** - commandes admin IG
+*** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
+*** mettre des portées différentes pour chaque armes
 
 Idées :
 
@@ -66,3 +68,4 @@ Idées :
 		Le personnage du joueur ne passera plus sous celui des autres
 		Correction de plusieurs typo
 		Appuyer sur echap ne fera plus perdre la connexion sur FF
+		Le bug où on ne pouvait plus rejoindre une partie après avoir été placé AFK est corrigé
