@@ -58,6 +58,13 @@ src: url('HUD.ttf') format('truetype');
 	background-size: 200px; /*actual size / 2 */
 	background-repeat: no-repeat;
 }
+.droppable{
+	width: 40px;/*Changer aussi characterManager si on change ça*/
+	height: 40px;
+	z-index: 6;
+	background-image: url('/img/droppables.png');
+	background-repeat: no-repeat;
+}
 .sang{
 	z-index: 1;
 	width:50px;

@@ -32,6 +32,9 @@ il existe toujours un bug qui fait que parfois il se passe rien quand on rejoint
 *** ajouter armes dessins + changer système d'armes du coup
 *** ajouter des droppables
 *** mettre des portées différentes pour chaque armes
+*** nav bar
+*** page spéciales pour les zombies
+*** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
 
 Idées :
 

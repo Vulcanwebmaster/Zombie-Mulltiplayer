@@ -375,7 +375,12 @@ module.exports = function CharacterManager(){
 		return result;
 	}
 
-    this.listToNetwork=function(liste){
+  this.getDroppable=function(idItem){
+    //switch sur l'id
+    return {id:idItem, x:1000+idItem*40, y:500};
+  }
+
+  this.listToNetwork=function(liste){
         var result={};
         for(var id in liste){
             //On a besoin du x, du y, du style, de l'angle et de alive

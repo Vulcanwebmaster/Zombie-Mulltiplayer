@@ -258,7 +258,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       //if( this.MODULO_ENVOI == 0){
 		   this.io.sockets.volatile.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
-                                              'listeTemporaryItems': this.temporaryDisplayItem});
+                                              'listeTemporaryItems': this.temporaryDisplayItem, 'listeDroppables' : this.listeDroppables});
          //On réinitialise les item temporaires.
          this.temporaryDisplayItem={};
          this.numberTmpItem=0;	     
@@ -680,6 +680,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.listeZombies={};
    this.numberTmpItem=0;
    this.temporaryDisplayItem={}; //such as blood, shots, ...
+   this.nbDroppables=0;
+   this.listeDroppables={};//armes, pack de soin...
+   for(var i=0;i<10;i++)
+      this.listeDroppables[this.nbDroppables++]=characterManager.getDroppable(i);
    this.listeSpectateurs={};
    this.listeAttente={};
    this.isRunning=false;

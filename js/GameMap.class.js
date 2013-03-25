@@ -119,6 +119,19 @@ function GameMap(){
 			}
 		}
 
+		//Update des items droppables
+		for(var idDroppable in datas.listeDroppables){
+			var droppable = document.getElementById('droppable'+idDroppable);
+			if(droppable==null){
+				droppable=document.createElement('div');
+				droppable.className= 'map-item droppable';
+				droppable.id='droppable' + idDroppable;
+				this.moveTo(droppable, datas.listeDroppables[idDroppable].x,datas.listeDroppables[idDroppable].y);
+				droppable.style.backgroundPosition=this.setBackgroundPositionDroppable(datas.listeDroppables[idDroppable].id);
+				this.divMap.appendChild(droppable);
+			}
+		}
+
 
 		//Update de tous les joueurs
 		var player;
@@ -429,6 +442,24 @@ function GameMap(){
 			case 10:return '-100px -100px';break;
 			case 11:return '-100px -150px';break;
 			case 12:return '-150px 0px';break;
+		}
+	}
+
+	this.setBackgroundPositionDroppable=function(num){
+		switch(parseInt(num)){
+			case 0:return '0px 0px';break;
+			case 1:return '0px -40px';break;
+			case 2:return '0px -80px';break;
+			case 3:return '0px -120px';break;
+			case 4:return '-40px 0px';break;
+			case 5:return '-40px -40px';break;
+			case 6:return '-40px -80px';break;
+			case 7:return '-40px -120px';break;
+			case 8:return '-80px 0px';break;
+			case 9:return '-80px -40px';break;
+			case 10:return '-80px -80px';break;
+			case 11:return '-80px -120px';break;
+			case 12:return '-120px 0px';break;
 		}
 	}
 
