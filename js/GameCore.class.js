@@ -67,6 +67,7 @@ function GameCore(pseudo,mdp){
 		});
 
 		this.socket.on('set_id', function(nbr){
+			$('#inscription h2').text('Personnage créé ! Lancement du jeu...');
 			$('#inscription').fadeOut(1000,function(){$(this).remove()});
 			gameCore.playerId=nbr;
 			gameMap=new GameMap();
