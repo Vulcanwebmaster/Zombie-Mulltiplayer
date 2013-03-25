@@ -159,3 +159,5 @@ module.exports = function DBCore(){
 }
 /*Si je veux ajouter un nouveau champs sur la table, il faudra lancer cette commande d'abord :
 db.foo.update({},{$set : { "about.bio" : ""}} , true, true); */
+
+//Champs à ajouter : active (0,1), rang(0,1,2), skin_id(X)
