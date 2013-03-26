@@ -100,7 +100,9 @@ function GameMap(){
 					$('#zombie-life-inner').stop().css('width','0%');
 					this.idZombieTarget=-1;
 				}
-
+			}
+			else if(item.type=='remove_droppable'){
+				$('#droppable'+item.id).remove();
 			}
 			else if(item.type=='player_target' && item.id==gameCore.playerId){
 				this.idZombieTarget=item.id_zombie;

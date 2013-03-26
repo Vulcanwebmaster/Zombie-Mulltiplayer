@@ -238,7 +238,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             //on verifie qu'il est toujours vivant après les debuff
             if(persoTmp.alive){
                this.move(persoTmp, 'humain');
-               this.validatePositionToMapLimits(persoTmp);  
+               this.validatePositionToMapLimits(persoTmp);
+               //On regarde si il marche sur un draoppebl
+               this.checkIfOnDroppableItem(persoTmp);  
                this.calculNextEtapeFire(persoTmp);     
             }
          }
@@ -440,9 +442,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                zombiePlusProche.alive=false;
                joueur.kills++;
                this.totalZombiesKilled++;
-               this.checkWeaponUpdate(joueur);
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:-1};
+               //On ajoute de manière aléatoire un objet (1 chance sur 10)
+               if(Math.random()>0.1)
+                  this.listeDroppables[this.nbDroppables++]=characterManager.getRandomDroppable(zombiePlusProche.x, zombiePlusProche.y);
             }
             else{
                //On lance la mise à jour de la cible pour le joueur
@@ -498,33 +502,6 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       }
    }
 
-   this.checkWeaponUpdate=function(joueur){
-      if(joueur.kills==25){
-         joueur.attaque=characterManager.creationArme(1);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
-      }
-      if(joueur.kills==50){
-         joueur.attaque=characterManager.creationArme(2);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
-      }
-      if(joueur.kills==100){
-         joueur.attaque=characterManager.creationArme(3);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
-      }
-      if(joueur.kills==250){
-         joueur.attaque=characterManager.creationArme(4);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
-      }
-      if(joueur.kills==500){
-         joueur.attaque=characterManager.creationArme(5);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});
-      }
-      if(joueur.kills==1000){
-         joueur.attaque=characterManager.creationArme(6);
-         this.io.sockets.emit('broadcast_msg', {'auteur':joueur.pseudo,  'message': 'J\'ai trouvé un '+ joueur.attaque.nom +'!'});  
-      }
-   }
-
    this.start=function(){
       if(!this.isRunning){
          this.isRunning=true;
@@ -556,6 +533,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.listeZombies={};
          this.nbZombies=0;
 
+         //On fait pop des bonus
+        /* for(var i = 0 ; i< Math.ceil(this.getPlayingPlayers()/2);i++)
+            this.listeDroppables[this.nbDroppables++]=characterManager.getDroppable(parseInt(this.currentWave / characterManager.VAGUE_MAX * characterManager.NOMBRE_ARMES), parseInt(Math.random()*this.widthMap), parseInt(Math.random()*this.heightMap));
+*/
          //On fait revivre les morts
          //et on regarde le joueur qui a le plus de kill pour lui donner un bonus
          var joueurMeneur=null;
@@ -619,6 +600,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.nbZombies=0;
             _this.listeZombies={};
             _this.totalZombiesKilled=0;
+            _this.listeDroppables={};
+            _this.nbDroppables=0;
             //On fait revivre les morts
             for(var idPerso in _this.listeJoueurs){
                //On update toutes les stats des joueurs dans la DB
@@ -664,9 +647,25 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.listeJoueurs={};
          this.listeSpectateurs={};
          this.listeAttente={};
+         this.listeDroppables={};
+         this.nbDroppables=0;
       }
       else
          this.testFinPartie();
+   }
+
+   this.checkIfOnDroppableItem=function(perso){
+      var droppable=null;
+      for(var idDroppable in this.listeDroppables){
+         droppable=this.listeDroppables[idDroppable];
+         if(this.calculDistanceBetween(perso, droppable) < droppable.taille/2){
+            var msg = characterManager.manageDroppable(perso, droppable);
+            if(msg!='')
+               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
+            delete this.listeDroppables[idDroppable];
+         }
+      }
    }
 
    this.widthMap=2000;
@@ -682,8 +681,6 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.temporaryDisplayItem={}; //such as blood, shots, ...
    this.nbDroppables=0;
    this.listeDroppables={};//armes, pack de soin...
-   for(var i=0;i<10;i++)
-      this.listeDroppables[this.nbDroppables++]=characterManager.getDroppable(i);
    this.listeSpectateurs={};
    this.listeAttente={};
    this.isRunning=false;

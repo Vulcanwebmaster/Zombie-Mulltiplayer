@@ -162,9 +162,9 @@ module.exports = function CharacterManager(){
 		var result={
    			x:0,
    			y:0,
-            maxLife : this.DEFAULT_PLAYER_LIFE,
+        maxLife : this.DEFAULT_PLAYER_LIFE,
    			life:this.DEFAULT_PLAYER_LIFE,
-            angle:0,//degrés
+        angle:0,//degrés
    			directions:{haut:false,bas:false,gauche:false,droite:false},
    			id:id,
             pseudo:pseudo,
@@ -375,9 +375,22 @@ module.exports = function CharacterManager(){
 		return result;
 	}
 
-  this.getDroppable=function(idItem){
+  this.getDroppable=function(idItem, x, y){
     //switch sur l'id
-    return {id:idItem, x:1000+idItem*40, y:500};
+    return {id:idItem, x:x, y:y, taille:40};
+  }
+  this.getRandomDroppable=function(x, y){
+    //On associe les ID avec un niveau de rareté
+    return {id:0, x:x, y:y, taille:40};
+  }
+
+  this.manageDroppable=function(perso, item){
+    //Les 6 premiers sont les armes
+    if(item.id<=5){
+      perso.attaque=this.creationArme(item.id+1);
+      return 'J\'ai trouvé un '+ perso.attaque.nom +'!';
+    }
+    return "J'ai ramassé un objet non identitifé";
   }
 
   this.listToNetwork=function(liste){
@@ -420,4 +433,7 @@ module.exports = function CharacterManager(){
     this.MAX_DISTANCE=Math.sqrt(2000*2000 + 1000*1000);//Distance diagonale de la map du jeu
     this.MIN_DISTANCE_VISIBLE=350;//distance où est raisonnablement visible
     this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 325*325); //en gros, dès que le joueur peut le voie, il attaque
+    this.VAGUE_MAX=15;
+    this.NOMBRE_ARMES=6;
+    this.NOMBRE_ITEM_DROPPABLE=6;
 }
