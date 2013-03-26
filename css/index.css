@@ -32,7 +32,7 @@ src: url('zombie.ttf') format('truetype');
 #liste-zombies td{
 	width:30%;
 	padding:10px;
-	background-color:rgba(0,0,0,0.3);
+	background-color:rgba(50,50,50,0.9);
 	border-radius:10px;
 	border:2px groove grey;
 	color:rgb(210,210,210);

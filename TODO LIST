@@ -32,10 +32,7 @@ il existe toujours un bug qui fait que parfois il se passe rien quand on rejoint
 *** ajouter armes dessins + changer système d'armes du coup
 *** ajouter des droppables
 *** mettre des portées différentes pour chaque armes
-*** nav bar
-*** page spéciales pour les zombies
 *** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
-*** changer le nom du header pour le referencement !
 
 Idées :
 
@@ -63,11 +60,13 @@ Idées :
 	ADD :
 		Support des claviers qwerty
 		Un feed twitter fera office de dev blog et news sur la page d'accueil
+		Une barre de navigation vous facilitera la tâche désormais
 	EDIT :
 		Ajout de quelques etapes en plus lors de la connexion (permettra d'identifier plus precisement pourquoi certaines personnes ne peuvent se connecter)
 		Changement de quelques couleurs dans le tchat
 		Le leaderboard montrera maintenant la position du joueur
 		Changement des couleurs du leaderboard pour plus de lisibilité
+		Quelques améliorations pour le referencement (séparation du changelog, modification des noms d'images...)
 	FIX :
 		Le personnage du joueur ne passera plus sous celui des autres
 		Correction de plusieurs typo

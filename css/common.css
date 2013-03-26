@@ -26,19 +26,23 @@ body{
 	font-family: 'mainFont', arial, times;
 }
 header{
-	margin-bottom: 40px;
 	background-color: rgba(0,0,0,0.5);
 	box-shadow: 0px 10px 10px black;
 	width:1000px;
 	height: 234px;
-	background-image: url('/img/zombiz_eader.jpg');
+	background-image: url('/img/zombiz_header.jpg');
 	background-size: 100%;
 	text-indent: -9999px;
 }
 a{color:white;}
-a:visited{color:grey;}
+a:visited{color:white;}
 #header{text-decoration: none;}
 
+nav{font-family:headerFont;font-size:30px;height: 40px;background-color:black;color:white;	margin-bottom: 40px;}
+nav ul{list-style: none;padding: 0;margin:0;}
+nav ul li{float:left;width:30%;text-align:center;}
+nav ul li a{text-decoration: none;}
+nav ul li a:hover{color:rgb(200,50,50);}
 #wrapper{
 	width:1000px;
 	min-height: 100%;
