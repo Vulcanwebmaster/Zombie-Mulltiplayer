@@ -600,6 +600,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.nbZombies=0;
             _this.listeZombies={};
             _this.totalZombiesKilled=0;
+            for(var idDroppable in this.listeDroppables)
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             _this.listeDroppables={};
             _this.nbDroppables=0;
             //On fait revivre les morts
@@ -647,6 +649,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.listeJoueurs={};
          this.listeSpectateurs={};
          this.listeAttente={};
+         for(var idDroppable in this.listeDroppables)
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
          this.listeDroppables={};
          this.nbDroppables=0;
       }
@@ -660,8 +664,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          droppable=this.listeDroppables[idDroppable];
          if(this.calculDistanceBetween(perso, droppable) < droppable.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
-            /*if(msg!='')
-               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});*/
+            if(msg!='')
+               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:perso.id, life:perso.life};
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             delete this.listeDroppables[idDroppable];

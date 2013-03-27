@@ -199,6 +199,8 @@ function GameMap(){
 					else
 						$('#'+stringBuff).remove();
 				}
+				//Affichage de l'arme possédée
+				$('#arme-courante').css('background-position', this.setBackgroundPositionDroppable(datas.listeJoueurs[idPerso].attaque));
 			}				
 		}
 

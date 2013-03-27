@@ -63,7 +63,6 @@ src: url('HUD.ttf') format('truetype');
 	height: 40px;
 	z-index: 6;
 	background-image: url('/img/droppables.png');
-	background-color:red;
 	background-repeat: no-repeat;
 }
 .sang{
@@ -86,7 +85,7 @@ src: url('HUD.ttf') format('truetype');
 /****************  CSS HUD  ***************** */
 #hud{
 	background-color:rgba(0,0,0,0.6);
-	width: 300px;
+	width: 340px;
 	height: 40px;
 	position:absolute;
 	top:0px;
@@ -103,6 +102,13 @@ src: url('HUD.ttf') format('truetype');
 	background-position: left top;
 	background-size: 30px;
 	background-repeat: no-repeat;
+}
+#arme-courante{
+	background-image:url('/img/droppables.png');
+	background-size: 160px !important;
+	width:40px !important;
+	height:40px !important;
+	left:290px;
 }
 #joueur-life{
 	background-image:url('/img/heart.png');

@@ -236,7 +236,7 @@ module.exports = function CharacterManager(){
                   this.buffs[type].description="Survivor : vos dégâts sont amplifiés par la vue de vos amis morts";
                 }
                 else if(type=="adrenaline"){
-                  this.buffs[type].duree=this.secondsToTic(5);
+                  this.buffs[type].duree=this.secondsToTic(10);
                   this.buffs[type].description="Adrenaline : Le monde vous parait plus lent. Ou alors, vous allza plus vite ?";
                 }
             },
@@ -248,7 +248,7 @@ module.exports = function CharacterManager(){
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
               //On regarde si il est empoisonné pour pas appliquer le buff zombizSlayer
               var empoisonner=false;
-              var slayer=false;
+              var slayer=false, adrenaline=false;;
               if(this.buffs['poison']!=undefined && this.buffs['poison'].duree!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
 
                 for(var stringBuff in this.buffs){
@@ -285,7 +285,9 @@ module.exports = function CharacterManager(){
                         }
                     }
                     else if(stringBuff=="zombizSlayer"){
-                        if(!empoisonner)
+                        if(adrenaline && !empoisonner)
+                          this.speed=this.maxSpeed+2;
+                        else if(!adrenaline && !empoisonner)
                           this.speed=this.maxSpeed+1;
                         slayer=true;
                         this.buffs[stringBuff].duree--;
@@ -299,6 +301,7 @@ module.exports = function CharacterManager(){
                           this.speed=this.maxSpeed+2;
                       else if(!slayer && !empoisonner)
                           this.speed=this.maxSpeed+1;
+                      adrenaline=true;
                       this.buffs[stringBuff].duree--;
                       if(this.buffs[stringBuff].duree==0){
                         delete this.buffs[stringBuff];
@@ -426,18 +429,18 @@ module.exports = function CharacterManager(){
     //Les 6 premiers sont les armes
     if(item.id<=5){
       if(perso.attaque.id < item.id){
-        perso.attaque=this.creationArme(item.id+1);
+        perso.attaque=this.creationArme(item.id);
         return 'J\'ai trouvé un '+ perso.attaque.nom +'!';
       }
       else return '';
     }
     else if(item.id==this.LISTE_DROPPABLES.BONUS_SOIN){
       perso.life+=10;
-      return 'J\'ai trouvé un pack de soin !';
+      return '';
     }
     else if(item.id==this.LISTE_DROPPABLES.BONUS_VITESSE){
       perso.addBuff('adrenaline');
-      return 'J\'ai trouvé de l\'adrénaline';
+      return '';
     }
     return "J'ai ramassé un objet non identitifé";
   }
@@ -453,6 +456,8 @@ module.exports = function CharacterManager(){
             result[id].angle=parseInt(liste[id].angle);
             result[id].alive=liste[id].alive;
             result[id].life=parseInt(liste[id].life);
+            if(liste[id].attaque.id != undefined)
+              result[id].attaque=liste[id].attaque.id;
             if(liste[id].pseudo != undefined)
                result[id].pseudo=liste[id].pseudo;
             if(liste[id].buffs != undefined)
@@ -490,7 +495,7 @@ module.exports = function CharacterManager(){
       ARME_SKORPION:4,
       ARME_AK:5,
       ARME_M16:6,
-      BONUS_SOIN:7,
-      BONUS_VITESSE:8
+      BONUS_VITESSE:7,
+      BONUS_SOIN:8
     };
 }
