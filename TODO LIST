@@ -28,11 +28,12 @@ voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
 il existe toujours un bug qui fait que parfois il se passe rien quand on rejoint
 - commandes admin IG (rang banni et admin et choix du skin dans la DB)
+faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
 
-*** ajouter armes dessins + changer système d'armes du coup
-*** ajouter des droppables
-*** mettre des portées différentes pour chaque armes
-*** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
+
+*** ajouter armes dessins
+*** ajouter buff adrenaline dans l'image
+*** précharger les droppables aussi
 
 Idées :
 
@@ -61,12 +62,15 @@ Idées :
 		Support des claviers qwerty
 		Un feed twitter fera office de dev blog et news sur la page d'accueil
 		Une barre de navigation vous facilitera la tâche désormais
+		Des objets ramassables font leur apparition !
 	EDIT :
 		Ajout de quelques etapes en plus lors de la connexion (permettra d'identifier plus precisement pourquoi certaines personnes ne peuvent se connecter)
 		Changement de quelques couleurs dans le tchat
 		Le leaderboard montrera maintenant la position du joueur
 		Changement des couleurs du leaderboard pour plus de lisibilité
 		Quelques améliorations pour le referencement (séparation du changelog, modification des noms d'images...)
+		Désormais les armes se ramassent au lieu d'être en fonction du nombre de kills (coopérez pour que tout le monde ait de bonnes armes)
+		Les armes ont chacune leur propre portée
 	FIX :
 		Le personnage du joueur ne passera plus sous celui des autres
 		Correction de plusieurs typo

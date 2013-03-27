@@ -63,6 +63,7 @@ src: url('HUD.ttf') format('truetype');
 	height: 40px;
 	z-index: 6;
 	background-image: url('/img/droppables.png');
+	background-color:red;
 	background-repeat: no-repeat;
 }
 .sang{
@@ -159,6 +160,7 @@ src: url('HUD.ttf') format('truetype');
 #assomage{background-position:0px -120px;}
 #poison{background-position:0px -160px;}
 #survivor{background-position: -40px 0px;}
+#adrenaline{background-position:-40px -40px;}
 
 #vague-courante{
 	background-image:url('/img/wave.png');

@@ -235,6 +235,10 @@ module.exports = function CharacterManager(){
                   this.buffs[type].duree=this.secondsToTic(5);
                   this.buffs[type].description="Survivor : vos dégâts sont amplifiés par la vue de vos amis morts";
                 }
+                else if(type=="adrenaline"){
+                  this.buffs[type].duree=this.secondsToTic(5);
+                  this.buffs[type].description="Adrenaline : Le monde vous parait plus lent. Ou alors, vous allza plus vite ?";
+                }
             },
             doDamages:function(target){
               var multiplier=1;
@@ -243,7 +247,8 @@ module.exports = function CharacterManager(){
             },
             applyBuff:function(instance){/*on passe instance car on veut envoyer au client ses nouvelles infos !*/
               //On regarde si il est empoisonné pour pas appliquer le buff zombizSlayer
-              var empoisonner=false;;
+              var empoisonner=false;
+              var slayer=false;
               if(this.buffs['poison']!=undefined && this.buffs['poison'].duree!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
 
                 for(var stringBuff in this.buffs){
@@ -282,11 +287,26 @@ module.exports = function CharacterManager(){
                     else if(stringBuff=="zombizSlayer"){
                         if(!empoisonner)
                           this.speed=this.maxSpeed+1;
+                        slayer=true;
                         this.buffs[stringBuff].duree--;
                         if(this.buffs[stringBuff].duree==0){
                             delete this.buffs[stringBuff];
                             this.speed=this.maxSpeed;
                         }
+                    }
+                    else if(stringBuff=="adrenaline"){
+                      if(slayer && !empoisonner)
+                          this.speed=this.maxSpeed+2;
+                      else if(!slayer && !empoisonner)
+                          this.speed=this.maxSpeed+1;
+                      this.buffs[stringBuff].duree--;
+                      if(this.buffs[stringBuff].duree==0){
+                        delete this.buffs[stringBuff];
+                        if(slayer)
+                          this.speed=this.maxSpeed+1;
+                        else
+                          this.speed=this.maxSpeed;
+                      }
                     }
                     else if(stringBuff=="poison"){
                         this.speed=this.speed>0.1 ? this.speed - 0.1 : 0 ;
@@ -313,20 +333,20 @@ module.exports = function CharacterManager(){
 		var result;
 		switch(level){
 			// 50 DPS
-			case 0:result={nom:'.44 Magnum', degats:37.5,compteAReboursAttaque:0,delaiMax:15, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 0:result={id:level, nom:'.44 Magnum', degats:37.5,compteAReboursAttaque:0,delaiMax:15, portee:this.MIN_DISTANCE_VISIBLE*0.7};break;
 			// 75 DPS
-			case 1:result={nom:'Walther P99', degats:63.75,compteAReboursAttaque:0,delaiMax:17, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 1:result={id:level, nom:'Walther P99', degats:63.75,compteAReboursAttaque:0,delaiMax:17, portee:this.MIN_DISTANCE_VISIBLE*0.9};break;
 			// 100 DPS
-			case 2:result={nom:'Desert Eagle', degats:100,compteAReboursAttaque:0,delaiMax:20, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 2:result={id:level, nom:'Desert Eagle', degats:100,compteAReboursAttaque:0,delaiMax:20, portee:this.MIN_DISTANCE_VISIBLE*1.1};break;
 			// 130 DPS
-			case 3:result={nom:'Uzi', degats:13,compteAReboursAttaque:0,delaiMax:2, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 3:result={id:level, nom:'Uzi', degats:13,compteAReboursAttaque:0,delaiMax:2, portee:this.MIN_DISTANCE_VISIBLE*0.8};break;
 			// 200 DPS
-			case 4:result={nom:'Skorpion VZ61', degats:10,compteAReboursAttaque:0,delaiMax:1, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 4:result={id:level, nom:'Skorpion VZ61', degats:10,compteAReboursAttaque:0,delaiMax:1, portee:this.MIN_DISTANCE_VISIBLE*0.9};break;
 			// 300 DPS
-			case 5:result={nom:'AK-47', degats:45,compteAReboursAttaque:0,delaiMax:3, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 5:result={id:level, nom:'AK-47', degats:45,compteAReboursAttaque:0,delaiMax:3, portee:this.MIN_DISTANCE_VISIBLE};break;
 			// 500 DPS
-			case 6:result={nom:'M16', degats:100,compteAReboursAttaque:0,delaiMax:4, portee:this.MIN_DISTANCE_VISIBLE};break;
-			default:result={nom:'arme', degats:30,compteAReboursAttaque:0,delaiMax:10, portee:this.MIN_DISTANCE_VISIBLE};break;
+			case 6:result={id:level, nom:'M16', degats:100,compteAReboursAttaque:0,delaiMax:4, portee:this.MIN_DISTANCE_VISIBLE*1.1};break;
+			default:result={id:level, nom:'arme', degats:30,compteAReboursAttaque:0,delaiMax:10, portee:this.MIN_DISTANCE_VISIBLE*0.5};break;
 		}
 		return result;
 	}
@@ -381,14 +401,43 @@ module.exports = function CharacterManager(){
   }
   this.getRandomDroppable=function(x, y){
     //On associe les ID avec un niveau de rareté
-    return {id:0, x:x, y:y, taille:40};
+    var random=Math.random()*100;
+    if(random<30)//30%
+      return {id:this.LISTE_DROPPABLES.BONUS_SOIN, x:x, y:y, taille:40};
+    else if(random<50)//20%
+      return {id:this.LISTE_DROPPABLES.BONUS_VITESSE, x:x, y:y, taille:40};
+    else if(random<70)//20%
+      return {id:this.LISTE_DROPPABLES.ARME_WALTER, x:x, y:y, taille:40};
+    else if(random<80)//10%
+      return {id:this.LISTE_DROPPABLES.ARME_DEAGLE, x:x, y:y, taille:40};
+    else if(random<90)//10%
+      return {id:this.LISTE_DROPPABLES.ARME_UZI, x:x, y:y, taille:40};
+    else if(random<95)//5%
+      return {id:this.LISTE_DROPPABLES.ARME_SKORPION, x:x, y:y, taille:40};
+    else if(random<98)//3%
+      return {id:this.LISTE_DROPPABLES.ARME_AK, x:x, y:y, taille:40};
+    else if(random<100)//2%
+      return {id:this.LISTE_DROPPABLES.ARME_M16, x:x, y:y, taille:40};
+    else
+      return {id:-1, x:x, y:y, taille:40};
   }
 
   this.manageDroppable=function(perso, item){
     //Les 6 premiers sont les armes
     if(item.id<=5){
-      perso.attaque=this.creationArme(item.id+1);
-      return 'J\'ai trouvé un '+ perso.attaque.nom +'!';
+      if(perso.attaque.id < item.id){
+        perso.attaque=this.creationArme(item.id+1);
+        return 'J\'ai trouvé un '+ perso.attaque.nom +'!';
+      }
+      else return '';
+    }
+    else if(item.id==this.LISTE_DROPPABLES.BONUS_SOIN){
+      perso.life+=10;
+      return 'J\'ai trouvé un pack de soin !';
+    }
+    else if(item.id==this.LISTE_DROPPABLES.BONUS_VITESSE){
+      perso.addBuff('adrenaline');
+      return 'J\'ai trouvé de l\'adrénaline';
     }
     return "J'ai ramassé un objet non identitifé";
   }
@@ -434,6 +483,14 @@ module.exports = function CharacterManager(){
     this.MIN_DISTANCE_VISIBLE=350;//distance où est raisonnablement visible
     this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 325*325); //en gros, dès que le joueur peut le voie, il attaque
     this.VAGUE_MAX=15;
-    this.NOMBRE_ARMES=6;
-    this.NOMBRE_ITEM_DROPPABLE=6;
+    this.LISTE_DROPPABLES={
+      ARME_WALTER:1,
+      ARME_DEAGLE:2,
+      ARME_UZI:3,
+      ARME_SKORPION:4,
+      ARME_AK:5,
+      ARME_M16:6,
+      BONUS_SOIN:7,
+      BONUS_VITESSE:8
+    };
 }

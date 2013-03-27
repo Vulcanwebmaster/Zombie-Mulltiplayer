@@ -445,7 +445,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:-1};
                //On ajoute de manière aléatoire un objet (1 chance sur 10)
-               if(Math.random()>0.1)
+               if(Math.random()<=0.1)
                   this.listeDroppables[this.nbDroppables++]=characterManager.getRandomDroppable(zombiePlusProche.x, zombiePlusProche.y);
             }
             else{
@@ -660,8 +660,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          droppable=this.listeDroppables[idDroppable];
          if(this.calculDistanceBetween(perso, droppable) < droppable.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
-            if(msg!='')
-               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
+            /*if(msg!='')
+               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});*/
+            this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:perso.id, life:perso.life};
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             delete this.listeDroppables[idDroppable];
          }
