@@ -237,7 +237,7 @@ module.exports = function CharacterManager(){
                 }
                 else if(type=="adrenaline"){
                   this.buffs[type].duree=this.secondsToTic(10);
-                  this.buffs[type].description="Adrenaline : Le monde vous parait plus lent. Ou alors, vous allza plus vite ?";
+                  this.buffs[type].description="Adrenaline : Le monde vous parait plus lent. Ou alors, vous allez plus vite ?";
                 }
             },
             doDamages:function(target){
@@ -427,7 +427,7 @@ module.exports = function CharacterManager(){
 
   this.manageDroppable=function(perso, item){
     //Les 6 premiers sont les armes
-    if(item.id<=5){
+    if(item.id<=6){
       if(perso.attaque.id < item.id){
         perso.attaque=this.creationArme(item.id);
         return 'J\'ai trouvé un '+ perso.attaque.nom +'!';

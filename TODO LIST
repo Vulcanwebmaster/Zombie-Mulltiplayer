@@ -26,9 +26,11 @@ pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
 voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
-il existe toujours un bug qui fait que parfois il se passe rien quand on rejoint
-- commandes admin IG (rang banni et admin et choix du skin dans la DB)
-faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
+
+
+*** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
+***faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
+*** mettre un drop rate unique à chaque zombies
 
 Idées :
 
@@ -52,5 +54,14 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.2 alpha (20130327)
+--- v 0.9.2.1 alpha (20130327)
+	ADD :
+
+	EDIT :
+		Chaque zombie possède désormais son propre drop rate sur les item
+	FIX :
+		Le bug où l'on rejoint et que rien ne se passe devrait être réellement corrigé cette fois-ci !
+		Le M16 est droppable maintenant
+		Les item s'effacent bien en fin de partie
+		Correction typos
 

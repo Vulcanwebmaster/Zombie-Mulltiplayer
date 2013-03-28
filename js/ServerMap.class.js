@@ -600,8 +600,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.nbZombies=0;
             _this.listeZombies={};
             _this.totalZombiesKilled=0;
-            for(var idDroppable in this.listeDroppables)
-               this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
+            for(var idDroppable in _this.listeDroppables)
+               _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             _this.listeDroppables={};
             _this.nbDroppables=0;
             //On fait revivre les morts
@@ -627,7 +627,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       
          var _this;
          setTimeout(function(){
-            if(_this.getPlayingPlayers!=0){
+            if(_this.getPlayingPlayers()!=0){
                _this.currentWave=0;
                _this.spawnWave(_this.currentWave);
             }
