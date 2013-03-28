@@ -21,7 +21,7 @@ module.exports = function CharacterManager(){
             agressivite:Math.random()*150 -75,
             instance:instance,
             PAS:this.PAS,
-            dropRate:1,
+            dropRate:0.1,
             listDropRate :{},
             special:function(){}
          };
