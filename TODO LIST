@@ -29,11 +29,10 @@ sauvegarde des options
 
 
 *** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
-***faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
-*** mettre un drop rate unique à chaque zombies
+*** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
+*** outil calcul perf rendu + opti
 *** validator
 *** passer l'histoire du leaderboard en css :) (nth child)
-*** changer le machin bleu moche avec la font trop petite
 
 Idées :
 
@@ -57,16 +56,5 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.2.1 alpha (20130327)
-	ADD :
-
-	EDIT :
-		Chaque zombie possède désormais son propre drop rate sur les item
-		Modifications de certains handler pour mieux identifier les erreurs avec les sockets
-	FIX :
-		Le bug où l'on rejoint et que rien ne se passe devrait être réellement corrigé cette fois-ci !
-		Le M16 est droppable maintenant
-		Les item s'effacent bien en fin de partie
-		Correction typos
-		Les buffs devraient désormais partir en fin de partie
+--- v 0.9.2.1 alpha (20130328)
 

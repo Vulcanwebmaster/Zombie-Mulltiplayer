@@ -21,8 +21,14 @@ module.exports = function CharacterManager(){
             agressivite:Math.random()*150 -75,
             instance:instance,
             PAS:this.PAS,
+            dropRate:1,
+            listDropRate :{},
             special:function(){}
          };
+         //On remplit le tableau de droprate avec tout à zero par défaut
+         for(var idDrop in this.LISTE_DROPPABLES){
+            result.listDropRate[this.LISTE_DROPPABLES[idDrop]]=0;
+         }
 
          //Normal 4 DPS
          if(type==this.ZOMBIE_NORMAL){
@@ -34,6 +40,10 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementLeger');
                 }
             }
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_WALTER]=15;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=5;
          }
          //Rapide 8 DPS
          if(type==this.ZOMBIE_RAPIDE){
@@ -49,6 +59,11 @@ module.exports = function CharacterManager(){
                     this.speed=this.speed < 9 ? this.speed + 0.5 : 9;  
                 }
             }
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=30;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=30;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_WALTER]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=15;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=5;
          }
          //Deuxième rapide, 20DPS plus violent que le premier
           if(type==this.ZOMBIE_RAPIDE2){
@@ -64,6 +79,14 @@ module.exports = function CharacterManager(){
                     this.speed=this.speed < this.PAS*1.1 ? this.speed + 0.5 : this.PAS*1.1;  
                 }
             }
+            result.dropRate=0.2;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=10;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=7;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=3;
          }
          //Gros 20 DPS mais très lent (1 coup toutes les 2,5 secondes)
          if(type==this.ZOMBIE_GROS){
@@ -82,6 +105,10 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('assomage');
                 }
             }
+            result.dropRate=0.5;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=70;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=10;
          }
          //Très rapide 10 DPS
          if(type==this.ZOMBIE_TRES_RAPIDE){
@@ -99,6 +126,11 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('poison');
                 }
             }
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=10;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=7;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=3;
          }
          //Resistant 26.6 DPS
          if(type==this.ZOMBIE_RESISTANT){
@@ -108,6 +140,10 @@ module.exports = function CharacterManager(){
             result.attaque.delaiMax=15;
             result.style=type;
             result.distanceVision=this.MAX_DISTANCE/2;
+
+            result.dropRate=0.4;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=50;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=50;
          }
          //Mini Boss 300 DPS
          if(type==this.ZOMBIE_BOSS1){
@@ -132,6 +168,9 @@ module.exports = function CharacterManager(){
                     }
                 }
             }
+            result.dropRate=1;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=50;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=50;
          }
          //armé 160 DPS mais tape très fort
          if(type==this.ZOMBIE_ARME){
@@ -150,9 +189,14 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementViolent');
                 }
             }
+            result.dropRate=0.4;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=30;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=30;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=20;
          }
          //Zombie explosif
-
+         //console.log(result);
          //Zombie boss encore plus fort
          //Zombie boss encore encore plus fort
          return result;
@@ -402,27 +446,18 @@ module.exports = function CharacterManager(){
     //switch sur l'id
     return {id:idItem, x:x, y:y, taille:40};
   }
-  this.getRandomDroppable=function(x, y){
+  this.getRandomDroppable=function(zombieTuer){
     //On associe les ID avec un niveau de rareté
     var random=Math.random()*100;
-    if(random<30)//30%
-      return {id:this.LISTE_DROPPABLES.BONUS_SOIN, x:x, y:y, taille:40};
-    else if(random<50)//20%
-      return {id:this.LISTE_DROPPABLES.BONUS_VITESSE, x:x, y:y, taille:40};
-    else if(random<70)//20%
-      return {id:this.LISTE_DROPPABLES.ARME_WALTER, x:x, y:y, taille:40};
-    else if(random<80)//10%
-      return {id:this.LISTE_DROPPABLES.ARME_DEAGLE, x:x, y:y, taille:40};
-    else if(random<90)//10%
-      return {id:this.LISTE_DROPPABLES.ARME_UZI, x:x, y:y, taille:40};
-    else if(random<95)//5%
-      return {id:this.LISTE_DROPPABLES.ARME_SKORPION, x:x, y:y, taille:40};
-    else if(random<98)//3%
-      return {id:this.LISTE_DROPPABLES.ARME_AK, x:x, y:y, taille:40};
-    else if(random<100)//2%
-      return {id:this.LISTE_DROPPABLES.ARME_M16, x:x, y:y, taille:40};
-    else
-      return {id:-1, x:x, y:y, taille:40};
+    var total=0;
+    for(var idDrop in this.LISTE_DROPPABLES){
+      //console.log('Random ' + random + ': Total actuel : ' + total + ': DropRate ' + zombieTuer.listDropRate[this.LISTE_DROPPABLES[idDrop]]);
+      if(random < total + zombieTuer.listDropRate[this.LISTE_DROPPABLES[idDrop]])
+        return {id:this.LISTE_DROPPABLES[idDrop], x:zombieTuer.x, y:zombieTuer.y, taille:40};
+      total+=zombieTuer.listDropRate[this.LISTE_DROPPABLES[idDrop]];
+    }
+    console.log('Petit probleme dans les random du getRandomDroppable');
+    return {id:this.LISTE_DROPPABLES.BONUS_SOIN, x:zombieTuer.x, y:zombieTuer.y, taille:40};
   }
 
   this.manageDroppable=function(perso, item){

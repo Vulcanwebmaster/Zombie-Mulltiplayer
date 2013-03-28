@@ -445,8 +445,8 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:-1};
                //On ajoute de manière aléatoire un objet (1 chance sur 10)
-               if(Math.random()<=0.1)
-                  this.listeDroppables[this.nbDroppables++]=characterManager.getRandomDroppable(zombiePlusProche.x, zombiePlusProche.y);
+               if(Math.random()<=zombiePlusProche.dropRate)
+                  this.listeDroppables[this.nbDroppables++]=characterManager.getRandomDroppable(zombiePlusProche);
             }
             else{
                //On lance la mise à jour de la cible pour le joueur

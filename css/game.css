@@ -102,6 +102,7 @@ src: url('HUD.ttf') format('truetype');
 	background-position: left top;
 	background-size: 30px;
 	background-repeat: no-repeat;
+	box-shadow: none;
 }
 #arme-courante{
 	background-image:url('/img/droppables.png');

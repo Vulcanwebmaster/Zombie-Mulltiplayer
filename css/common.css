@@ -16,7 +16,7 @@ body{
     -ms-user-select: none; /* IE */
     user-select: none; /* CSS3 */
     background-color:rgb(100,100,100);
-    background-image: url('/img/background_light.jpg');
+    background-image: url('/img/zombiz_background.jpg');
     background-color:grey;
     background-position: center top;
     background-size: 2560px;
@@ -57,7 +57,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 #wrapper{
 	width:1000px;
 	min-height: 100%;
-	background-color:rgba(50,50,50,0.9);
+	background-color:rgba(50,50,50,0.8);
 	margin:auto;
 	box-shadow: 0px 0px 50px black, 0px 0px 30px black;
 }
@@ -124,26 +124,28 @@ h1{
 	padding:0px;
 	margin:0px;
 	text-align: center;
+	text-shadow:1px 1px 2px black;
 }
 h2{
 	color:grey;
 	text-align: center;
 	font-size: 30px;
 	margin:0px;
+	text-shadow:1px 1px 2px black;
 }
-
+p{text-shadow:0px 1px 1px black;box-shadow:0px 0px 5px black;}
 #warning-navigateur{
 	/*background-color:rgb(210,150,20);*/
-	background-color: rgb(30,80,150);
+	background-color: rgb(158, 80, 0);
 	border-radius: 10px;
 	padding:10px;
 	color:rgb(220,220,220);
-	font-size:12px;
+	text-align: center;
 }
 
 footer{
 	color:rgb(200,200,200);
-	font-size: 12px;
+	font-size: 13px;
 	background-color:black;
 	padding:5px;
 }
