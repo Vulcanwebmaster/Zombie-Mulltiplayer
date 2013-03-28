@@ -34,7 +34,6 @@ sauvegarde des options
 *** validator
 *** passer l'histoire du leaderboard en css :) (nth child)
 *** changer le machin bleu moche avec la font trop petite
-*** en fin de partie, les buffs ne partent pas si on est spec.
 
 Idées :
 
@@ -63,9 +62,11 @@ Idées :
 
 	EDIT :
 		Chaque zombie possède désormais son propre drop rate sur les item
+		Modifications de certains handler pour mieux identifier les erreurs avec les sockets
 	FIX :
 		Le bug où l'on rejoint et que rien ne se passe devrait être réellement corrigé cette fois-ci !
 		Le M16 est droppable maintenant
 		Les item s'effacent bien en fin de partie
 		Correction typos
+		Les buffs devraient désormais partir en fin de partie
 

@@ -61,10 +61,18 @@ function GameCore(pseudo,mdp){
 			gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});
 		});
 
-		this.socket.on('reconnect', function(){
-			alert('Vous avez perdu votre connexion.');
+		this.socket.on('disconnect', function(){
+			alert('ERREUR : Vous avez perdu votre connexion.');
 			document.location.reload(true);
 		});
+		this.socket.on('reconnecting', function(){
+			alert('ERREUR : Vous avez perdu votre connexion et votre navigateur essaye de se reconnecter.');
+			document.location.reload(true);
+		});
+		this.socket.on('connect_failed', function(){
+			alert('ERREUR : Connexion au serveur impossible.');
+		});
+
 
 		this.socket.on('set_id', function(nbr){
 			$('#inscription h2').text('Personnage créé ! Lancement du jeu...');
