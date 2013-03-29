@@ -77,7 +77,7 @@ src: url('HUD.ttf') format('truetype');
 .simple_bullet{
 	z-index:7;
 	position:absolute;
-	top:0px;left:0px;'
+	top:0px;left:0px;
 	background-image:url('/img/simple_bullet.png');
 	background-repeat: no-repeat;
 }
