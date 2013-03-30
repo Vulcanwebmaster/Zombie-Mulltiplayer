@@ -13,6 +13,7 @@ var KEYS={
 		A:65,
 		ENTER:13,
 		ETOILE:220,
+		ETOILE2:170,
 		ECHAP:27,
 		V:86,
 		M:77,
@@ -296,7 +297,7 @@ function GameCore(pseudo,mdp){
 						AUDIO[key].stop();
 				OPTIONS.sound_enabled=!OPTIONS.sound_enabled;
 			}
-			if(key==KEYS.ETOILE){
+			if(key==KEYS.ETOILE ||key==KEYS.ETOILE2){
 				if($('#debug').css('display')=='none')
 					$('#debug').css({'display':'block'});
 				else
@@ -355,12 +356,10 @@ function GameCore(pseudo,mdp){
 		if(gameCore.lastUpdate!=-1){
 			var now=new Date;
 			var currentPeak=(now-gameCore.lastUpdate);
+			if(currentPeak>gameCore.maxPeak)gameCore.maxPeak=currentPeak;
 			//console.log(currentPeak + 'ms since last update');
-			if(currentPeak > gameCore.maxPeak) gameCore.maxPeak=currentPeak;
 			gameCore.averageBPS=(gameCore.averageBPS*9 + currentPeak)/ 10;
-			$('#debug').html( 'current : ' + currentPeak + 'ms<br/>' +
-							'average : ' + (Math.round(gameCore.averageBPS*100)/100) + 'ms<br/>' +
-							'max : ' + gameCore.maxPeak + 'ms')
+			$('#debug-average-latency').text( 'Reception moy. : ' + (Math.round(gameCore.averageBPS*100)/100) + 'ms. max :' + gameCore.maxPeak +'ms');
 			gameCore.lastUpdate=now;
 		}
 		else
@@ -382,8 +381,8 @@ function GameCore(pseudo,mdp){
 	this.dateLastAction=new Date;
 	/*variables pour le calcul des FPS*/
 	this.lastUpdate=-1;
-	this.maxPeak=0;
 	this.averageBPS=0;
+	this.maxPeak=0;
 	this.init();	
 }
 

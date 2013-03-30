@@ -176,7 +176,8 @@ src: url('HUD.ttf') format('truetype');
 #debug{
 	position:absolute;
 	top:0px;right:0px;
-	width:150px;
+	width:300px;
+	padding:3px;
 	color:white;
 	background-color:rgba(0,0,0,0.5);
 	display: none;

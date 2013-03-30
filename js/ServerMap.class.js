@@ -215,6 +215,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
 
    this.update=function(){
+      var debutRenderDate = new Date;
       var _this=this;
       if(this.isRunning)
        setTimeout(function(){_this.update();},_this.GAME_SPEED);
@@ -254,6 +255,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
 
+      //On calcule le temps qu'on a mis pour faire le rendu
+      var finRenderDate=new Date();
+      var tempsLastRender = finRenderDate - debutRenderDate;
+      this.averageRenderTime = (this.averageRenderTime*9 + tempsLastRender)/10;
+      this.temporaryDisplayItem[this.numberTmpItem++]={type:'render_time', value: (Math.round(this.averageRenderTime*100)/100)};
+
       this.temporaryDisplayItem[this.numberTmpItem++]={type:'numero_vague', value: this.currentWave};
       this.temporaryDisplayItem[this.numberTmpItem++]={type:'online_players_number', value: this.getOnlinePlayers()};
       //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
@@ -265,6 +272,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.temporaryDisplayItem={};
          this.numberTmpItem=0;	     
       //}
+
    }  
 	  
    this.validatePositionToMapLimits=function(entite){
@@ -693,6 +701,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.vagueEnTrainDeSeLancer=false;
    this.totalZombiesKilled=0;
    this.MODULO_ENVOI=0;
+   this.averageRenderTime=0;
    this.ID_ENVOI=0;
    this.COSINUS_45=Math.cos(Math.PI * 45 / 180 );
 }

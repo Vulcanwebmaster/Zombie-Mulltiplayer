@@ -30,10 +30,12 @@ sauvegarde des options
 
 *** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
 *** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
-*** outil calcul perf rendu + opti
+*** outil calcul perf rendu + opti => ne pas remove les div, mais simplement les cacher, puis les remontrer
 *** validator
 *** passer l'histoire du leaderboard en css :) (nth child)
 *** corriger hitbox des drop
+*** changer design page accueil (les boites de description sont nazes)
+*** compresser le BG
 
 Idées :
 

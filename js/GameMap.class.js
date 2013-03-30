@@ -71,8 +71,12 @@ function GameMap(){
 
 
 	this.update=function(datas){
+		//variable qui est utilisée pour calculer le temps de rendu
+		var debutRenderDate=new Date;
+
 		//this.GAME_SPEED=gameCore.averageBPS;
-		this.last_update=datas.id;
+		
+		//this.last_update=datas.id;
 		this.updateDisplayedAngle=!this.updateDisplayedAngle;
 
 		//Update de tous les item temporaires
@@ -118,6 +122,9 @@ function GameMap(){
 			}
 			else if(item.type=='online_players_number'){
 				$('#nbr-online-players').text(item.value + ' joueur' +(item.value>1 ? 's' : ''));
+			}
+			else if(item.type=='render_time'){
+				$('#debug-average-server-render').text('Server moy. : ' + item.value + 'ms');
 			}
 		}
 
@@ -256,8 +263,15 @@ function GameMap(){
 
 		}
 
+		//On calcule le temps qu'on a mis pour faire le rendu
+		var finRenderDate=new Date();
+		var tempsLastRender = finRenderDate - debutRenderDate;
+		if(this.maxRenderTime < tempsLastRender) this.maxRenderTime=tempsLastRender;
+		this.averageRenderTime = (this.averageRenderTime*9 + tempsLastRender)/10;
+		$('#debug-average-client-render').text('Render moy. : ' + (Math.round(this.averageRenderTime*100)/100) + 'ms. max : ' + this.maxRenderTime +'ms');
+
 		//on lance l'update local au cas où le serveur lag
-		var _this=this;
+		//var _this=this;
 		/*setTimeout(function(){_this.localUpdate(datas.id);}, this.GAME_SPEED);*/
 	}
 
@@ -568,4 +582,6 @@ function GameMap(){
 	this.COSINUS_45=Math.cos(45/180*Math.PI);
 	this.idZombieTarget=-1;
 	this.updateDisplayedAngle=true;
+	this.averageRenderTime=0;
+	this.maxRenderTime=0;
 }
