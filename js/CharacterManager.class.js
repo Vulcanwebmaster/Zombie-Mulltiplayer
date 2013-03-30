@@ -21,7 +21,7 @@ module.exports = function CharacterManager(){
             agressivite:Math.random()*150 -75,
             instance:instance,
             PAS:this.PAS,
-            dropRate:0.1,
+            dropRate:1,
             listDropRate :{},
             special:function(){}
          };
@@ -79,12 +79,11 @@ module.exports = function CharacterManager(){
                     this.speed=this.speed < this.PAS*1.1 ? this.speed + 0.5 : this.PAS*1.1;  
                 }
             }
-            result.dropRate=0.2;
-            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=20;
+            result.dropRate=0.15;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=30;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=20;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=10;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=7;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=3;
          }
@@ -107,8 +106,8 @@ module.exports = function CharacterManager(){
             }
             result.dropRate=0.5;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=70;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=10;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=10;
          }
          //Très rapide 10 DPS
          if(type==this.ZOMBIE_TRES_RAPIDE){
@@ -190,10 +189,10 @@ module.exports = function CharacterManager(){
                 }
             }
             result.dropRate=0.4;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=30;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=30;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=15;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=5;
          }
          //Zombie explosif
          //console.log(result);
@@ -456,7 +455,7 @@ module.exports = function CharacterManager(){
         return {id:this.LISTE_DROPPABLES[idDrop], x:zombieTuer.x, y:zombieTuer.y, taille:40};
       total+=zombieTuer.listDropRate[this.LISTE_DROPPABLES[idDrop]];
     }
-    console.log('Petit probleme dans les random du getRandomDroppable');
+    console.log('Petit probleme dans les random du getRandomDroppable sur un ' + zombieTuer.style +' avec un pourcentage de : ' + random);
     return {id:this.LISTE_DROPPABLES.BONUS_SOIN, x:zombieTuer.x, y:zombieTuer.y, taille:40};
   }
 
@@ -524,13 +523,13 @@ module.exports = function CharacterManager(){
     this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 325*325); //en gros, dès que le joueur peut le voie, il attaque
     this.VAGUE_MAX=15;
     this.LISTE_DROPPABLES={
+      BONUS_SOIN:8,
+      BONUS_VITESSE:7,
       ARME_WALTER:1,
       ARME_DEAGLE:2,
       ARME_UZI:3,
       ARME_SKORPION:4,
       ARME_AK:5,
-      ARME_M16:6,
-      BONUS_VITESSE:7,
-      BONUS_SOIN:8
+      ARME_M16:6      
     };
 }

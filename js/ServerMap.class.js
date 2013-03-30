@@ -670,7 +670,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       var droppable=null;
       for(var idDroppable in this.listeDroppables){
          droppable=this.listeDroppables[idDroppable];
-         if(this.calculDistanceBetween(perso, droppable) < droppable.taille/2){
+         //On calcule le centre du perso et du droppable
+         var persoTmp = {x:perso.x+perso.taille/2, y:perso.y+perso.taille/2};
+         var dropTmp = {x:droppable.x+droppable.taille/2, y:droppable.y+droppable.taille/2};
+         if(this.calculDistanceBetween(persoTmp, dropTmp) < perso.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
             if(msg!='')
                this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});

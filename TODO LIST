@@ -16,7 +16,7 @@
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 systeme pour aider ceux qui rejoignent en cours ?
-page FB
+page FB + analytics
 supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 probleme du tir qui ne touche pas, encore et toujours...
@@ -27,15 +27,15 @@ Faire une page d'avancement / suggestions / infos (whishlist du coup)
 voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
 
-
 *** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
+*** w3c validator
 *** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
 *** outil calcul perf rendu + opti => ne pas remove les div, mais simplement les cacher, puis les remontrer
-*** validator
-*** passer l'histoire du leaderboard en css :) (nth child)
-*** corriger hitbox des drop
 *** changer design page accueil (les boites de description sont nazes)
 *** compresser le BG
+*** empêcher d'aller vague 16 x)
+*** ajouter une ligne "latency" avec un timestamp lancé par le serveur et changer l'autre en "espace entre reception"
+*** lors de la maj, faire un pull puis un push a partir du serveur (car j'y ai changé la typo dans la description)
 
 Idées :
 
@@ -59,5 +59,11 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.2.1 alpha (20130328)
-
+--- v 0.9.3 alpha (201303XX)
+	ADD :
+		L'outil de debug (touche *) apporte plus d'informations
+	EDIT :
+		Multiples modification de design (notamment la font plus grosse pour plus de lisibilité)
+		Modification des drop rates
+	FIX :
+		Les items à ramasser ont maintenant une plus grande zone de tolérance

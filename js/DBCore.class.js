@@ -87,9 +87,7 @@ module.exports = function DBCore(){
          var style="";
          response.write('<tr><th>Position</th><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++){
-            if(i+1<4) style='style="font-weight:bold"';
-            else style='';
-            response.write('<tr '+style+'><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
          }
          response.end();
       });
@@ -101,12 +99,7 @@ module.exports = function DBCore(){
          var totalKills=0,bestRecord=-1;
          var style="";
          for(var i=0; i<users.length;i++){
-            if(i+1==1) style='style="font-weight:bold;font-size:1.5em"';
-            else if(i+1==2) style='style="font-weight:bold;font-size:1.4em;"';
-            else if(i+1==3) style='style="font-weight:bold;font-size:1.3em;"';
-            else if(i+1 >3 && i+1 <=5) style='style="font-size:1.2em;"';
-            else style='';
-            response.write('<tr '+ style +'><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
             totalKills+=users[i].kills;
             bestRecord=Math.max(users[i].record, bestRecord);
          }
