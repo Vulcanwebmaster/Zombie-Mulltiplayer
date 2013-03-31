@@ -48,6 +48,13 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       for(var id in this.listeSpectateurs) result+= " " +  this.listeSpectateurs[id].pseudo + " (spectateur) | ";
       return result;
    }
+   this.getListeJoueursWithIDStr=function(){
+      var result="Liste des joueurs : ";
+      for(var id in this.listeJoueurs) result+= " " +  this.listeJoueurs[id].pseudo + " ("+id+") | ";
+      for(var id in this.listeAttente) result+= " " +  this.listeAttente[id].pseudo + " ("+id+") | ";
+      for(var id in this.listeSpectateurs) result+= " " +  this.listeSpectateurs[id].pseudo + " ("+id+") | ";
+      return result;
+   }
    this.getPlayingPlayers=function(){
       var cpt=0;
       for(var id in this.listeJoueurs)   cpt++;

@@ -16,7 +16,7 @@
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 systeme pour aider ceux qui rejoignent en cours ?
-page FB + analytics
+page FB + analytics (barre "sociale")
 supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 probleme du tir qui ne touche pas, encore et toujours...
@@ -26,16 +26,13 @@ pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
 voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
+w3c validator
 
 *** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
-*** w3c validator
 *** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
 *** outil calcul perf rendu + opti => ne pas remove les div, mais simplement les cacher, puis les remontrer
-*** changer design page accueil (les boites de description sont nazes)
 *** compresser le BG
-*** empêcher d'aller vague 16 x)
-*** lors de la maj, faire un pull puis un push a partir du serveur (car j'y ai changé la typo dans la description)
-*** baisser encore les drop rates
+*** lors de la maj, faire un pull puis un push a partir du serveur (car j'y ai changé la typo dans la description) faire de la pub sur IUT quand la maj sera faite
 *** mettre le boss en plus gros
 *** mettre le zombiz slayer seulement sur le nombre de kills de la manche
 
@@ -66,7 +63,7 @@ Idées :
 		L'outil de debug (touche *) apporte plus d'informations (latence, temps de calcul client/server)
 		L'adrenaline est maintenant cumulable
 	EDIT :
-		Multiples modification de design (notamment la font plus grosse pour plus de lisibilité)
+		Multiples modification de design (notamment la police de caractère plus grosse pour plus de lisibilité)
 		Modification des drop rates
 	FIX :
 		Les items à ramasser ont maintenant une plus grande zone de tolérance

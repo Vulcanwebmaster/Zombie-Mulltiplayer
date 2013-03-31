@@ -28,28 +28,46 @@ src: url('zombie.ttf') format('truetype');
 }
 
 #liste-zombies{
+	width:500px;
+	margin:auto;
+	border-collapse:separate;
+border-spacing:0px 20px;
+}
+#liste-zombies tr{
+	margin-top: 10px;
 }
 #liste-zombies td{
-	width:30%;
 	padding:10px;
-	background-color:rgba(50,50,50,0.9);
+	background-color:#444444;
+	box-shadow: 0px 0px 15px black;
 	border-radius:10px;
-	border:2px groove grey;
 	color:rgb(210,210,210);
 	text-align: justify;
 	vertical-align: top;
 }
 #liste-zombies p{
+	box-shadow: none;
+	padding:0 20px;
+	text-align: justify;
+}
+#liste-zombies h4{
+	padding:0;
+	margin:0;
+	margin-left:20px;
+	color:rgb(230, 230, 230);
+	text-align: center;
 }
 
 h3{
 	border-bottom:1px solid white;
+	text-align: center;
 }
 .miniature-zombie{
 	width:100px;
 	height: 100px;
 	float:left;
 	margin-top:10px;
+	margin-left:10px;
 	background-image: url('/img/zombies.png');
 	-webkit-transform:rotate(90deg);
 	-moz-transform:rotate(90deg);
@@ -61,15 +79,22 @@ h3{
 }
 
 .stats-bonnes{
-	color:rgb(70,128,51);
+	background-color:rgb(70,128,51);
+	border-radius:2px;
+	padding:0 3px;
 }
 .stats-moyennes{
-	color:rgb(179,121,15);
+	background-color:rgb(159,111,15);
+	border-radius:2px;
+	padding:0 3px;
 }
 .stats-mauvaises{
-	color:rgb(162,13,17);
+	background-color:rgb(132,53,57);
+	border-radius:2px;
+	padding: 0 3px;
 }
 .italic{
+	clear:both;
 	font-style: italic;
 	color:rgb(190,190,190);
 }

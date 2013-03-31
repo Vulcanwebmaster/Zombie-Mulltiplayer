@@ -113,6 +113,18 @@ function specialCommandProcessing(string){
     else if(string=="/who"){
         result=serverMap.getListeJoueursStr();
     }
+    else if(string=="/list"){
+        //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
+        result=serverMap.getListeJoueursWithIDStr();
+    }
+    else if(string.substr(0,5)=="/kick"){
+        //Commande admin
+        //Usage : /kick ID
+        if(string.length>=6)
+            var ID = parseInt(string.substring(6,string.length));
+        else
+            result="La commande s'utilise comme ceci : /kick playerID. Taper /list pour avoir la liste des ID";
+    }
     return result;
 }
 
