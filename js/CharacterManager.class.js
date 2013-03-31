@@ -79,7 +79,7 @@ module.exports = function CharacterManager(){
                     this.speed=this.speed < this.PAS*1.1 ? this.speed + 0.5 : this.PAS*1.1;  
                 }
             }
-            result.dropRate=0.15;
+            result.dropRate=0.1;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=30;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=20;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
@@ -188,7 +188,7 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementViolent');
                 }
             }
-            result.dropRate=0.4;
+            result.dropRate=0.2;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=40;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=40;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=15;

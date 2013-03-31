@@ -36,6 +36,8 @@ sauvegarde des options
 *** empêcher d'aller vague 16 x)
 *** ajouter une ligne "latency" avec un timestamp lancé par le serveur et changer l'autre en "espace entre reception"
 *** lors de la maj, faire un pull puis un push a partir du serveur (car j'y ai changé la typo dans la description)
+*** baisser encore les drop rates
+*** mettre le boss en plus gros
 
 Idées :
 
