@@ -40,10 +40,11 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementLeger');
                 }
             }
-            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=40;
-            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=40;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_WALTER]=15;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=5;
+            result.dropRate=0.2;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=45;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=45;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_WALTER]=7;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=3;
          }
          //Rapide 8 DPS
          if(type==this.ZOMBIE_RAPIDE){
@@ -79,12 +80,11 @@ module.exports = function CharacterManager(){
                     this.speed=this.speed < this.PAS*1.1 ? this.speed + 0.5 : this.PAS*1.1;  
                 }
             }
-            result.dropRate=0.2;
-            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=20;
+            result.dropRate=0.1;
+            result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=30;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=20;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=10;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=7;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=3;
          }
@@ -105,10 +105,10 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('assomage');
                 }
             }
-            result.dropRate=0.5;
+            result.dropRate=0.3;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=70;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=10;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_DEAGLE]=20;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=10;
          }
          //Très rapide 10 DPS
          if(type==this.ZOMBIE_TRES_RAPIDE){
@@ -189,11 +189,11 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementViolent');
                 }
             }
-            result.dropRate=0.4;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=30;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=30;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=20;
-            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=20;
+            result.dropRate=0.2;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_UZI]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_SKORPION]=40;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_AK]=15;
+            result.listDropRate[this.LISTE_DROPPABLES.ARME_M16]=5;
          }
          //Zombie explosif
          //console.log(result);
@@ -254,7 +254,9 @@ module.exports = function CharacterManager(){
             },
             secondsToTic:function(secondes){return secondes*1000/50;},
             addBuff:function(type){
-                this.buffs[type]={};
+                //on regarde si le buff existe déjà ou pas
+                if(this.buffs[type]==undefined)
+                   this.buffs[type]={};
                 if(type=="saignementLeger"){
                     this.buffs[type].duree=this.secondsToTic(5);
                     this.buffs[type].description="Saignement léger : votre vie descend lentement";
@@ -280,7 +282,10 @@ module.exports = function CharacterManager(){
                   this.buffs[type].description="Survivor : vos dégâts sont amplifiés par la vue de vos amis morts";
                 }
                 else if(type=="adrenaline"){
-                  this.buffs[type].duree=this.secondsToTic(10);
+                  if(this.buffs[type].duree!=undefined)
+                    this.buffs[type].duree=this.buffs[type].duree+this.secondsToTic(10);
+                  else
+                    this.buffs[type].duree=this.secondsToTic(10);
                   this.buffs[type].description="Adrenaline : Le monde vous parait plus lent. Ou alors, vous allez plus vite ?";
                 }
             },
@@ -405,11 +410,11 @@ module.exports = function CharacterManager(){
 		nombre[this.ZOMBIE_NORMAL]= {     0:10, 1:20, 2:30, 3:40, 4:50, 5:0,  6:30, 7:30, 8:30, 9:30, 10:0,  11:30, 12:30, 13:30, 14:30, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RAPIDE]= {     0:0 , 1:0,  2:5,  3:15, 4:30, 5:0,  6:30, 7:30, 8:20, 9:20, 10:10, 11:10, 12:10, 13:10, 14:10, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_GROS]= {       0:0 , 1:0,  2:0,  3:0,  4:1,  5:0,  6:3,  7:3,  8:2,  9:2,  10:0,  11:2, 12:2,   13:2,  14:2,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:1, 10:20, 11:20,12:20,  13:25, 14:30,  15:0, 16:200,17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_TRES_RAPIDE]= {0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:1, 10:20, 11:20,12:20,  13:25, 14:30,  15:0, 16:200,17:300, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_RESISTANT]= {  0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:1,  9:2,  10:1,  11:1, 12:1,   13:1,  14:1,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:0,  11:0, 12:0,   13:0,  14:0,  15:1, 16:0, 17:0, 18:0, 19:0, 20:0};
+		nombre[this.ZOMBIE_BOSS1]= {      0:0 , 1:0,  2:0,  3:0,  4:0,  5:0,  6:0,  7:0,  8:0,  9:0,  10:0,  11:0, 12:0,   13:0,  14:0,  15:1, 16:0, 17:10, 18:0, 19:0, 20:0};
 		nombre[this.ZOMBIE_ARME]= {       0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:0,  7:0,  8:2,  9:2,  10:5,  11:1, 12:1,   13:3,  14:3,  15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
-    nombre[this.ZOMBIE_RAPIDE2]={     0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:5,  7:10, 8:20, 9:20, 10:10,  11:20, 12:20, 13:20, 14:20, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0};
+    nombre[this.ZOMBIE_RAPIDE2]={     0:0 , 1:0,  2:0,  3:0,  4:0,  5:2,  6:5,  7:10, 8:20, 9:20, 10:10,  11:20, 12:20, 13:20, 14:20, 15:0, 16:0, 17:100, 18:0, 19:0, 20:0};
 		//Affichage des totaux par vague dans la console, pour vérification.
 		for(var i=0 ; i<=15 ; i++){
 			var totalTmp=0;
@@ -456,7 +461,7 @@ module.exports = function CharacterManager(){
         return {id:this.LISTE_DROPPABLES[idDrop], x:zombieTuer.x, y:zombieTuer.y, taille:40};
       total+=zombieTuer.listDropRate[this.LISTE_DROPPABLES[idDrop]];
     }
-    console.log('Petit probleme dans les random du getRandomDroppable');
+    console.log('Petit probleme dans les random du getRandomDroppable sur un ' + zombieTuer.style +' avec un pourcentage de : ' + random);
     return {id:this.LISTE_DROPPABLES.BONUS_SOIN, x:zombieTuer.x, y:zombieTuer.y, taille:40};
   }
 
@@ -524,13 +529,13 @@ module.exports = function CharacterManager(){
     this.MAX_DIAGONALE_PLAYER=Math.sqrt(450*450 + 325*325); //en gros, dès que le joueur peut le voie, il attaque
     this.VAGUE_MAX=15;
     this.LISTE_DROPPABLES={
+      BONUS_SOIN:8,
+      BONUS_VITESSE:7,
       ARME_WALTER:1,
       ARME_DEAGLE:2,
       ARME_UZI:3,
       ARME_SKORPION:4,
       ARME_AK:5,
-      ARME_M16:6,
-      BONUS_VITESSE:7,
-      BONUS_SOIN:8
+      ARME_M16:6      
     };
 }

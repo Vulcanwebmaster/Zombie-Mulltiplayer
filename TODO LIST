@@ -16,7 +16,7 @@
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 systeme pour aider ceux qui rejoignent en cours ?
-page FB
+page FB + analytics (barre "sociale")
 supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 probleme du tir qui ne touche pas, encore et toujours...
@@ -26,17 +26,18 @@ pop up qui nous dit qu'on change d'arme
 Faire une page d'avancement / suggestions / infos (whishlist du coup)
 voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
-
+w3c validator
 
 *** - commandes admin IG (rang banni et admin et choix du skin dans la DB)
 *** faire pop en différé les zombies (pour pas lagger aux vagues 7, 8, 9)
-*** outil calcul perf rendu + opti
-*** validator
-*** passer l'histoire du leaderboard en css :) (nth child)
-*** corriger hitbox des drop
+*** outil calcul perf rendu + opti => ne pas remove les div, mais simplement les cacher, puis les remontrer
+*** compresser le BG
+*** mettre le boss en plus gros
+*** mettre le zombiz slayer seulement sur le nombre de kills de la manche
 
 Idées :
 
+- faire un système de blocage d'IP pour les mecss bizarres qui m'attaquent ?
 - zombie attaque à distance ?
 - ajouter un système de "continuité" en local ! (seulement le personnage actuel ?)
 - ajouter boss 2 et 3 et eventuellement des types de zombies...
@@ -57,5 +58,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.2.1 alpha (20130328)
-
+--- v 0.9.2.2 alpha (20130331)

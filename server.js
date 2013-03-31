@@ -113,27 +113,45 @@ function specialCommandProcessing(string){
     else if(string=="/who"){
         result=serverMap.getListeJoueursStr();
     }
+    /*else if(string=="/list"){
+        //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
+        result=serverMap.getListeJoueursWithIDStr();
+    }
+    else if(string.substr(0,5)=="/kick"){
+        //Commande admin
+        //Usage : /kick ID
+        if(string.length>=6)
+            var ID = parseInt(string.substring(6,string.length));
+        else
+            result="La commande s'utilise comme ceci : /kick playerID. Taper /list pour avoir la liste des ID";
+    }*/
     return result;
 }
 
 
 /* GESTION DES ENVOIS RECEPTIONS CLIENTS */
 io.sockets.on('connection', function(socket) {
+    socket.set('pseudo', '_null');
+    socket.set('grade', 0);
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
-        var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
-        if(joueurDejaInGame == null || datas.pseudo.toLowerCase() == "visiteur")
-            var joueurId=serverMap.addJoueur(datas.pseudo, socket);
-        else{
-            socket.emit('set_id', -1);
-            socket.emit('player_spectateur', {id:-1});
-            socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
-       }
-		io.sockets.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
-		socket.set('pseudo', datas.pseudo , function () {
-			/*console.log (dateToLog(new Date) + 'Création du joueur ' + joueurId + ' (' + datas.pseudo + ')');*/
-		});
-        socket.set('id', joueurId);
+        //On vérifie avant tout que le pseudo envoyé correspond bien à celui enregistré sur la socket
+        socket.get('pseudo', function(err, pseudo){
+            if(pseudo==datas.pseudo){
+                var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
+                if(joueurDejaInGame == null || datas.pseudo.toLowerCase() == "visiteur")
+                    var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+                else{
+                    socket.emit('set_id', -1);
+                    socket.emit('player_spectateur', {id:-1});
+                    socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
+               }
+                io.sockets.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+                socket.set('id', joueurId);
+            }
+            else
+                console.log(dateToLog(new Date) + 'Le pseudo ne correspond pas à celui de la socket.(' + pseudo + ')');
+        });
 	});
 
     socket.on('update_player_mouvement', function(datas){

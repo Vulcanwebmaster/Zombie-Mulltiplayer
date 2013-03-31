@@ -24,7 +24,7 @@ body{
     background-attachment: fixed;
     background-repeat: no-repeat;
 	height: 100%;
-	font-family: 'mainFont', arial, times;
+	font-family: arial, times;
 }
 header{
 	background-color: rgba(0,0,0,0.5);
@@ -39,7 +39,7 @@ a{color:white;}
 a:visited{color:white;}
 #header{text-decoration: none;}
 
-nav{font-family:headerFont;font-size:30px;height: 40px;background-color:black;color:white;	margin-bottom: 40px;
+nav{font-family:headerFont;font-size:35px;height: 40px;background-color:black;color:white;	margin-bottom: 0px;
 	border:solid 3px black;
 	background: #4f4f4f; /* Old browsers */
 	background: -moz-linear-gradient(top,  #4f4f4f 0%, #000000 100%); /* FF3.6+ */
@@ -134,7 +134,7 @@ h2{
 	margin:0px;
 	text-shadow:1px 1px 2px black;
 }
-p{text-shadow:0px 1px 1px black;box-shadow:0px 0px 5px black;}
+p{text-shadow:1px 1px 1px black;box-shadow:0px 0px 5px black;}
 #warning-navigateur{
 	/*background-color:rgb(210,150,20);*/
 	background-color: rgb(158, 80, 0);
@@ -148,13 +148,21 @@ footer{
 	color:rgb(200,200,200);
 	font-size: 13px;
 	background-color:black;
-	padding:5px;
+	padding:10px 20px;
+	position:relative;
 }
+footer p{margin-top:0px;}
 #copyright{
 	text-align: right;
+	position:absolute;
+	top:20px;
+	right:20px;
 }
 #version{
 	text-align: right;
+	position:absolute;
+	top:40px;
+	right:20px;
 }
 
 
@@ -174,7 +182,22 @@ footer{
 #leaderboard tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);
 }
+/*gestion du truc pour afficher en gros les premiers joueurs*/
+#leaderboard tr:nth-child(2) td{font-weight: bold;font-size: 1.4em;}
+#leaderboard tr:nth-child(3) td{font-weight: bold;font-size: 1.3em;}
+#leaderboard tr:nth-child(4) td{font-weight: bold;font-size: 1.2em;}
+#leaderboard tr:nth-child(5) td{font-size: 1.1em;}
+#leaderboard tr:nth-child(6) td{font-size: 1.1em;}
 
 .preload{display: none;}
 
 .twitter-timeline{display:block;margin:20px auto;width:100%;}
+#social-bar{
+	background-color:rgba(0,0,0,0.7);
+	border-bottom: 1px solid black;
+	margin-bottom: 40px;
+	height: 25px;	
+}
+#social-bar span{float:right;padding:0 15px;}
+#social-bar a{text-decoration: none;font-size: 12px;}
+#social-bar img{height: 25px;vertical-align: middle;margin-right: 5px;}

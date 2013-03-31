@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Zombiz ! Team Survival | Jouer</title>
-	<meta charset='utf-8'/>
+	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="/css/common.css"/>
 	<link rel="stylesheet" type="text/css" href="/css/game.css"/>
@@ -14,7 +14,6 @@
 	<script type="text/javascript" src="/js/Options.js"></script>
 	<script type="text/javascript" src="/js/GameCore.class.js"></script>
 	<script type="text/javascript" src="/js/GameMap.class.js"></script>
-	<meta charset="utf-8"/>
 </head>
 <!--onBeforeUnload="return('Êtes vous sûr de vouloir quitter Zombiz ?')"-->
 <body oncontextmenu="return false">
@@ -32,10 +31,16 @@
 				<li><a href="/leaderboard">Leaderboard</a></li>
 			</ul>
 		</nav>
+		<div id="social-bar">
+			<span><a target="_blank" href="callto:whiteslash28"><img src="/img/icone-skype.png" alt="icone skype"/>Un problème, une question ? Venez en parler sur skype (@whiteslash28)</a></span>
+			<span><a target="_blank" href="https://www.facebook.com/ZombizTeamSurvival"><img src="/img/icone-facebook.png" alt="icone facebook"/>Montrez-nous votre amour des zombies sur facebook.</a></span>
+			<span><a target="_blank" href="https://twitter.com/ZombizDev"><img src="/img/icone-twitter.png" alt="icone twitter"/>Suivez-nous sur twitter</a></span>
+		</div>
 
-		<p style="color:white;background-color:rgb(130,20,20);padding:5px">Jeu en cours de développement (alpha). Bug ? Suggestions ? Envoyer un mail ici : <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a> ou ajoutez moi sur skype : <strong>whiteslash28</strong>
+		<p style="color:white;background-color:#b94a48;padding:5px">Jeu en cours de développement (alpha).<br/>
+		 Bug ? Suggestions ? Envoyer un mail ici : <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a> ou ajoutez moi sur skype : <strong>whiteslash28</strong>.
 		</p>
-		<p style="color:white;background-color:rgb(130,20,20);padding:5px">Renseigner une adresse mail valide (onglet "mon Compte" quand vous êtes connecté) vous permettra d'être au courant des mises à jours importantes et de faire une récupération de mot de passe en cas d'oubli.</p>
+		<p style="color:white;background-color:#3a87ad;padding:5px">Renseigner une adresse mail valide (onglet "mon Compte" quand vous êtes connecté) vous permettra d'être au courant des mises à jours importantes et de faire une récupération de mot de passe en cas d'oubli.</p>
 		<div id="menu">
 			<span id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
@@ -67,7 +72,12 @@
 				<div id="buffs"></div>
 				<span id="online-players"><span id="nbr-online-players">-1 joueur</span> en ligne</span>
 			</div>
-			<div id="debug"></div>
+			<div id="debug">
+				<span id="debug-average-BPS"></span><br/>
+				<span id="debug-average-latency"></span><br/>
+				<span id="debug-average-client-render"></span><br/>
+				<span id="debug-average-server-render"></span>
+			</div>
 
 			<div id="inscription">
 				<div>
@@ -91,9 +101,9 @@
 			<div style="display:none;" id="options">
 				<div>
 					<h2>Options</h2>
-					<input type="checkbox" id="checkbox-audio" checked="true"/>Activer le son (raccourci touche M)<br/>
-					<input type="checkbox" id="checkbox-pseudo" checked="true"/>Afficher les pseudos (raccourci touche V)<br/>
-					<input type="checkbox" id="checkbox-sang" checked="true"/>Afficher le sang<br/>
+					<input type="checkbox" id="checkbox-audio" checked="checked"/>Activer le son (raccourci touche M)<br/>
+					<input type="checkbox" id="checkbox-pseudo" checked="checked"/>Afficher les pseudos (raccourci touche V)<br/>
+					<input type="checkbox" id="checkbox-sang" checked="checked"/>Afficher le sang<br/>
 					<a id="hide_options" href="#">Fermer</a>
 				</div>
 			</div>
@@ -121,44 +131,59 @@
 				<span style="font-weight:bold">Pour éviter tout problème, utilisez <a href="http://www.google.fr/intl/fr/chrome/browser/">Google Chrome</a> </span>! (ou un firefox à jour).
 			</p>
 		<footer>
-			<p style="float:left">Développement : Mikaël B. aka. WhiteSlash.<br/>
-			Pour tout bug ou suggestion, m'envoyer un mail <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a><br/>
-			Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).</p>
+			<p>
+				Développement : Mikaël B. aka. WhiteSlash.<br/>
+				Pour tout bug ou suggestion, m'envoyer un mail <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a><br/>
+				Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).<br/>
+				<a href="http://www.yootheme.com/icons" target="_blank">Social icons by YOOtheme</a>
+			</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.9.2.1 alpha (20130328)</p>
+			<p id="version">Version 0.9.2.2 alpha (20130331)</p>
 		</footer>
 	</div><!-- div#wrapper -->
+	<!-- Script servant à forcer le chargement des sprites-->
+	<script type="text/javascript">
+	var preloadImage1 = new Image(); 
+	preloadImage1.src = 'img/players.png'; 
+	var preloadImage2 = new Image(); 
+	preloadImage2.src = 'img/zombies.png'; 
+	var preloadImage3 = new Image(); 
+	preloadImage3.src = 'img/buffs.png'; 
+	var preloadImage4 = new Image(); 
+	preloadImage4.src = 'img/sang.png'; 
+	var preloadImage5 = new Image(); 
+	preloadImage5.src = 'img/simple_bullet.png'; 
+	var preloadImage6 = new Image();
+	preloadImage6.src ='img/droppables.png';
+	var preloadImage7 = new Image();
+	preloadImage7.src = 'img/simple_bullet.png';
+	</script>
+	<!-- Chargement des sons -->
+	<script>
+	var nbZombieSound=8;
+	var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
+						'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 
+						'ZOMBIE_2':'/sounds/silverstone.wav', 'ZOMBIE_3':'/sounds/zombie_attack.wav',
+						'ZOMBIE_4':'/sounds/Zombie_Brain_Eater.mp3', 'ZOMBIE_5':'/sounds/Zombie_Gets_Attacked.mp3',
+						'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
+						'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
+						'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
+	var AUDIO={};
+	for(var key in audio_tableau){
+		AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
+	}
+	</script>
+
+	<!-- Google analytics -->
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-39756012-1']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
 </body>
-<!-- Script servant à forcer le chargement des sprites-->
-<script>
-var preloadImage1 = new Image(); 
-preloadImage1.src = 'img/players.png'; 
-var preloadImage2 = new Image(); 
-preloadImage2.src = 'img/zombies.png'; 
-var preloadImage3 = new Image(); 
-preloadImage3.src = 'img/buffs.png'; 
-var preloadImage4 = new Image(); 
-preloadImage4.src = 'img/sang.png'; 
-var preloadImage5 = new Image(); 
-preloadImage5.src = 'img/simple_bullet.png'; 
-var preloadImage6 = new Image();
-preloadImage6.src ='img/droppables.png';
-var preloadImage7 = new Image();
-preloadImage7.src = 'img/simple_bullet.png';
-</script>
-<!-- Chargement des sons -->
-<script>
-var nbZombieSound=8;
-var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
-					'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 
-					'ZOMBIE_2':'/sounds/silverstone.wav', 'ZOMBIE_3':'/sounds/zombie_attack.wav',
-					'ZOMBIE_4':'/sounds/Zombie_Brain_Eater.mp3', 'ZOMBIE_5':'/sounds/Zombie_Gets_Attacked.mp3',
-					'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
-					'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
-					'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
-var AUDIO={};
-for(var key in audio_tableau){
-	AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
-}
-</script>
 </html>

@@ -48,6 +48,13 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       for(var id in this.listeSpectateurs) result+= " " +  this.listeSpectateurs[id].pseudo + " (spectateur) | ";
       return result;
    }
+   this.getListeJoueursWithIDStr=function(){
+      var result="Liste des joueurs : ";
+      for(var id in this.listeJoueurs) result+= " " +  this.listeJoueurs[id].pseudo + " ("+id+") | ";
+      for(var id in this.listeAttente) result+= " " +  this.listeAttente[id].pseudo + " ("+id+") | ";
+      for(var id in this.listeSpectateurs) result+= " " +  this.listeSpectateurs[id].pseudo + " ("+id+") | ";
+      return result;
+   }
    this.getPlayingPlayers=function(){
       var cpt=0;
       for(var id in this.listeJoueurs)   cpt++;
@@ -215,6 +222,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    }
 
    this.update=function(){
+      var debutRenderDate = new Date;
       var _this=this;
       if(this.isRunning)
        setTimeout(function(){_this.update();},_this.GAME_SPEED);
@@ -254,17 +262,25 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
 
+      //On calcule le temps qu'on a mis pour faire le rendu
+      var finRenderDate=new Date();
+      var tempsLastRender = finRenderDate - debutRenderDate;
+      this.averageRenderTime = (this.averageRenderTime*9 + tempsLastRender)/10;
+      this.temporaryDisplayItem[this.numberTmpItem++]={type:'render_time', value: (Math.round(this.averageRenderTime*100)/100)};
+
       this.temporaryDisplayItem[this.numberTmpItem++]={type:'numero_vague', value: this.currentWave};
       this.temporaryDisplayItem[this.numberTmpItem++]={type:'online_players_number', value: this.getOnlinePlayers()};
       //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
       //if( this.MODULO_ENVOI == 0){
-		   this.io.sockets.volatile.emit('update',{'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
+		   this.io.sockets.volatile.emit('update',{'timestamp' : new Date,
+                                              'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
                                               'listeTemporaryItems': this.temporaryDisplayItem, 'listeDroppables' : this.listeDroppables});
          //On réinitialise les item temporaires.
          this.temporaryDisplayItem={};
          this.numberTmpItem=0;	     
       //}
+
    }  
 	  
    this.validatePositionToMapLimits=function(entite){
@@ -551,7 +567,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             }  
             else{
                //Sinon il gagne un bonus
-               this.listeJoueurs[idPerso].life+=25;
+               //this.listeJoueurs[idPerso].life+=25;
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:this.listeJoueurs[idPerso].id, life:this.listeJoueurs[idPerso].life};
             }
             //comparaison du nombre de kills
@@ -662,7 +678,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       var droppable=null;
       for(var idDroppable in this.listeDroppables){
          droppable=this.listeDroppables[idDroppable];
-         if(this.calculDistanceBetween(perso, droppable) < droppable.taille/2){
+         //On calcule le centre du perso et du droppable
+         var persoTmp = {x:perso.x+perso.taille/2, y:perso.y+perso.taille/2};
+         var dropTmp = {x:droppable.x+droppable.taille/2, y:droppable.y+droppable.taille/2};
+         if(this.calculDistanceBetween(persoTmp, dropTmp) < perso.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
             if(msg!='')
                this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
@@ -693,6 +712,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    this.vagueEnTrainDeSeLancer=false;
    this.totalZombiesKilled=0;
    this.MODULO_ENVOI=0;
+   this.averageRenderTime=0;
    this.ID_ENVOI=0;
    this.COSINUS_45=Math.cos(Math.PI * 45 / 180 );
 }
