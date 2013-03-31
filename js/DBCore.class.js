@@ -46,6 +46,7 @@ module.exports = function DBCore(){
    this.connect=function(datas, socket){
       //On regarde si on se connecte en visiteur
       if(datas.pseudo=='visiteur'){
+         socket.set('pseudo', 'visiteur');
          socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':datas.pseudo});
          return;
       }
@@ -55,6 +56,7 @@ module.exports = function DBCore(){
             socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
          }
          else{
+            socket.set('pseudo', users[0].pseudo);
             socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
          }
       });

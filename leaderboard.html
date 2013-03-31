@@ -24,9 +24,26 @@
 			</ul>
 		</nav>
 
+		<div id="social-bar">
+			<span><a target="_blank" href="callto:whiteslash28"><img src="/img/icone-skype.png" alt="icone skype"/>Un problème, une question ? Venez en parler sur skype (@whiteslash28)</a></span>
+			<span><a target="_blank" href="https://www.facebook.com/ZombizTeamSurvival"><img src="/img/icone-facebook.png" alt="icone facebook"/>Montrez-nous votre amour des zombies sur facebook.</a></span>
+			<span><a target="_blank" href="https://twitter.com/ZombizDev"><img src="/img/icone-twitter.png" alt="icone twitter"/>Suivez-nous sur twitter</a></span>
+		</div>
+
 		<table id="leaderboard">
 			<tr><th>Chargement en cours...</th></tr>
 		</table>
+
+		<footer>
+			<p>
+				Développement : Mikaël B. aka. WhiteSlash.<br/>
+				Pour tout bug ou suggestion, m'envoyer un mail <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a><br/>
+				Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).<br/>
+				<a href="http://www.yootheme.com/icons" target="_blank">Social icons by YOOtheme</a>
+			</p>
+			<p id="copyright">Copyright ©2013</p>
+			<p id="version">Leaderboard mis à jour à chaque fin de partie.</p>
+		</footer>
 	</div>
 	<script>	
 	$(function(){
@@ -35,6 +52,17 @@
 			$('#leaderboard').html(data);
 		});
 	});
+	</script>
+	<!-- Google analytics -->
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-39756012-1']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
 	</script>
 </body>
 </html>
