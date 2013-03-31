@@ -34,10 +34,10 @@ sauvegarde des options
 *** changer design page accueil (les boites de description sont nazes)
 *** compresser le BG
 *** empêcher d'aller vague 16 x)
-*** ajouter une ligne "latency" avec un timestamp lancé par le serveur et changer l'autre en "espace entre reception"
 *** lors de la maj, faire un pull puis un push a partir du serveur (car j'y ai changé la typo dans la description)
 *** baisser encore les drop rates
 *** mettre le boss en plus gros
+*** mettre le zombiz slayer seulement sur le nombre de kills de la manche
 
 Idées :
 
@@ -63,7 +63,8 @@ Idées :
 
 --- v 0.9.3 alpha (201303XX)
 	ADD :
-		L'outil de debug (touche *) apporte plus d'informations
+		L'outil de debug (touche *) apporte plus d'informations (latence, temps de calcul client/server)
+		L'adrenaline est maintenant cumulable
 	EDIT :
 		Multiples modification de design (notamment la font plus grosse pour plus de lisibilité)
 		Modification des drop rates

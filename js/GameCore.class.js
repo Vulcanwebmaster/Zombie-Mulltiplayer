@@ -359,7 +359,7 @@ function GameCore(pseudo,mdp){
 			if(currentPeak>gameCore.maxPeak)gameCore.maxPeak=currentPeak;
 			//console.log(currentPeak + 'ms since last update');
 			gameCore.averageBPS=(gameCore.averageBPS*9 + currentPeak)/ 10;
-			$('#debug-average-latency').text( 'Reception moy. : ' + (Math.round(gameCore.averageBPS*100)/100) + 'ms. max :' + gameCore.maxPeak +'ms');
+			$('#debug-average-BPS').text( 'Recept moy. : ' + (Math.round(gameCore.averageBPS*100)/100) + 'ms. max :' + gameCore.maxPeak +'ms');
 			gameCore.lastUpdate=now;
 		}
 		else

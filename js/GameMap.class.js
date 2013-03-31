@@ -76,6 +76,14 @@ function GameMap(){
 
 		//this.GAME_SPEED=gameCore.averageBPS;
 		
+		//On calcule la latence
+		var currentTime= new Date;
+		var servTime = new Date(datas.timestamp);
+		var currentLatency = currentTime - servTime;
+		this.averageLatency = (this.averageLatency*9 + currentLatency)/10;
+		if(currentLatency>this.peakLatency)this.peakLatency=currentLatency;
+		$('#debug-average-latency').text('Latence moy. : ' + (Math.round(this.averageLatency*100)/100) + 'ms. max : ' + this.peakLatency +'ms');
+
 		//this.last_update=datas.id;
 		this.updateDisplayedAngle=!this.updateDisplayedAngle;
 
@@ -584,4 +592,6 @@ function GameMap(){
 	this.updateDisplayedAngle=true;
 	this.averageRenderTime=0;
 	this.maxRenderTime=0;
+	this.averageLatency=0;
+	this.peakLatency=0;
 }
