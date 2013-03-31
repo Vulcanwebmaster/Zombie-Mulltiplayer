@@ -38,6 +38,7 @@ w3c validator
 
 Idées :
 
+- faire un système de blocage d'IP pour les mecss bizarres qui m'attaquent ?
 - zombie attaque à distance ?
 - ajouter un système de "continuité" en local ! (seulement le personnage actuel ?)
 - ajouter boss 2 et 3 et eventuellement des types de zombies...
@@ -65,5 +66,6 @@ Idées :
 	EDIT :
 		Multiples modification de design (notamment la police de caractère plus grosse pour plus de lisibilité)
 		Modification des drop rates
+		Retrait du +25 de vie par vague
 	FIX :
 		Les items à ramasser ont maintenant une plus grande zone de tolérance

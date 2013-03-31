@@ -40,7 +40,7 @@ module.exports = function CharacterManager(){
                         args.target.addBuff('saignementLeger');
                 }
             }
-            result.dropRate=0.4;
+            result.dropRate=0.2;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_SOIN]=45;
             result.listDropRate[this.LISTE_DROPPABLES.BONUS_VITESSE]=45;
             result.listDropRate[this.LISTE_DROPPABLES.ARME_WALTER]=7;

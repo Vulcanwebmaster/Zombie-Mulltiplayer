@@ -567,7 +567,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             }  
             else{
                //Sinon il gagne un bonus
-               this.listeJoueurs[idPerso].life+=25;
+               //this.listeJoueurs[idPerso].life+=25;
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:this.listeJoueurs[idPerso].id, life:this.listeJoueurs[idPerso].life};
             }
             //comparaison du nombre de kills
