@@ -77,7 +77,7 @@ module.exports = function CharacterManager(){
             result.special=function(args){
                 if(args.type=="defense"){
                     //on court un peu plus vite si on prend des dégats
-                    this.speed=this.speed < this.PAS*1.1 ? this.speed + 0.5 : this.PAS*1.1;  
+                    this.speed=this.speed < this.PAS*1.15 ? this.speed + 0.5 : this.PAS*1.15;  
                 }
             }
             result.dropRate=0.1;

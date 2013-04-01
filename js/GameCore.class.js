@@ -39,7 +39,7 @@ function GameCore(pseudo,mdp){
 	this.init=function(){
 		this.socket = io.connect(SERVER_ADRESS);
 		this.socket.on('broadcast_msg', function ( data ) {
-			gameCore.tchat(data.auteur, data.message, data.class);
+			gameCore.tchat(data.auteur, data.message, data.class, data.rang);
 		});
 		this.socket.on('connect', function(){
 			$('#inscription h2').text('Liaison avec le serveur OK...');
@@ -217,6 +217,19 @@ function GameCore(pseudo,mdp){
 		this.socket.on('success', function(){
 			alert('La mise à jour s\'est bien déroulée.');
 		});
+		this.socket.on('kick_player', function(datas){
+			if(datas.id==gameCore.playerId){
+				alert('KICK ! Vous avez été kické du jeu.');
+				document.location.reload(true);
+			}
+		});
+		this.socket.on('ban_player', function(datas){
+			if(datas.id==gameCore.playerId){
+				alert('Vous avez été banni du jeu.');
+				createCookie('zombiz_version_z', 1, 5);
+				document.location.reload(true);
+			}
+		});
 
 	}
 
@@ -338,14 +351,18 @@ function GameCore(pseudo,mdp){
 		return true;
 	}
 
-	this.tchat=function(auteur,message,classe){
+	this.tchat=function(auteur,message,classe, rang){
 		//On supprime si y'a trop de messages
 		if($('#tchat ul li').length>30){
 			$('#tchat ul li:lt(5)').remove();
 		}
 		var debutMessage='';
-		if(auteur!=undefined && auteur!='')
-			debutMessage=$('<span>').addClass('tchat-default-auteur').addClass(classe).text(auteur + '> ');
+		if(auteur!=undefined && auteur!=''){
+			if(rang==undefined)
+				debutMessage=$('<span>').addClass('tchat-rang-0').addClass(classe).text(auteur + '> ');
+			else
+				debutMessage=$('<span>').addClass('tchat-rang-' + rang).addClass(classe).text(auteur + '> ');
+		}
 		if(classe==undefined)
 			classe='';
 		var corpsMessage=$('<span>').text(message);
@@ -420,7 +437,16 @@ function updateLeaderBoard(){
 
 
 $(document).ready(function(){
-	initEventConnexion();
+	if(readCookie('zombiz_version_z')==null)
+		initEventConnexion();
+	else{
+		$('#button-inscription').hide();
+		$('#jouerVisiteur').hide();
+		$('#creerCompte').hide();
+		$('#inscription form').hide();
+		$('#inscription h2').text('Vous ne pouvez plus jouer car votre compte a été banni.').after("<p>Si il s'agit d'une erreur, veuillez contacter un administrateur.</p>");
+		alert('Vous avez été banni.');
+	}
 	//Eviter le changement du curseur en text
 	document.onselectstart = function(e){ if(e.originalEvent!=undefined) e.originalEvent.preventDefault();e.preventDefault();return false; }
 

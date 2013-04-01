@@ -43,7 +43,7 @@ module.exports = function DBCore(){
          }
       });
    }
-   this.connect=function(datas, socket){
+   this.connect=function(datas, socket, listeOnlinePlayers){
       //On regarde si on se connecte en visiteur
       if(datas.pseudo=='visiteur'){
          socket.set('pseudo', 'visiteur');
@@ -56,8 +56,13 @@ module.exports = function DBCore(){
             socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
          }
          else{
-            socket.set('pseudo', users[0].pseudo);
-            socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+            if(users[0].active==1){
+               listeOnlinePlayers[users[0].pseudo]=users[0];
+               socket.set('pseudo', users[0].pseudo);
+               socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+            }
+            else
+               socket.emit('connection_fail', {'message':'Votre compte a été banni.'});
          }
       });
    }
@@ -65,6 +70,7 @@ module.exports = function DBCore(){
    this.updatePlayerStats=function(datas){
       if(datas==null || datas==undefined){
          console.log(dateToLog(new Date) + 'DBCore::updatePlayerStats : datas = ' + datas);
+         return;
       }
       if(datas.pseudo=='visiteur') return;
       var _this=this;
@@ -89,7 +95,14 @@ module.exports = function DBCore(){
          var style="";
          response.write('<tr><th>Position</th><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++){
-            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            var classes="";
+            if(users[i].active==0)
+               classes+="leaderboard-ban ";
+            else if(users[i].rang==1)
+               classes+="leaderboard-modo ";
+            else if(users[i].rang==2)
+               classes+="leaderboard-admin ";
+            response.write('<tr class="'+classes+'"><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
          }
          response.end();
       });
@@ -101,7 +114,14 @@ module.exports = function DBCore(){
          var totalKills=0,bestRecord=-1;
          var style="";
          for(var i=0; i<users.length;i++){
-            response.write('<tr><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+            var classes="";
+            if(users[i].active==0)
+               classes+="leaderboard-ban ";
+            else if(users[i].rang==1)
+               classes+="leaderboard-modo ";
+            else if(users[i].rang==2)
+               classes+="leaderboard-admin ";
+            response.write('<tr class="'+classes+'"><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
             totalKills+=users[i].kills;
             bestRecord=Math.max(users[i].record, bestRecord);
          }
@@ -133,6 +153,9 @@ module.exports = function DBCore(){
    this.updateAccountEmail=function(pseudo, email, socket){
       this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {email:email}, function(err, data){if(err) console.log(err); else socket.emit('success');});
    }
+   this.ban=function(pseudo){
+      this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {active:0}, function(err, data){if(err) console.log(err); else console.log('Compte ' + pseudo + ' banni.');});
+   }
 
    this.mongoose= new require('mongoose');
    this.playerSchema=new this.mongoose.Schema({
@@ -145,6 +168,9 @@ module.exports = function DBCore(){
       record: {type : Number, default : -1},
       niveau: {type : Number, default :0},
       xp : {type : Number, default : 0},
+      active : {type : Number, default : 1},
+      rang : {type : Number, default : 0},
+      skin_id : {type : Number, default : 0},
       created : {type : Date, default: Date.now}
    });
 
@@ -156,3 +182,4 @@ module.exports = function DBCore(){
 db.foo.update({},{$set : { "about.bio" : ""}} , true, true); */
 
 //Champs à ajouter : active (0,1), rang(0,1,2), skin_id(X)
+//db.players.update({}, {$set : {rang:0, active:1, skin_id:0}}, true, true);

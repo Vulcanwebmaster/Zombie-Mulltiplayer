@@ -105,34 +105,81 @@ function handler( request , response ) {
 }
 
 //Fonction de commandes spéciales IG
-function specialCommandProcessing(string){
+function specialCommandProcessing(pseudo, string){
     var result='';
     if(string=="/help"){
         result='Liste des commandes : /help (donne la liste des commandes), /who (donne la liste des joueurs en ligne)';
+        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+            result+=', /list (affiche la liste des joueurs avec leur ID), /kick ID (kick le joueur ID), /annonce MSG (affiche un message type annonce)';
+        }
     }
     else if(string=="/who"){
         result=serverMap.getListeJoueursStr();
     }
-    /*else if(string=="/list"){
+    else if(string=="/list"){
         //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
-        result=serverMap.getListeJoueursWithIDStr();
+        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+            result=serverMap.getListeJoueursWithIDStr();
+        }
+        else
+            result="Vous n'avez pas les droits.";
     }
     else if(string.substr(0,5)=="/kick"){
-        //Commande admin
-        //Usage : /kick ID
-        if(string.length>=6)
-            var ID = parseInt(string.substring(6,string.length));
+        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+            if(string.length>=6){
+                var id = parseInt(string.substring(6,string.length));
+                var playerToKick = serverMap.getJoueur(id);
+                if(playerToKick==undefined) return 'Le joueur n\'existe pas';
+                dbCore.updatePlayerStats(playerToKick);
+                io.sockets.emit('kick_player', {id:id});
+                serverMap.removeJoueur(id);
+                io.sockets.emit('remove_player', {'id':id});
+                io.sockets.emit('broadcast_msg', {message:'Le joueur' + playerToKick.pseudo + ' a été kické.', class:'tchat-game-event'});
+                result="Commande OK";
+            }
+            else
+                result="La commande s'utilise comme ceci : /kick playerID. Taper /list pour avoir la liste des ID";
+        }
         else
-            result="La commande s'utilise comme ceci : /kick playerID. Taper /list pour avoir la liste des ID";
-    }*/
+            result="Vous n'avez pas les droits.";
+    }
+    else if(string.substr(0,4)=="/ban"){
+        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>=2){
+            if(string.length>=5){
+                var id = parseInt(string.substring(5,string.length));
+                var playerToBan = serverMap.getJoueur(id);
+                if(playerToBan==undefined) return 'Le joueur n\'existe pas';
+                dbCore.updatePlayerStats(playerToBan);
+                io.sockets.emit('ban_player', {id:id});
+                serverMap.removeJoueur(id);
+                io.sockets.emit('remove_player', {'id':id});
+                io.sockets.emit('broadcast_msg', {message:'Le joueur' + playerToBan.pseudo + ' a été banni.', class:'tchat-game-event'});
+                dbCore.ban(playerToBan.pseudo);
+                result="Commande OK";
+            }
+            else
+                result="La commande s'utilise comme ceci : /ban playerID. Taper /list pour avoir la liste des ID";
+        }
+        else
+            result="Vous n'avez pas les droits.";
+    }
+    else if(string.substr(0,8)=="/annonce"){
+        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+            io.sockets.emit('broadcast_msg', {auteur:'SERVEUR', message:string.substr(9, string.length), class:'tchat-admin'});
+            result="Commande OK";
+        }
+        else
+            result="Vous n'avez pas les droits.";
+
+    }
     return result;
 }
 
+var listeOnlinePlayers = {};
 
 /* GESTION DES ENVOIS RECEPTIONS CLIENTS */
 io.sockets.on('connection', function(socket) {
     socket.set('pseudo', '_null');
-    socket.set('grade', 0);
 	socket.on('new_player', function(datas) {
         console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
         //On vérifie avant tout que le pseudo envoyé correspond bien à celui enregistré sur la socket
@@ -172,16 +219,18 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('broadcast_msg', function(datas){
-        //On regarde si c'est une commande spéciale
-        var specialCommandResult = specialCommandProcessing(datas.message)
-        if( specialCommandResult != ''){
-            socket.emit('broadcast_msg', {message:specialCommandResult});
-        }
-        else
-            socket.get('pseudo', function(err, pseudo){
+        socket.get('pseudo', function(err, pseudo){
+            //On regarde si c'est une commande spéciale
+            var specialCommandResult = specialCommandProcessing(pseudo, datas.message)
+            if( specialCommandResult != ''){
+                socket.emit('broadcast_msg', {message:specialCommandResult});
+            }
+            else{
                 datas.class='';
+                datas.rang=(listeOnlinePlayers[pseudo]!=undefined) ? listeOnlinePlayers[pseudo].rang : 0;
                 datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);
-            });
+            }
+        });
     });
 
     socket.on('spect_mode_on', function(){
@@ -196,11 +245,16 @@ io.sockets.on('connection', function(socket) {
         socket.get('id', function(err,id){
             if(id==null) return;
             //On lance un update de la DB sur ce joueur, pour pas qu'il perde ce qu'il a eu.
-            dbCore.updatePlayerStats(serverMap.getJoueur(id));
-            serverMap.removeJoueur(id);
-            socket.broadcast.emit('remove_player', {'id':id});
+            var playerToUpdate = serverMap.getJoueur(id);
+            if(playerToUpdate!=undefined){
+                dbCore.updatePlayerStats(serverMap.getJoueur(id));
+                serverMap.removeJoueur(id);
+                socket.broadcast.emit('remove_player', {'id':id});
+            }
             socket.get('pseudo', function(err, pseudo){
                 if(pseudo!=null){
+                    if(listeOnlinePlayers[pseudo]!=undefined)
+                        delete listeOnlinePlayers[pseudo];
                     console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
                     socket.broadcast.emit('broadcast_msg', {'message': pseudo + ' a quitté le jeu.', 'class':'tchat-game-event'});
                 }
@@ -213,7 +267,7 @@ io.sockets.on('connection', function(socket) {
         dbCore.createAccount(datas, this);
     });
     socket.on('connection_attempt', function(datas){
-        dbCore.connect(datas, this);
+        dbCore.connect(datas, this, listeOnlinePlayers);
     });
     socket.on('request_account_informations', function(){
         socket.get('pseudo', function(err, pseudo){

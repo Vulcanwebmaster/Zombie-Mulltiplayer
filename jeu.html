@@ -51,6 +51,14 @@
 
 		<div id="plateau">
 			<div id="map">
+				<!-- Ajout des arbres -->
+				<div class="map-item arbre1" style="left:60px;top:880px;"></div>
+				<div class="map-item arbre2" style="left:750px;top:400px;"></div>
+				<div class="map-item arbre1" style="left:1000px;top:-40px;"></div>
+				<div class="map-item arbre1" style="left:1200px;top:-70px;"></div>
+				<div class="map-item arbre1" style="left:1100px;top:20px;"></div>
+				<div class="map-item arbre2" style="left:1220px;top:90px;"></div>
+				<div class="map-item arbre1" style="left:1120px;top:160px;"></div>
 			</div><!-- div#map -->
 
 			<div id="tchat">
@@ -74,11 +82,12 @@
 			</div>
 			<div id="debug">
 				<span id="debug-average-BPS"></span><br/>
-				<span id="debug-average-latency"></span><br/>
+				<!--<span id="debug-average-latency"></span><br/>-->
 				<span id="debug-average-client-render"></span><br/>
 				<span id="debug-average-server-render"></span>
 			</div>
 
+			<!-- Fenêtre de connexion -->
 			<div id="inscription">
 				<div>
 					<h2>Connectez-vous</h2>
@@ -95,9 +104,14 @@
 						<li>Clic gauche pour tirer (vous pouvez rester cliqué, chaque arme a sa propre cadence de tir)</li>
 						<li>Survivez le plus longtemps possible !</li>
 					</ul>
+					<p id="info-connexion">
+						<a href="http://les.utopolitistes.2.overblog.com/">Le blog de Boris, le graphiste de Zombiz</a><br/>
+						<a href="https://www.facebook.com/ZombizTeamSurvival">Zombiz vous attend déjà sur Facebook</a><br/>
+						<a href="mailto:zombiz.dev@gmail.com">Envie de contribuer à Zombiz ? De faire un partenariat ? Envoyez-moi un mail !</a><br/></p>
 				</div>
 			</div>
 
+			<!-- Fenêtre des options -->
 			<div style="display:none;" id="options">
 				<div>
 					<h2>Options</h2>
@@ -107,6 +121,7 @@
 					<a id="hide_options" href="#">Fermer</a>
 				</div>
 			</div>
+			<!-- Fenêtres des informations du compte -->
 			<div style="display:none" id="account">
 				<div>
 					<h2>Vos informations : </h2>
@@ -122,6 +137,7 @@
 			</div>
 
 		</div><!-- div#plateau-->
+
 		<h2 id="topPlayers">Top 10 des joueurs de Zombiz! <a href="/leaderboard" style="font-size:12px" target="_blank">Voir le classement complet</a></h2>
 		<table id="leaderboard">
 			<tr><th>Chargement en cours...</th></tr>

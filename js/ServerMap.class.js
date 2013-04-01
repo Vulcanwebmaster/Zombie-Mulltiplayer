@@ -174,9 +174,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             }
             //_this.io.sockets.emit('broadcast_msg', {'message':'Ils sont là ! Défendez-vous !', 'class':'tchat-game-event'});
             var jSONVague=characterManager.getWave(id);
+            var decalageTotalMS=0;
             for(var zombieType in jSONVague){
-               for(var i=0;i<jSONVague[zombieType].nombre;i++){
-                  _this.addZombie(zombieType);
+               var nombreTmp=jSONVague[zombieType].nombre;
+               for(var i=0;i<nombreTmp;i++){
+                  setTimeout(_this.addZombieDecalage(_this,zombieType), decalageTotalMS);
+                  decalageTotalMS+=25;
                }
             }
             _this.vagueEnTrainDeSeLancer=false;
@@ -194,6 +197,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             _this.flushFileAttente();
             _this.temporaryDisplayItem[_this.numberTmpItem++]={type:'compte_a_rebours_vague', value:secondesRestantes};
          }
+      };
+   }
+   this.addZombieDecalage=function(_this, zombieType){
+      return function(){
+         _this.addZombie(zombieType);
       };
    }
 
@@ -471,14 +479,14 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'sang', x:parseInt(zombiePlusProche.x),y:parseInt(zombiePlusProche.y)};
             //On balance l'event d'affichage du tir
             if(!tirVertical)
-               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt((zombiePlusProche.x+zombiePlusProche.taille/2) * a + b)};
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', idPlayer:joueur.id, x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(zombiePlusProche.x+zombiePlusProche.taille/2), targetY:parseInt((zombiePlusProche.x+zombiePlusProche.taille/2) * a + b)};
             else
-               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:targetX, targetY:joueurY + (viseEnHaut ? -distancePlusCourte : distancePlusCourte)}; 
+               this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', idPlayer:joueur.id, x:parseInt(joueurX) , y:parseInt(joueurY), targetX:targetX, targetY:joueurY + (viseEnHaut ? -distancePlusCourte : distancePlusCourte)}; 
             this.testFinVague();
          }
          else{
              //On balance l'event d'affichage du tir
-             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(joueurX + Math.cos(joueur.angle/180*Math.PI)*joueur.attaque.portee), targetY:parseInt( joueurY+ Math.sin(joueur.angle/180*Math.PI)*joueur.attaque.portee)};
+             this.temporaryDisplayItem[this.numberTmpItem++]={type:'fire', idPlayer:joueur.id, x:parseInt(joueurX) , y:parseInt(joueurY), targetX:parseInt(joueurX + Math.cos(joueur.angle/180*Math.PI)*joueur.attaque.portee), targetY:parseInt( joueurY+ Math.sin(joueur.angle/180*Math.PI)*joueur.attaque.portee)};
           }
           joueur.attaque.compteAReboursAttaque=joueur.attaque.delaiMax;
        }
