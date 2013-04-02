@@ -555,7 +555,7 @@ function GameMap(){
 			div.style.display='block';
 		}
 
-	    setTimeout(function(){document.getElementById("fire-"+divId).style.display='none';},30);
+	    setTimeout(function(){document.getElementById("fire-"+divId).style.display='none';},45);
 	    //On play le bruit du tir
 	    if(OPTIONS.sound_enabled){
 	    	if(AUDIO['GUN_SHORT'].isEnded)
