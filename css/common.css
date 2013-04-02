@@ -20,6 +20,7 @@ body{
     background-color:grey;
     background-position: center top;
     /*background-size: 2560px;*/
+    margin:0;padding:0;
     background-size:100%;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -39,7 +40,7 @@ a{color:white;}
 a:visited{color:white;}
 #header{text-decoration: none;}
 
-nav{font-family:headerFont;font-size:35px;height: 40px;background-color:black;color:white;	margin-bottom: 0px;
+nav{font-family:headerFont;font-size:35px;height: 40px;background-color:black;color:white;	margin-bottom: 30px;
 	border:solid 3px black;
 	background: #4f4f4f; /* Old browsers */
 	background: -moz-linear-gradient(top,  #4f4f4f 0%, #000000 100%); /* FF3.6+ */
@@ -61,6 +62,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	background-color:rgba(50,50,50,0.8);
 	margin:auto;
 	box-shadow: 0px 0px 50px black, 0px 0px 30px black;
+	position:relative;
 }
 
 #plateau{
@@ -170,6 +172,7 @@ footer p{margin-top:0px;}
 #leaderboard{
 	width: 100%;
 	border-collapse: collapse;
+	margin-bottom:20px;
 }
 #leaderboard th,#leaderboard td{
 	text-align: center;
@@ -199,11 +202,14 @@ footer p{margin-top:0px;}
 
 .twitter-timeline{display:block;margin:20px auto;width:100%;}
 #social-bar{
-	background-color:rgba(0,0,0,0.7);
 	border-bottom: 1px solid black;
-	margin-bottom: 40px;
-	height: 25px;	
+	height: 25px;
+	position:absolute;
+	top:205px;
+	left:0px;
+	border-radius:0px 5px 0px 0px;	
 }
-#social-bar span{float:right;padding:0 15px;}
-#social-bar a{text-decoration: none;font-size: 12px;}
+#social-bar span{height:100%;float:left;padding:1px 10px;background-color:rgba(0,0,0,0.7);}
+#social-bar a, #social-bar span{color:white;text-decoration: none;font-size: 12px;}
+#social-bar span:first-child{padding-top:6px;}
 #social-bar img{height: 25px;vertical-align: middle;margin-right: 5px;}
