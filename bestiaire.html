@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Zombiz ! Team Survival | Bestiaire | Jeu Multijoueur de Zombies</title>
+	<link rel="stylesheet" type="text/css" href="/css/common.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/index.css"/>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
+	
+</head>
+<body>
+	<div id="wrapper">
+		<a id="header" href="/index">
+			<header>
+				<h1>ZOMBIZ ! Team Survival, jeu de zombie en ligne par navigateur</h1>
+				<h2>Zombies Massacre, jeu multijoueur zombies</h2>
+			</header>
+		</a>
+
+		<div id="social-bar">
+			<!--<span><a target="_blank" href="callto:whiteslash28"><img src="/img/icone-skype.png" alt="icone skype"/>Mon skype : whiteslash28</a></span>-->
+			<span>Retrouvez l'actualité de Zombiz sur</span>
+			<span><a target="_blank"  href="https://www.facebook.com/ZombizTeamSurvival"><img src="/img/icone-facebook.png" alt="icone facebook"/>Facebook</a></span>
+			<span><a target="_blank" href="https://twitter.com/ZombizDev"><img src="/img/icone-twitter.png" alt="icone twitter"/>Twitter</a></span>
+		</div>
+
+		<nav>
+			<ul>
+				<li><a href="/">Accueil</a></li>
+				<li><a href="/jeu">Jeu</a></li>
+				<li><a href="/bestiaire">Bestiaire</a></li>
+				<li><a href="/leaderboard">Leaderboard</a></li>
+			</ul>
+		</nav>
+
+
+		<section id="content">
+
+			<!-- Description des zombies -->
+			<h3>Découvrez vos ennemis :</h3>
+			<table id="liste-zombies">
+				<tr><td>
+					<h4>Le zombiz</h4>
+					<div class="miniature-zombie" style="background-position:0px 0px"></div>
+					<p>
+						<span class="italic">Description</span> : Pas très malin, le Zombiz, c'est la base, la lada des zombies. Si jamais ils arrivent à vous attraper, vous êtes probablement obèse, ou endormi. Bref, c'est gratuit, ça prend bien les balles, que du bonheur !<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-bonnes">Très faible</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-bonnes">Faible</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-bonnes">Assez Faible</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-bonnes">Vos plaies ne se cicatrisent pas instantanément, attention donc aux saignements...</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>Le sprinter</h4>
+					<div class="miniature-zombie" style="background-position:0px -200px"></div>
+					<p>
+						<span class="italic">Description</span> : Bien plus rapide que les zombiz, les sprinters sont des adversaires difficiles à battre... Les 2 premières minutes. Ils vous donneront tout de même un léger surplus de difficultés, d'autant plus qu'ils sont plus endurants que les Zombiz. A vos fusils, prêt, tirez !!<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-bonnes">Plutôt faible</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-bonnes">Faible</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-moyennes">Plus vous le tapez, plus il se déplacera vite.</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>L'araignée</h4>
+					<div class="miniature-zombie" style="background-position:-100px 0px"></div>
+					<p>
+						<span class="italic">Description</span> : Si vous avez déjà joué à Zombiz!, alors vous connaissez les araignées. Je dirais même que vous les détestez probablement. Rapide, collante, nombreuses... Vous les connaissiez à peine qu'elles étaient déjà vos pires ennemies. Rien ne sert de courir, Elles finiront toujours par vous rattraper... Brrr. Je déteste les araignées !<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-bonnes">Très faible</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Très rapide</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-bonnes">Très Faible</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-mauvaises">Un vénin qui vous endort le corps, est-ce que vous aviez vraiment besoin de ça ?</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>Bouboule</h4>
+					<div class="miniature-zombie" style="background-position:0px -300px"></div>
+					<p>
+						<span class="italic">Description</span> : Vous l'aurez deviné, Bouboule ne fait pas dans la finesse. Une chance pour vous, il est du genre très lent. Mais diantre, qu'est ce qu'il est resistant !<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-bonnes">Très Faible</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-moyennes">Il peut aisément vous assomer avec ses gros bras.</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>M. boucher</h4>
+					<div class="miniature-zombie" style="background-position:-100px -300px"></div>
+					<p>
+						<span class="italic">Description</span> : Le boucher aime son travail. Tellement, qu'il ne s'arrête jamais de travailler. Il est dans son monde, tant que vous ne l'approchez pas trop, il vous laissera tranquille. Méfiez-vous de son couteau, plus d'un aventurier a été servi dans son fameux plat de cervelle farcie !<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-mauvaises">Très forte</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Rapide</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-mauvaises">Si jamais il ne vous tue pas d'un coup de hachoir, la plaie béante qu'il laissera finira par vous vider de votre sang...</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>Le soldat</h4>
+					<div class="miniature-zombie" style="background-position:-100px -100px"></div>
+					<p>
+						<span class="italic">Description</span> : Vous vous demandiez ce qui pouvait être pire qu'un zombie avec un hachoir de cuisine ? Et bien, imaginez un fanatique ex-soldat. Le tout, en gilet par balle, avec le casque et tout le tintouin... Et oui. Le soldat, c'est ça. Autant vous dire que vous allez en gaspiller des balles pour en venir à bout...<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-moyennes">Moyenne</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-mauvaises">Très résistant</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-bonnes">Aucune</span>
+					</p>
+				</td></tr>
+				<tr><td>
+					<h4>Maîtresse des araignées</h4>
+					<div class="miniature-zombie" style="background-position:-100px -200px"></div>
+					<p>
+						<span class="italic">Description</span> : Mmmh. J'ai bien peur que vous ayez ici un zombie de qualité. La puissance du boucher (en mieux !), la résistance du soldat (en mieux !) et la vitesse des araignées... En mieux ! Autant vous dire qu'avant de la reveiller, il faudra bien vous organiser.<br style="clear:both"/>
+						<span class="italic">Attaque</span> : <span class="stats-mauvaises">Très forte</span><br/>
+						<span class="italic">Vitesse </span>: <span class="stats-mauvaises">Très rapide</span><br/>
+						<span class="italic">Endurance</span> : <span class="stats-mauvaises">Très résistante</span><br/>
+						<span class="italic">Abilités </span>: <span class="stats-mauvaises">Elle peut invoquer des araignées losqu'elle est en difficulté.</span>
+					</p>
+				</td></tr>
+			</table>
+
+		</section><!-- section#content-->
+
+		<footer>
+			<p>
+				Développement : Mikaël B. aka. WhiteSlash.<br/>
+				Un grand merci à <a href="http://les.utopolitistes.2.overblog.com/">Boris</a> pour son super travail sur les graphismes (<a href="http://les.utopolitistes.2.overblog.com/">son blog</a>).<br/>
+			</p>
+			<p id="copyright">Copyright ©2013</p>
+		</footer>
+	</div><!-- div#wrapper -->
+
+	<!-- Google analytics -->
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-39756012-1']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+</body>
+</html>

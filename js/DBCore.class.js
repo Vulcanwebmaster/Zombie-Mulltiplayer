@@ -95,14 +95,14 @@ module.exports = function DBCore(){
          var style="";
          response.write('<tr><th>Position</th><th>Pseudo</th><th>Zombies Tués</th><th>Record de survie</th></tr>');
          for(var i=0; i<users.length;i++){
-            var classes="";
+            var badge="";
             if(users[i].active==0)
-               classes+="leaderboard-ban ";
+               badge='<span class="leaderboard-badge leaderboard-ban">banni</span> ';
             else if(users[i].rang==1)
-               classes+="leaderboard-modo ";
+               badge='<span class="leaderboard-badge leaderboard-modo">modo</span> ';
             else if(users[i].rang==2)
-               classes+="leaderboard-admin ";
-            response.write('<tr class="'+classes+'"><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+               badge='<span class="leaderboard-badge leaderboard-admin">admin</span> ';
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+badge+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
          }
          response.end();
       });
@@ -114,14 +114,14 @@ module.exports = function DBCore(){
          var totalKills=0,bestRecord=-1;
          var style="";
          for(var i=0; i<users.length;i++){
-            var classes="";
+            var badge="";
             if(users[i].active==0)
-               classes+="leaderboard-ban ";
+               badge='<span class="leaderboard-badge leaderboard-ban">banni</span> ';
             else if(users[i].rang==1)
-               classes+="leaderboard-modo ";
+               badge='<span class="leaderboard-badge leaderboard-modo">modo</span> ';
             else if(users[i].rang==2)
-               classes+="leaderboard-admin ";
-            response.write('<tr class="'+classes+'"><td>'+ (i+1) +'</td><td>'+ users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
+               badge='<span class="leaderboard-badge leaderboard-admin">admin</span> ';
+            response.write('<tr><td>'+ (i+1) +'</td><td>'+badge+users[i].pseudo +'</td><td>'+ users[i].kills +'</td><td>'+ recordToString(users[i].record) +'</td></tr>');
             totalKills+=users[i].kills;
             bestRecord=Math.max(users[i].record, bestRecord);
          }

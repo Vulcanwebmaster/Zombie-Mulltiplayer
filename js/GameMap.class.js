@@ -248,7 +248,7 @@ function GameMap(){
 			}
 			else if(zombie!=null){
 				/*On regarde si le zombie est "proche" sinon on le cache et on fait rien*/
-				if(this.calculDistance(zombieObj.x ,zombieObj.y) < this.MIN_DISTANCE_SHOW){
+				if(this.calculDistance(zombieObj.x ,zombieObj.y) < this.MIN_DISTANCE_SHOW*this.MIN_DISTANCE_SHOW){
 					zombie.style.display="block";
 					//On met à jour que si le changement est assez "visible"
 					var deplacementMinimum = 1;
@@ -322,7 +322,7 @@ function GameMap(){
 	}
 
 	this.calculDistance=function(x, y){
-		return Math.sqrt( Math.pow(-parseInt(this.divMap.style.left)+this.widthPlateau/2-x,2)+Math.pow(-parseInt(this.divMap.style.top)+this.heightPlateau/2-y,2));
+		return Math.pow(-parseInt(this.divMap.style.left)+this.widthPlateau/2-x,2)+Math.pow(-parseInt(this.divMap.style.top)+this.heightPlateau/2-y,2);
 	}
 
 	this.localUpdate=function(id){

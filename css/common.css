@@ -52,7 +52,7 @@ nav{font-family:headerFont;font-size:35px;height: 40px;background-color:black;co
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
 nav ul{list-style: none;padding: 0;margin:0;}
-nav ul li{float:left;width:30%;text-align:center;}
+nav ul li{float:left;width:24%;text-align:center;}
 nav ul li a{text-decoration: none;}
 nav ul li a:hover{color:rgb(200,50,50);}
 
@@ -182,6 +182,7 @@ footer p{margin-top:0px;}
 }
 #leaderboard td{
 	color:rgb(220,190,150);
+	position:relative;
 }
 #leaderboard tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);
@@ -194,9 +195,10 @@ footer p{margin-top:0px;}
 #leaderboard tr:nth-child(6) td{font-size: 1.1em;}
 
 /* gestion des grades / ban */
-.leaderboard-ban td{font-size:11px;color:rgb(150,150,150) !important;text-decoration: line-through;}
-.leaderboard-modo td{color:rgb(50,150,50) !important;}
-.leaderboard-admin td{color:rgb(150,50,150) !important;}
+.leaderboard-badge{position:absolute;left:2px;top:2px;font-size:11px;color:white;padding:2px;border-radius: 4px;}
+.leaderboard-ban{background-color:rgb(150,150,150);}
+.leaderboard-modo{background-color:rgb(50,150,50);}
+.leaderboard-admin{background-color:rgb(150,50,150);}
 
 .preload{display: none;}
 

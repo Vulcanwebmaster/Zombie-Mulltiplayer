@@ -38,6 +38,8 @@ function handler( request , response ) {
         dbCore.getTopPlayerHTML(response);
         return;
     }
+    else if(filePath=='./bestiaire')
+        filePath='./bestiaire.html';
     else if(filePath=='./fullLeaderboard'){
         dbCore.getLeaderboardHTML(response);
         return;

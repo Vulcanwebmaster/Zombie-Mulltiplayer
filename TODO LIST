@@ -18,17 +18,18 @@ supprimer un des boutons en trop (spect/pas spec)
 regarder la vie des zombies en spectateur
 pagination sur page leaderboard
 pop up qui nous dit qu'on change d'arme
-voir pour enlever des racines carrés si y'a pas besoin (opti)
 sauvegarde des options
 w3c validator
 mettre le boss en plus gros
 reflechir sur une histoire
 système de 3 types d'armes
 
+
 *** - selection de skins
 *** mettre le zombiz slayer seulement sur le nombre de kills de la manche
 *** changer le bug du BG qui remplit pas l'ecran
 *** sécuriser la connexion en créant le joueur direct à la sortie de DBCore ?
+*** corriger le bug sur l'image "jouer"
 
 Idées :
 
@@ -58,8 +59,9 @@ Idées :
 		Apparition des zombies en différé pour ne pas faire un "pic" de lag
 		Changement de map ! Système de layer pour passer "sous" certains objets du décor
 		Des grades et commandes de modération font leur apparition
+		La présentation des zombies est maintenant dans une page séparée
 	EDIT :
 		Compression de quelques images pour accélerer le chargement et la fluidité
-		Optimisation générale du code pour le rendu côté client
+		Optimisation générale du code pour le rendu côté client (cf. graphiques et article sur FB)
 	FIX :
 		Les tirs ne devraient plus disparaitre (à tester)
