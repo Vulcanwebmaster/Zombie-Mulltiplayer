@@ -22,7 +22,7 @@
 			$('#changelogLink').click(function(){
 				$.get('/changelog.html', function(datas){
 					$('#changelog').remove();
-					$('#changelogLink').after($('<textarea>').attr('id', 'changelog').text(datas));
+					$('#changelogLink').after($('<pre>').attr('id', 'changelog').text(datas));
 					$('#changelog').show();
 				});
 				return false;
@@ -145,8 +145,8 @@
 				</td></tr>
 			</table>
 		<a href="#" id="changelogLink" style="color:white;margin-left:400px;">Afficher le changelog</a>
-		<textarea id="changelog">
-		</textarea>
+		<pre id="changelog">
+		</pre>
 		</section><!-- section#content-->
 
 		<footer>
