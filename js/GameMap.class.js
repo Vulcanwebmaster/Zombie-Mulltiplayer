@@ -544,12 +544,14 @@ function GameMap(){
 			div.id='fire-'+divId;
 			div.setAttribute('style','z-index:7;border:0px solid white;width:'+width+'px;height:15px;-moz-transform:rotate('+deg+'deg)'+scaleX+';-webkit-transform:rotate('+deg+'deg)'+scaleX+';position:absolute;top:'+y+'px;left:'+x+'px;');   
 			div.style.backgroundImage='url(\'/img/simple_bullet.png\')';
+			div.style.transform='rotate('+deg+'deg)'+scaleX;
 			document.getElementById("map").appendChild(div);
 		}
 		else{
 			div.style.width=width+'px';
 			div.style.mozTransform='rotate('+deg+'deg)'+scaleX;
 			div.style.webkitTransform='rotate('+deg+'deg)'+scaleX;
+			div.style.transform='rotate('+deg+'deg)'+scaleX;
 			div.style.top=y+'px';
 			div.style.left=x+'px';
 			div.style.display='block';
