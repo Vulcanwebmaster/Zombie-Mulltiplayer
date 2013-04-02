@@ -59,7 +59,7 @@ function GameCore(pseudo,mdp){
 		this.socket.on('connection_success', function(datas){
 			$('#inscription h2').text(datas.message);
 			gameCore.pseudo=datas.pseudo;
-			gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});
+			//gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});
 		});
 
 		this.socket.on('disconnect', function(){

@@ -43,24 +43,42 @@ module.exports = function DBCore(){
          }
       });
    }
-   this.connect=function(datas, socket, listeOnlinePlayers){
+   this.connect=function(datas, socket, listeOnlinePlayers, serverMap){
+      console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
       //On regarde si on se connecte en visiteur
       if(datas.pseudo=='visiteur'){
          socket.set('pseudo', 'visiteur');
          socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':datas.pseudo});
+         var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+         socket.broadcast.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+         socket.set('id', joueurId);
          return;
       }
       var _this=this;
+      //Load from DB
       this.PlayerModel.find({pseudoLowerCase : datas.pseudo.toLowerCase(), mdp: this.Sha1(datas.mdp)}, function(err, users){
          if(users.length!=1){
             socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
          }
          else{
+            //Connexion en tant que joueur à partir de la DB
             if(users[0].active==1){
                listeOnlinePlayers[users[0].pseudo]=users[0];
                socket.set('pseudo', users[0].pseudo);
                socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+
+               var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
+               if(joueurDejaInGame == null || datas.pseudo.toLowerCase() == "visiteur")
+                  var joueurId=serverMap.addJoueurFromDB(users[0], socket);
+               else{
+                  socket.emit('set_id', -1);
+                  socket.emit('player_spectateur', {id:-1});
+                  socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
+               }
+               socket.broadcast.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+               socket.set('id', joueurId);
             }
+            //ERROR
             else
                socket.emit('connection_fail', {'message':'Votre compte a été banni.'});
          }

@@ -20,7 +20,7 @@ src: url('zombie.ttf') format('truetype');
 	text-decoration: none;
 	background-image: url('/img/playbutton.png');
 	background-repeat: no-repeat;
-	background-position: center bottom;
+	background-position: center -115px;
 }
 #button-jouer:hover{
 	cursor: pointer;

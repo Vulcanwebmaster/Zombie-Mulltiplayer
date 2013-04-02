@@ -34,6 +34,16 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          newJoueur.y=this.heightMap/2;
    		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
+   this.addJoueurFromDB=function(infosJoueur, socket){
+      var idPlayer = this.addJoueur(infosJoueur.pseudo, socket);
+      //On modifie maintenant ses stats en fonction des infos de la DB
+      var joueur=this.getJoueur(idPlayer);
+      if(joueur!=null){
+         joueur.style=infosJoueur.skin_id;
+      }
+      return idPlayer;
+   }
+
    this.getPlayer=function(pseudo){
       var joueurEnLigne=null;
       for(var id in this.listeJoueurs)  if(this.listeJoueurs[id].pseudo.toLowerCase()==pseudo.toLowerCase()) joueurEnLigne=this.listeJoueurs[id];

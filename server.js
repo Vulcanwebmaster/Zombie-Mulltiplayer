@@ -182,26 +182,6 @@ var listeOnlinePlayers = {};
 /* GESTION DES ENVOIS RECEPTIONS CLIENTS */
 io.sockets.on('connection', function(socket) {
     socket.set('pseudo', '_null');
-	socket.on('new_player', function(datas) {
-        console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
-        //On vérifie avant tout que le pseudo envoyé correspond bien à celui enregistré sur la socket
-        socket.get('pseudo', function(err, pseudo){
-            if(pseudo==datas.pseudo){
-                var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
-                if(joueurDejaInGame == null || datas.pseudo.toLowerCase() == "visiteur")
-                    var joueurId=serverMap.addJoueur(datas.pseudo, socket);
-                else{
-                    socket.emit('set_id', -1);
-                    socket.emit('player_spectateur', {id:-1});
-                    socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
-               }
-                io.sockets.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
-                socket.set('id', joueurId);
-            }
-            else
-                console.log(dateToLog(new Date) + 'Le pseudo ne correspond pas à celui de la socket.(' + pseudo + ')');
-        });
-	});
 
     socket.on('update_player_mouvement', function(datas){
         //On protège en prenant l'id sauvegardé serverside
@@ -269,7 +249,7 @@ io.sockets.on('connection', function(socket) {
         dbCore.createAccount(datas, this);
     });
     socket.on('connection_attempt', function(datas){
-        dbCore.connect(datas, this, listeOnlinePlayers);
+        dbCore.connect(datas, this, listeOnlinePlayers, serverMap);
     });
     socket.on('request_account_informations', function(){
         socket.get('pseudo', function(err, pseudo){
@@ -286,4 +266,7 @@ io.sockets.on('connection', function(socket) {
             dbCore.updateAccountPassword(pseudo, passwd, socket);
         });
     });
+    socket.on('connection_success', function(datas){
+        console.log('le serveur a reçu le connexion success');
+    })
 });

@@ -15,13 +15,12 @@ body{
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE */
     user-select: none; /* CSS3 */
-    background-color:rgb(100,100,100);
     background-image: url('/img/zombiz_background.jpg');
-    background-color:grey;
+    background-color:rgb(50,50,50);
     background-position: center top;
     /*background-size: 2560px;*/
     margin:0;padding:0;
-    background-size:100%;
+    background-size:100% 100%;
     background-attachment: fixed;
     background-repeat: no-repeat;
 	height: 100%;

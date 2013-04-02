@@ -5,12 +5,10 @@
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - ajouter la partie RPG avec des points de compétences
-- reconnexion si on bug ?
 - cookie pour la connexion ?
 - ajouter un bandeau avec des petites phrases rigolottes
 - faire une option mot de passe oublié
 - accelerer les zombies quand la partie prend du temps
-- améliorer fps quand y'a beaucoup de zombies
 - numéros aux visiteurs ?
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
@@ -23,13 +21,13 @@ w3c validator
 mettre le boss en plus gros
 reflechir sur une histoire
 système de 3 types d'armes
+améliorer design page compte / option (bootstrap form ?)
+empêcher les comptes avec des noms de merde !
 
 
 *** - selection de skins
 *** mettre le zombiz slayer seulement sur le nombre de kills de la manche
-*** changer le bug du BG qui remplit pas l'ecran
-*** sécuriser la connexion en créant le joueur direct à la sortie de DBCore ?
-*** corriger le bug sur l'image "jouer"
+*** maj sitemap
 
 Idées :
 
@@ -42,14 +40,11 @@ Idées :
 - Agrandir un peu la map :) (là on la voit déjà presque entière...)
 - friendly fire ?
 - stratégies dans l'IA ?
-- ajouter des cookies pour ne pas perdre la progression si on quitte en cours de partie ?
 - ajouter du son correct
 - obstacles
 - munitions ?
-- systeme de succés
 - FAQ (problème de souris, compatibilité...)
 - systeme d'aide pour remettre debout un ami blessé ?
-- me donner accès aux log ig ?
 - filtre à obscenité
 
 *************************************************************************************
@@ -61,7 +56,9 @@ Idées :
 		Des grades et commandes de modération font leur apparition
 		La présentation des zombies est maintenant dans une page séparée
 	EDIT :
+		Changements multiples de design et correction de quelques petits bug de css
 		Compression de quelques images pour accélerer le chargement et la fluidité
 		Optimisation générale du code pour le rendu côté client (cf. graphiques et article sur FB)
 	FIX :
 		Les tirs ne devraient plus disparaitre (à tester)
+		optimisation des handshakes de login
