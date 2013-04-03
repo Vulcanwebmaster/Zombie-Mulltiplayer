@@ -479,9 +479,9 @@ function GameMap(){
 			case 10:return '-100px -100px';break;
 			case 11:return '-100px -150px';break;
 			case 12:return '-150px 0px';break;
-			case 13: return '-150 -50px';break;
-			case 14: return '-150 -100px';break;
-			case 15: return '-150 -150px';break;
+			case 13: return '-150px -50px';break;
+			case 14: return '-150px -100px';break;
+			case 15: return '-150px -150px';break;
 		}
 	}
 

@@ -31,6 +31,7 @@ ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de 
 
 Idées :
 
+- eviter la congestion du réseau si ça lag ?
 - faire un système de blocage d'IP pour les mecss bizarres qui m'attaquent ?
 - zombie attaque à distance ?
 - ajouter un système de "continuité" en local ! (seulement le personnage actuel ?)
