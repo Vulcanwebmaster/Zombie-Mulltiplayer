@@ -213,11 +213,12 @@ module.exports = function CharacterManager(){
    			id:id,
             pseudo:pseudo,
             alive:true,
-            style:parseInt(Math.random()*4),
+            style:parseInt(Math.random()*7),
             attaque:this.creationArme(0),
             isFiring:false,
             target:{targetX:0,targetY:0},
             kills:0,
+            killOnThisRound:0,
             deaths:0,
             record:0,//meilleure vague atteinte
             speed:this.PAS,
@@ -232,6 +233,7 @@ module.exports = function CharacterManager(){
               this.buffs={};
               this.kills=0;
               this.deaths=0;
+              this.killOnThisRound=0;
               this.record=0;
               this.directions={haut:false,bas:false,gauche:false,droite:false};
               this.isFiring=false;
@@ -251,6 +253,7 @@ module.exports = function CharacterManager(){
               this.life=characterManager.DEFAULT_PLAYER_LIFE;
               this.speed=this.maxSpeed;
               this.isFiring=false;
+              this.killOnThisRound=0;
             },
             secondsToTic:function(secondes){return secondes*1000/50;},
             addBuff:function(type){

@@ -48,7 +48,7 @@
 		<div id="menu">
 			<span id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
-			<!--<span id="show_boutique">Boutique</span>-->
+			<span id="show_boutique">Boutique</span>
 			<span id="show_options">Options</span>
 			<span id="show_account">Votre compte</span>
 		</div>
@@ -92,7 +92,7 @@
 			</div>
 
 			<!-- Fenêtre de connexion -->
-			<div id="inscription">
+			<div id="inscription" class="fenetreInfosPlateau">
 				<div>
 					<h2>Connectez-vous</h2>
 					<form onsubmit="return false;">
@@ -116,7 +116,7 @@
 			</div>
 
 			<!-- Fenêtre des options -->
-			<div style="display:none;" id="options">
+			<div style="display:none;" id="options" class="fenetreInfosPlateau">
 				<div>
 					<h2>Options</h2>
 					<input type="checkbox" id="checkbox-audio" checked="checked"/>Activer le son (raccourci touche M)<br/>
@@ -126,7 +126,7 @@
 				</div>
 			</div>
 			<!-- Fenêtres des informations du compte -->
-			<div style="display:none" id="account">
+			<div style="display:none" id="account" class="fenetreInfosPlateau">
 				<div>
 					<h2>Vos informations : </h2>
 					<input type="text" id="account-name" readonly="readonly" value="chargement..."/> (nom de compte)<br/>
@@ -137,6 +137,22 @@
 					<input type="password" id="account-passwd2"/><br/>
 					<a id="account-change-passwd" href="#">Entrez le nouveau mot de passe 2 fois et validez.</a><br/><br/>
 					<a id="hide_account" href="#">Fermer cette fenêtre</a>
+				</div>
+			</div>
+			<!-- Fenêtre de la boutique -->
+			<div style="display:none" id="boutique" class="fenetreInfosPlateau">
+				<div>
+					<h2>Choisissez votre skin</h2>
+					<div class="previewSkin" style="background-position:0px 0px" onclick="return gameCore.updateSkin(0)"></div>
+					<div class="previewSkin" style="background-position:0px -100px" onclick="return gameCore.updateSkin(1)"></div>
+					<div class="previewSkin" style="background-position:0px -200px" onclick="return gameCore.updateSkin(2)"></div>
+					<div class="previewSkin" style="background-position:0px -300px" onclick="return gameCore.updateSkin(3)"></div>
+					<div class="previewSkin" style="background-position:-100px 0px" onclick="return gameCore.updateSkin(4)"></div>
+					<div class="previewSkin" style="background-position:-100px -100px" onclick="return gameCore.updateSkin(5)"></div>
+					<div class="previewSkin" style="background-position:-100px -200px" onclick="return gameCore.updateSkin(6)"></div>
+					<div style="clear:both"><!--stop le fucking float-->
+						<a id="hide_boutique" href="#">Fermer cette fenêtre</a>
+					</div>
 				</div>
 			</div>
 
@@ -158,7 +174,7 @@
 				<a href="http://www.yootheme.com/icons" target="_blank">Social icons by YOOtheme</a>
 			</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.9.2.2 alpha (20130331)</p>
+			<p id="version">Version 0.9.3 alpha (20130403)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 	<!-- Script servant à forcer le chargement des sprites-->

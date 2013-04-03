@@ -118,9 +118,11 @@ function GameCore(pseudo,mdp){
 
 			//On ajoute les fonctionnalités des options
 			$('#passerSpectateur').click(function(){
+				$('.fenetreInfosPlateau').hide();
 				gameCore.spectateurOn();gameMap.desinit();
 			});
 			$('#rejoindrePartie').click(function(){
+				$('.fenetreInfosPlateau').hide();
 				gameCore.spectateurOff();
 				$('#options').hide();
 				$('#account').hide();
@@ -128,6 +130,7 @@ function GameCore(pseudo,mdp){
 			});
 			$('#menu').fadeIn(1000);
 			$('#show_options').click(function(){
+				$('.fenetreInfosPlateau').hide();
 				if(OPTIONS.display_names)
 					$("#checkbox-pseudo").attr("checked", "checked");
 				else
@@ -148,6 +151,7 @@ function GameCore(pseudo,mdp){
 				return false;
 			})
 			$('#show_account').click(function(){
+				$('.fenetreInfosPlateau').hide();
 				$('#account').show();
 				//On récupère les infos de la DB
 				gameCore.requestAccountInformations();
@@ -167,6 +171,15 @@ function GameCore(pseudo,mdp){
 				$('#account').hide();
 				return false;
 			})
+			$('#show_boutique').click(function(){
+				$('.fenetreInfosPlateau').hide();
+				$('#boutique').show();
+				return false;
+			});
+			$('#hide_boutique').click(function(){
+				$('#boutique').hide();
+				return false;
+			});
 		});
 
 		this.socket.on('response_account_informations', function(datas){
@@ -267,6 +280,9 @@ function GameCore(pseudo,mdp){
 	}
 	this.updateAccountPassword=function(passwd){
 		this.socket.emit('update_account_passwd', passwd);
+	}
+	this.updateSkin=function(skinID){
+		this.socket.emit('update_account_skin', skinID);
 	}
 
 

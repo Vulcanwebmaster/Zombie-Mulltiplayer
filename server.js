@@ -266,7 +266,13 @@ io.sockets.on('connection', function(socket) {
             dbCore.updateAccountPassword(pseudo, passwd, socket);
         });
     });
-    socket.on('connection_success', function(datas){
-        console.log('le serveur a reçu le connexion success');
-    })
+    socket.on('update_account_skin', function(skinID){
+        socket.get('pseudo', function(err, pseudo){
+            //A changer une fois les conditions d'obtentions faites.
+            if(skinID>=0 && skinID<=6){
+                dbCore.updateAccountSkin(pseudo, skinID);
+                serverMap.getPlayer(pseudo).style=skinID;
+            }
+        });
+    });
 });

@@ -80,7 +80,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	cursor: url('/img/viseur.png') 24 24,pointer;
 }
 
-#inscription, #options, #account{
+#inscription, #options, #account, #boutique{
 	background-color:black;
 	color:white;
 	position:absolute;
@@ -89,11 +89,20 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	width:1000px;
 	height: 650px;
 }
-#options div, #account div{
+#options div, #account div, #boutique div{
 	margin:auto;
 	width:60%;
-	margin-top: 100px;	
+	margin-top: 100px;
+	background-color:rgb(50,50,50);	
 }
+#boutique .previewSkin{
+	width: 100px;
+	height: 100px;
+	float:left;
+	background-image:url('/img/players.png');
+	background-repeat: none;
+}
+#boutique .previewSkin:hover{background-color:white;cursor:pointer;}
 #inscription div{
 	margin:auto;
 	width:60%;

@@ -175,6 +175,10 @@ module.exports = function DBCore(){
       this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {active:0}, function(err, data){if(err) console.log(err); else console.log('Compte ' + pseudo + ' banni.');});
    }
 
+   this.updateAccountSkin=function(pseudo, skinID){
+      this.PlayerModel.update({pseudoLowerCase:pseudo.toLowerCase()}, {skin_id:skinID}, function(err, data){if(err) console.log(err);});
+    }
+
    this.mongoose= new require('mongoose');
    this.playerSchema=new this.mongoose.Schema({
       pseudo: String,

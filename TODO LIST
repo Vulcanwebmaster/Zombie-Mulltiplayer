@@ -23,12 +23,11 @@ reflechir sur une histoire
 système de 3 types d'armes
 améliorer design page compte / option (bootstrap form ?)
 empêcher les comptes avec des noms de merde !
+ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
 
-*** - selection de skins
-*** mettre le zombiz slayer seulement sur le nombre de kills de la manche
+
 *** maj sitemap sut webmaster
-*** commandes du genre "spawn qqch"
 
 Idées :
 
@@ -50,16 +49,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3 alpha (20130331)
-	ADD :
-		Apparition des zombies en différé pour ne pas faire un "pic" de lag
-		Changement de map ! Système de layer pour passer "sous" certains objets du décor
-		Des grades et commandes de modération font leur apparition
-		La présentation des zombies est maintenant dans une page séparée
-	EDIT :
-		Changements multiples de design et correction de quelques petits bug de css
-		Compression de quelques images pour accélerer le chargement et la fluidité
-		Optimisation générale du code pour le rendu côté client (cf. graphiques et article sur FB)
-	FIX :
-		Les tirs ne devraient plus disparaitre (à tester)
-		optimisation des handshakes de login
+--- v 0.9.3 alpha (20130403)

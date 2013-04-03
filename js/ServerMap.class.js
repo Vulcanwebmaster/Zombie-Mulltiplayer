@@ -475,6 +475,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                zombiePlusProche.life=0;
                zombiePlusProche.alive=false;
                joueur.kills++;
+               joueur.killOnThisRound++;
                this.totalZombiesKilled++;
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'zombie_killed', id:joueur.id, kills:joueur.kills};
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_target', id:joueur.id, id_zombie:-1};
@@ -589,10 +590,11 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:this.listeJoueurs[idPerso].id, life:this.listeJoueurs[idPerso].life};
             }
             //comparaison du nombre de kills
-            if(this.listeJoueurs[idPerso].kills > maxKills){
+            if(this.listeJoueurs[idPerso].killOnThisRound > maxKills){
                joueurMeneur=this.listeJoueurs[idPerso];
-               maxKills=joueurMeneur.kills;
+               maxKills=joueurMeneur.killOnThisRound;
             }
+            this.listeJoueurs[idPerso].killOnThisRound=0;
          }
          //On fait aussi revivre les spectateurs si ils sont passés en spectateur pendant la mort
          for(var idSpec in this.listeSpectateurs)
@@ -604,7 +606,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
          //Assignation du bonus Zombiz Slayer
          if(joueurMeneur!=null){
-            this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer en menant avec ' + joueurMeneur.kills + ' kills.' , 'class':'tchat-game-info'});
+            this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer avec ' + maxKills + ' kills.' , 'class':'tchat-game-info'});
             joueurMeneur.addBuff('zombizSlayer');
          }
          this.spawnWave(++this.currentWave);

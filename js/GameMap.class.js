@@ -124,9 +124,11 @@ function GameMap(){
 					this.updateBarreDeVieZombie(document.getElementById('zombie'+item.id_zombie), true);
 			}
 			else if(item.type=='compte_a_rebours_vague'){
-				var div=$('<div>');
-				$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
-				div.fadeOut(500, function(){$(this).remove();});
+				if($('.fenetreInfosPlateau').not(':hidden').length==0){
+					var div=$('<div>');
+					$('#plateau').append(div.attr('id','compteAReboursVague').text(item.value));
+					div.fadeOut(500, function(){$(this).remove();});
+				}
 			}
 			else if(item.type=='online_players_number'){
 				$('#nbr-online-players').text(item.value + ' joueur' +(item.value>1 ? 's' : ''));
@@ -477,6 +479,9 @@ function GameMap(){
 			case 10:return '-100px -100px';break;
 			case 11:return '-100px -150px';break;
 			case 12:return '-150px 0px';break;
+			case 13: return '-150 -50px';break;
+			case 14: return '-150 -100px';break;
+			case 15: return '-150 -150px';break;
 		}
 	}
 
