@@ -25,7 +25,6 @@ améliorer design page compte / option (bootstrap form ?)
 empêcher les comptes avec des noms de merde !
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
-améliorer ergonomie changement de skins
 
 Idées :
 
@@ -48,8 +47,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3.1 alpha (20130403)
-	ADD :
-	EDIT :
-	FIX :
-		Les skins du SWAT s'affichent bien maintenant
+--- v 0.9.3.1 alpha (20130404)

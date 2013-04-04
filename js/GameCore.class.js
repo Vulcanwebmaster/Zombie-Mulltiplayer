@@ -283,6 +283,8 @@ function GameCore(pseudo,mdp){
 	}
 	this.updateSkin=function(skinID){
 		this.socket.emit('update_account_skin', skinID);
+		$('#boutique').hide();
+		return false;
 	}
 
 
