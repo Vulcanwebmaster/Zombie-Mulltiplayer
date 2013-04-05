@@ -107,6 +107,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          delete this.listeAttente[id];
          this.listeSpectateurs[id].directions={haut:false,bas:false,gauche:false,droite:false};
          this.listeSpectateurs[id].isFiring=false;
+         this.listeSpectateurs[id].buffs={};
          this.io.sockets.emit('remove_player', {'id':id});
          this.testFinPartie();
       }
