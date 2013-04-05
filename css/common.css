@@ -190,7 +190,6 @@ footer p{margin-top:0px;}
 }
 #leaderboard td{
 	color:rgb(220,190,150);
-	position:relative;
 }
 #leaderboard tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);
@@ -203,7 +202,7 @@ footer p{margin-top:0px;}
 #leaderboard tr:nth-child(6) td{font-size: 1.1em;}
 
 /* gestion des grades / ban */
-.leaderboard-badge{position:absolute;left:2px;top:2px;font-size:11px;color:white;padding:2px;border-radius: 4px;}
+.leaderboard-badge{float:left;margin-top:2px;margin-left:2px;font-size:11px;color:white;padding:2px;border-radius: 4px;}
 .leaderboard-ban{background-color:rgb(150,150,150);}
 .leaderboard-modo{background-color:rgb(50,150,50);}
 .leaderboard-admin{background-color:rgb(150,50,150);}

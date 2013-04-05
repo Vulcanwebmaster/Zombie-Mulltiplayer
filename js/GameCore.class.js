@@ -118,6 +118,7 @@ function GameCore(pseudo,mdp){
 
 			//On ajoute les fonctionnalités des options
 			$('#passerSpectateur').click(function(){
+				$('#buffs').empty();
 				$('.fenetreInfosPlateau').hide();
 				gameCore.spectateurOn();gameMap.desinit();
 			});
