@@ -115,6 +115,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	width:60%;
 	margin-top: 100px;
 	text-align: center;
+	background-size: auto 100%;
 }
 #inscription div ul{
 	text-align: left;
