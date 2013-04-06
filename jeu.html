@@ -6,6 +6,7 @@
 	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="/css/common.css"/>
 	<link rel="stylesheet" type="text/css" href="/css/game.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
 	<script src ="/socket.io/socket.io.js"></script>
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery.js"></script>
@@ -95,7 +96,7 @@
 
 			<!-- Fenêtre de connexion -->
 			<div id="inscription" class="fenetreInfosPlateau">
-				<div>
+				<div class="miniWrapper">
 					<h2>Connectez-vous</h2>
 					<form onsubmit="return false;">
 						<input id="champs-pseudo" type="text" placeholder="pseudo" maxlength="20"/><br/>
@@ -118,7 +119,7 @@
 			</div>
 			<!-- Fenêtre de chargement au démarrage -->
 			<div id="loadingScreen" class="fenetreInfosPlateau">
-				<div>
+				<div class="miniWrapper">
 					<h1>Zombiz Team survival</h1>
 					<h2>Chargement en cours</h2>
 					<h2 id="progressBar">0%</h2>
@@ -128,31 +129,31 @@
 
 			<!-- Fenêtre des options -->
 			<div style="display:none;" id="options" class="fenetreInfosPlateau">
-				<div>
+				<div class="miniWrapper">
 					<h2>Options</h2>
 					<input type="checkbox" id="checkbox-audio" checked="checked"/>Activer le son (raccourci touche M)<br/>
 					<input type="checkbox" id="checkbox-pseudo" checked="checked"/>Afficher les pseudos (raccourci touche V)<br/>
 					<input type="checkbox" id="checkbox-sang" checked="checked"/>Afficher le sang<br/>
-					<a id="hide_options" href="#">Fermer</a>
+					<a id="hide_options" class="lienRouge" href="#">Fermer</a>
 				</div>
 			</div>
 			<!-- Fenêtres des informations du compte -->
 			<div style="display:none" id="account" class="fenetreInfosPlateau">
-				<div>
+				<div class="miniWrapper">
 					<h2>Vos informations : </h2>
 					<input type="text" id="account-name" readonly="readonly" value="chargement..."/> (nom de compte)<br/>
 					<input type="text" id="account-email" value="chargement..."/> (adresse mail)<br/>
-					<a id="account-change-email" href="#">Valider le changement d'adresse email.</a>
+					<a id="account-change-email" class="lienRouge" href="#">Valider le changement d'adresse email.</a>
 					<h2>Pour changer de mot de passe :</h2>
 					<input type="password" id="account-passwd1"/><br/>
 					<input type="password" id="account-passwd2"/><br/>
-					<a id="account-change-passwd" href="#">Entrez le nouveau mot de passe 2 fois et validez.</a><br/><br/>
-					<a id="hide_account" href="#">Fermer cette fenêtre</a>
+					<a id="account-change-passwd" class="lienRouge" href="#">Entrez le nouveau mot de passe 2 fois et validez.</a><br/><br/>
+					<a id="hide_account" class="lienRouge" href="#">Fermer cette fenêtre</a>
 				</div>
 			</div>
 			<!-- Fenêtre de la boutique -->
 			<div style="display:none" id="boutique" class="fenetreInfosPlateau">
-				<div>
+				<div class="miniWrapper">
 					<h2>Choisissez votre skin</h2>
 					<div class="previewSkin" style="background-position:0px 0px" onclick="return gameCore.updateSkin(0)"></div>
 					<div class="previewSkin" style="background-position:0px -100px" onclick="return gameCore.updateSkin(1)"></div>
@@ -166,7 +167,7 @@
 					<div class="previewSkin" style="background-position:-200px -100px" onclick="return gameCore.updateSkin(9)"></div>
 					<div class="previewSkin" style="background-position:-200px -200px" onclick="return gameCore.updateSkin(10)"></div>
 					<div style="clear:both"><!--stop le fucking float-->
-						<a id="hide_boutique" href="#">Fermer cette fenêtre</a>
+						<a id="hide_boutique" class="lienRouge" href="#">Fermer cette fenêtre</a>
 					</div>
 				</div>
 			</div>
@@ -189,7 +190,7 @@
 				<a href="http://www.yootheme.com/icons" target="_blank">Social icons by YOOtheme</a>
 			</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.9.3.2 alpha (20130405)</p>
+			<p id="version">Version 0.9.3.3 alpha (20130406)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 

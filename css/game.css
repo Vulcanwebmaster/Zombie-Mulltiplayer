@@ -268,10 +268,14 @@ src: url('HUD.ttf') format('truetype');
 	color:rgb(200,150,150);
 }
 #tchat .tchat-rang-1{
-	color:rgb(100,200,100);
+	background-color:rgb(50,150,50);
+	color:white;margin-right:2px;
+	border-radius:2px;padding:0px 2px;
 }
 #tchat .tchat-rang-2{
-	color:rgb(200,50,200);
+	background-color:rgb(150,50,150);
+	color:white;margin-right:2px;
+	border-radius:2px;padding:0px 2px;
 }
 #tchat .tchat-admin{
 	color:rgb(200,50,200);

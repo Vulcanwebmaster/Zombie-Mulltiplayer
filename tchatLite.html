@@ -1,0 +1,80 @@
+<html>
+<head>
+	<title>Zombiz ! Team Survival | Tchat</title>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
+	<script src ="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<style>
+	body{background-color:rgb(50,50,100);}
+	#wrapper{background-color: white;padding:40px;width:800px;margin:auto;}
+	#tchat{height:400px;overflow: scroll;}
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="wrapperTchat" style="display:none">
+			<ul id="tchat">
+			</ul>
+			<form id="formTchat" onsubmit="return false;" style="text-align:center;">
+				<input type="text" id="champs-message" placeholder="Votre message"/><br/>
+				<button id="envoi">Valider</button><br/>
+				Connecté en tant que : <span id="connectedAs"></span>
+			</form>
+		</div>
+		<div id="wrapperConnect">
+			<form id="formConnect" onsubmit="return false;" style="text-align:center;">
+				<input type="text" id="champs-pseudo" placeholder="Votre pseudo"/><br/>
+				<input type="password" id="champs-mdp" placeholder="Votre mdp"/><br/>
+				<button id="envoi">Valider</button><br/>
+				<span id="infos"></span>
+			</form>
+		</div>
+	</div>
+	<script>
+	var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
+ 	var socket = io.connect(SERVER_ADRESS);
+
+ 	function tryConnexion(pseudo, mdp){
+ 		socket.emit('connection_attempt', {pseudo:pseudo, mdp:mdp});
+ 	}
+
+	socket.on('connect', function(){
+		//alert('Connecté au serveur');
+	});
+	socket.on('broadcast_msg', function(data){
+		//On supprime si y'a trop de messages
+		if($('#tchat li').length>30){
+			$('#tchat li:lt(5)').remove();
+		}
+		$('#tchat').append($('<li>').text(data.auteur + '> ' + data.message));
+	});
+	socket.on('connection_fail', function(datas){
+		$('#infos').text(datas.message);
+	});
+	socket.on('connection_success', function(datas){
+		$('#infos').text(datas.message);
+		$('#wrapperConnect').hide();
+		$('#wrapperTchat').show();
+		$('#formTchat').submit(function(){
+			if($('#champs-message').val()!="")
+			socket.emit('broadcast_msg', {message:$('#champs-message').val()});
+			$('#champs-message').val('');
+			return false;
+		});
+		$('#champs-message').focus();
+		socket.emit('spect_mode_on');
+	});
+	
+	
+	$(function(){
+		$('#formConnect').submit(function(){
+			tryConnexion($('#champs-pseudo').val(), $('#champs-mdp').val());
+			$('#connectedAs').text($('#champs-pseudo').val());
+			return false;
+		});
+		$('#champs-pseudo').focus();
+	});
+	</script>
+</body>
+</html>

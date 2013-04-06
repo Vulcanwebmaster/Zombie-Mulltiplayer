@@ -377,10 +377,10 @@ function GameCore(pseudo,mdp){
 		}
 		var debutMessage='';
 		if(auteur!=undefined && auteur!=''){
-			if(rang==undefined)
-				debutMessage=$('<span>').addClass('tchat-rang-0').addClass(classe).text(auteur + '> ');
-			else
-				debutMessage=$('<span>').addClass('tchat-rang-' + rang).addClass(classe).text(auteur + '> ');
+			debutMessage=$('<span>').addClass('tchat-rang-0').addClass(classe).text(auteur + '> ');
+			if(rang!=undefined)
+				if(rang>0)
+					debutMessage.prepend($('<span>').addClass('tchat-rang-' + rang).text('GM'));
 		}
 		if(classe==undefined)
 			classe='';
@@ -500,7 +500,7 @@ $(window).load(function(){
 	updateLeaderBoard();
 
 	// FONCTIONS DE PRELOADING
-	console.log('Lancement du charment...');
+	console.log('Lancement du chargement...');
 	var tabObjImages={};
 	for(var i=0;i<tabImages.length;i++){
 		tabObjImages[i]=new Image();

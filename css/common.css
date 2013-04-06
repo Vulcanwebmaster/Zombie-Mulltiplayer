@@ -89,24 +89,27 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	width:1000px;
 	height: 650px;
 }
-.fenetreInfosPlateau div, #options div, #account div, #boutique div{
+.fenetreInfosPlateau div.miniWrapper, #options div.miniWrapper, #account div.miniWrapper, #boutique div.miniWrapper{
 	margin:auto;
 	width:60%;
 	margin-top: 100px;
 	background-color:rgb(50,50,50);	
 	background-image: url('../img/zombiz_background.jpg');
 	background-size: 100%;
+	padding:0px 10px;
 	background-repeat: no-repeat;
 }
 #boutique .previewSkin{
 	width: 100px;
 	height: 100px;
 	margin:20px 20px;
+	padding:0;
 	float:left;
 	background-image:url('/img/players.png');
 	background-repeat: none;
+	background-size: 400px;
 }
-#boutique .previewSkin:hover{background-color:white;cursor:pointer;}
+#boutique .previewSkin:hover{cursor:pointer;background-color:white;}
 #inscription div{
 	margin:auto;
 	width:60%;
@@ -117,7 +120,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	text-align: left;
 	color:rgb(200,200,200);
 }
-#inscription a{
+#inscription a, .lienRouge{
 	display:inline-block;
 	margin:10px;
 	background-color:rgb(122,13,17);
@@ -125,7 +128,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	border-radius:5px;
 	border:1px white groove;
 }
-#inscription a:hover{
+#inscription a:hover, .lienRouge{
 	background-color:rgb(152,23,37);
 	margin-left:15px;
 	margin-right:5px;
@@ -146,6 +149,7 @@ h2{
 	text-align: center;
 	font-size: 30px;
 	margin:0px;
+	margin-bottom:10px;
 	text-shadow:1px 1px 2px black;
 }
 p{text-shadow:1px 1px 1px black;box-shadow:0px 0px 5px black;}

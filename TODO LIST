@@ -25,12 +25,6 @@ empêcher les comptes avec des noms de merde !
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
 
-
-* améliorer design page compte / option (bootstrap form ?)
-* changer infobulle sur les buffs
-* afficher / cacher le top 10
-* interface de tchat only
-
 Idées :
 
 - eviter la congestion du réseau si ça lag ?
@@ -50,13 +44,8 @@ Idées :
 - systeme d'aide pour remettre debout un ami blessé ?
 - filtre à obscenité
 - système de sessions (avec le token sur un cookie client)
+- MEttre les images en base64 ? http://www.greywyvern.com/code/php/binary2base64
 
 *************************************************************************************
 
---- v 0.9.3.3 alpha (20130405)
-	ADD :
-		5 nouveaux skins font leur apparition : 4 femmes et un secret
-		Un écran de chargement evitera aux joueurs de se connecter alors que la page n'est pas chargée entièrement
-	EDIT :
-	FIX :
-		Les pastilles dans le classement ne feront plus de décalage des pseudos
+--- v 0.9.3.3 alpha (20130406)
