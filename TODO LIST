@@ -21,21 +21,15 @@ w3c validator
 mettre le boss en plus gros
 reflechir sur une histoire
 système de 3 types d'armes
-améliorer design page compte / option (bootstrap form ?)
 empêcher les comptes avec des noms de merde !
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
-changer infobulle sur les buffs
-corriger les pasilles dans le leaderboard...
-Ajouter skins filles !
-Chopper les fichier genre le nouveau buff, la map et les filles. Pour pas les perdre dans les mails !
-changer les images en preloading vu qu'on est passé sur les "mini" ingame.
-protéger les autres fichiers importants sur le serveur
 
 
-* protéger plus les fichiers serveurs
-* faire un écran de chargement quand les images chargent ? Comme ça la page sera plus rapide de base, et on lance tout après :)
-*bien ignorer les psd
+* améliorer design page compte / option (bootstrap form ?)
+* changer infobulle sur les buffs
+* afficher / cacher le top 10
+* interface de tchat only
 
 Idées :
 
@@ -59,4 +53,10 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3.2 alpha (20130405)
+--- v 0.9.3.3 alpha (20130405)
+	ADD :
+		5 nouveaux skins font leur apparition : 4 femmes et un secret
+		Un écran de chargement evitera aux joueurs de se connecter alors que la page n'est pas chargée entièrement
+	EDIT :
+	FIX :
+		Les pastilles dans le classement ne feront plus de décalage des pseudos

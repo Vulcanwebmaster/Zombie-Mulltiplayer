@@ -213,7 +213,7 @@ module.exports = function CharacterManager(){
    			id:id,
             pseudo:pseudo,
             alive:true,
-            style:parseInt(Math.random()*7),
+            style:parseInt(Math.random()*11),
             attaque:this.creationArme(0),
             isFiring:false,
             target:{targetX:0,targetY:0},

@@ -80,7 +80,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	cursor: url('/img/viseur.png') 24 24,pointer;
 }
 
-#inscription, #options, #account, #boutique{
+.fenetreInfosPlateau, #inscription, #options, #account, #boutique{
 	background-color:black;
 	color:white;
 	position:absolute;
@@ -89,15 +89,19 @@ nav ul li a:hover{color:rgb(200,50,50);}
 	width:1000px;
 	height: 650px;
 }
-#options div, #account div, #boutique div{
+.fenetreInfosPlateau div, #options div, #account div, #boutique div{
 	margin:auto;
 	width:60%;
 	margin-top: 100px;
 	background-color:rgb(50,50,50);	
+	background-image: url('../img/zombiz_background.jpg');
+	background-size: 100%;
+	background-repeat: no-repeat;
 }
 #boutique .previewSkin{
 	width: 100px;
 	height: 100px;
+	margin:20px 20px;
 	float:left;
 	background-image:url('/img/players.png');
 	background-repeat: none;
@@ -111,7 +115,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 }
 #inscription div ul{
 	text-align: left;
-	color:grey;
+	color:rgb(200,200,200);
 }
 #inscription a{
 	display:inline-block;
@@ -138,7 +142,7 @@ h1{
 	text-shadow:1px 1px 2px black;
 }
 h2{
-	color:grey;
+	color:rgb(200,200,200);
 	text-align: center;
 	font-size: 30px;
 	margin:0px;
@@ -202,7 +206,7 @@ footer p{margin-top:0px;}
 #leaderboard tr:nth-child(6) td{font-size: 1.1em;}
 
 /* gestion des grades / ban */
-.leaderboard-badge{float:left;margin-top:2px;margin-left:2px;font-size:11px;color:white;padding:2px;border-radius: 4px;}
+.leaderboard-badge{float:left;margin-top:2px;margin-left:2px;margin-right:-38px;font-size:11px;color:white;padding:2px;border-radius: 4px;}
 .leaderboard-ban{background-color:rgb(150,150,150);}
 .leaderboard-modo{background-color:rgb(50,150,50);}
 .leaderboard-admin{background-color:rgb(150,50,150);}

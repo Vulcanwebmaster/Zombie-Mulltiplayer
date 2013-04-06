@@ -455,7 +455,7 @@ function updateLeaderBoard(){
 }
 
 
-$(document).ready(function(){
+$(window).load(function(){
 	if(readCookie('zombiz_version_z')==null)
 		initEventConnexion();
 	else{
@@ -499,4 +499,42 @@ $(document).ready(function(){
 	$('#account-passwd2').click(function(){$(this).focus();});
 	updateLeaderBoard();
 
+	// FONCTIONS DE PRELOADING
+	console.log('Lancement du charment...');
+	var tabObjImages={};
+	for(var i=0;i<tabImages.length;i++){
+		tabObjImages[i]=new Image();
+		tabObjImages[i].src=tabImages[i];
+		tabObjImages[i].onload=incrementChargement;
+	}
+	<!-- Chargement des sons -->
+	var nbZombieSound=8;
+	var AUDIO={};
+	for(var key in audio_tableau){
+		AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
+		AUDIO[key].bind('canplaythrough',incrementChargement);
+	}
+	$('#loadingScreen p').text($('#version').text());
 });
+
+//VARIABLES A PRELOADER
+var tabImages=['img/players.png', 'img/players_mini.png', 'img/buffs.png', 'img/sang.png',
+				'img/simple_bullet.png', 'img/droppables.png', 'img/zombies.png', 'img/zombies_mini.png'];
+var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
+						'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 
+						'ZOMBIE_2':'/sounds/silverstone.wav', 'ZOMBIE_3':'/sounds/zombie_attack.wav',
+						'ZOMBIE_4':'/sounds/Zombie_Brain_Eater.mp3', 'ZOMBIE_5':'/sounds/Zombie_Gets_Attacked.mp3',
+						'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
+						'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
+						'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
+var totalOK = 0;
+var totalCible= tabImages.length + Object.keys(audio_tableau).length;
+function incrementChargement(){
+	totalOK++;
+	//console.log(totalOK);
+	$('#progressBar').text(parseInt(totalOK/totalCible*100)+'%');
+	if(totalOK==totalCible){
+		console.log('Chargement terminé.');
+		$('#loadingScreen').remove();
+	}
+}

@@ -116,6 +116,15 @@
 						<a href="mailto:zombiz.dev@gmail.com">Envie de contribuer à Zombiz ? De faire un partenariat ? Envoyez-moi un mail !</a><br/></p>
 				</div>
 			</div>
+			<!-- Fenêtre de chargement au démarrage -->
+			<div id="loadingScreen" class="fenetreInfosPlateau">
+				<div>
+					<h1>Zombiz Team survival</h1>
+					<h2>Chargement en cours</h2>
+					<h2 id="progressBar">0%</h2>
+					<p>chargement version...</p>
+				</div>
+			</div>
 
 			<!-- Fenêtre des options -->
 			<div style="display:none;" id="options" class="fenetreInfosPlateau">
@@ -152,6 +161,10 @@
 					<div class="previewSkin" style="background-position:-100px 0px" onclick="return gameCore.updateSkin(4)"></div>
 					<div class="previewSkin" style="background-position:-100px -100px" onclick="return gameCore.updateSkin(5)"></div>
 					<div class="previewSkin" style="background-position:-100px -200px" onclick="return gameCore.updateSkin(6)"></div>
+					<div class="previewSkin" style="background-position:-100px -300px" onclick="return gameCore.updateSkin(7)"></div>
+					<div class="previewSkin" style="background-position:-200px 0px" onclick="return gameCore.updateSkin(8)"></div>
+					<div class="previewSkin" style="background-position:-200px -100px" onclick="return gameCore.updateSkin(9)"></div>
+					<div class="previewSkin" style="background-position:-200px -200px" onclick="return gameCore.updateSkin(10)"></div>
 					<div style="clear:both"><!--stop le fucking float-->
 						<a id="hide_boutique" href="#">Fermer cette fenêtre</a>
 					</div>
@@ -179,38 +192,6 @@
 			<p id="version">Version 0.9.3.2 alpha (20130405)</p>
 		</footer>
 	</div><!-- div#wrapper -->
-	<!-- Script servant à forcer le chargement des sprites-->
-	<script type="text/javascript">
-	var preloadImage1 = new Image(); 
-	preloadImage1.src = 'img/players.png'; 
-	var preloadImage2 = new Image(); 
-	preloadImage2.src = 'img/zombies.png'; 
-	var preloadImage3 = new Image(); 
-	preloadImage3.src = 'img/buffs.png'; 
-	var preloadImage4 = new Image(); 
-	preloadImage4.src = 'img/sang.png'; 
-	var preloadImage5 = new Image(); 
-	preloadImage5.src = 'img/simple_bullet.png'; 
-	var preloadImage6 = new Image();
-	preloadImage6.src ='img/droppables.png';
-	var preloadImage7 = new Image();
-	preloadImage7.src = 'img/simple_bullet.png';
-	</script>
-	<!-- Chargement des sons -->
-	<script>
-	var nbZombieSound=8;
-	var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
-						'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 
-						'ZOMBIE_2':'/sounds/silverstone.wav', 'ZOMBIE_3':'/sounds/zombie_attack.wav',
-						'ZOMBIE_4':'/sounds/Zombie_Brain_Eater.mp3', 'ZOMBIE_5':'/sounds/Zombie_Gets_Attacked.mp3',
-						'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
-						'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
-						'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
-	var AUDIO={};
-	for(var key in audio_tableau){
-		AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
-	}
-	</script>
 
 	<!-- Google analytics -->
 	<script type="text/javascript">

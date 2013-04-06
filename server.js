@@ -48,8 +48,8 @@ function handler( request , response ) {
         filePath='./leaderboard.html';
     }
     //On protège tous les dossiers et fichiers interdits
-    else if(filePath=='./server.js'){
-        console.log(dateToLog(new Date) + 'Tentative d\'accès au fichier serveur');
+    else if(filePath=='./server.js' || filePath=='./js/CharacterManager.class.js' || filePath=='./js/DBCore.class.js' || filePath=='./js/ServerMap.class.js'){
+        console.log(dateToLog(new Date) + 'Tentative d\'accès aux fichiers serveurs : ' + filePath);
         response.writeHead(403);
         response.end('Acces interdit. Petit malin.');
     }
@@ -90,6 +90,7 @@ function handler( request , response ) {
             fs.readFile(filePath, function(error, content) {
                 if (error) {
                     response.writeHead(500);
+                    console.log(dateToLog(new Date) + 'Erreur 500 : ' + err);
                     response.end();
                 }
                 else {
@@ -99,7 +100,7 @@ function handler( request , response ) {
             });
         }
         else {
-            console.log(dateToLog(new Date) + 'Error fs.stat : ' + err);
+            console.log(dateToLog(new Date) + 'Erreur 404 : ' + err);
             response.writeHead(404);
             response.end();
         }
@@ -269,7 +270,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('update_account_skin', function(skinID){
         socket.get('pseudo', function(err, pseudo){
             //A changer une fois les conditions d'obtentions faites.
-            if(skinID>=0 && skinID<=6){
+            if(skinID>=0 && skinID<=10){
                 dbCore.updateAccountSkin(pseudo, skinID);
                 serverMap.getPlayer(pseudo).style=skinID;
             }
