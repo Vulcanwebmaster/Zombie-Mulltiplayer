@@ -102,7 +102,7 @@ nav ul li a:hover{color:rgb(200,50,50);}
 #boutique .previewSkin{
 	width: 100px;
 	height: 100px;
-	margin:20px 20px;
+	margin:0px 5px;
 	padding:0;
 	float:left;
 	background-image:url('/img/players.png');
