@@ -48,6 +48,8 @@
 			$('#tchat li:lt(5)').remove();
 		}
 		$('#tchat').append($('<li>').text(data.auteur + '> ' + data.message));
+		var objDiv = document.getElementById("tchat");
+		objDiv.scrollTop = objDiv.scrollHeight;
 	});
 	socket.on('connection_fail', function(datas){
 		$('#infos').text(datas.message);
