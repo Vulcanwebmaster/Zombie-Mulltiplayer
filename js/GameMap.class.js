@@ -456,7 +456,7 @@ function GameMap(){
 		//$('#map').html('');
 		gameMap.idZombieTarget=-1;
 		$('#zombie-life-inner').stop().css('width', '0%');
-		$('.zombie').css('display', 'none');
+		$('.zombie').remove();
 		/*document.getElementById('map').innerHTML='';*/
 	}
 

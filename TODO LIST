@@ -26,6 +26,9 @@ ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
 bug de la vie des zombies des fois ?
 
+*mettre quelques couleurs dans le tchat lite + outil de gestion + vraie url + lien de retour sur la page normale
+*remettre le bonus de vie en fin de vague
+
 Idées :
 
 - eviter la congestion du réseau si ça lag ?
@@ -49,4 +52,9 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3.3 alpha (20130406)
+--- v 0.9.3.4 alpha (20130407)
+	ADD :
+	EDIT :
+		Le bonus de vie de fin de vague refait surface
+	FIX :
+		Le bug de la vie des zombies qui "dépasse" est corrigé
