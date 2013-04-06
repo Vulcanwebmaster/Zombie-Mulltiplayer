@@ -1,5 +1,11 @@
 #On ignore les fichiers adobe illustrator
 *.ai
+
+#Et ceux de toshop
+*.psd
+
 #Ignore du fichier de google
 google0b4ef743d20215bf.html
+
+#ignore du fichier sensible
 sendemail.js

@@ -32,6 +32,11 @@ Chopper les fichier genre le nouveau buff, la map et les filles. Pour pas les pe
 changer les images en preloading vu qu'on est passé sur les "mini" ingame.
 protéger les autres fichiers importants sur le serveur
 
+
+* protéger plus les fichiers serveurs
+* faire un écran de chargement quand les images chargent ? Comme ça la page sera plus rapide de base, et on lance tout après :)
+*bien ignorer les psd
+
 Idées :
 
 - eviter la congestion du réseau si ça lag ?
