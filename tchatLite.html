@@ -5,20 +5,27 @@
 	<link rel="icon" type="image/ico" href="/img/favicon.ico"/>
 	<script src ="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/js/jquery.js"></script>
-	<style>
-	body{background-color:rgb(50,50,100);}
-	#wrapper{background-color: white;padding:40px;width:800px;margin:auto;}
-	#tchat{height:400px;overflow: scroll;}
-	</style>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.full.css">
+	<link rel="stylesheet" type="text/css" href="/css/admin.css">
 </head>
 <body>
 	<div id="wrapper">
+		<a class="btn btn-info" href="/jeu">Retourner sur le site</a>
+		<header class="page-header">
+			<h1>Zombiz Team survival<small> Interface d'aministration </h1>
+		</header>
 		<div id="wrapperTchat" style="display:none">
 			<ul id="tchat">
 			</ul>
+			<div id="infosOnline">
+				<p class="text-info">Il y a <span style="font-size:30px;line-height:35px;" id="nbrPlayersOnline" class="label label-info">0</span> joueurs en ligne.</p>
+				<ul id="listeJoueurs">
+					<!--<li><span>WhiteSlash</span> <button class="btn btn-small btn-danger">Kicker</button></li>-->
+				</ul>
+			</div>
 			<form id="formTchat" onsubmit="return false;" style="text-align:center;">
-				<input type="text" id="champs-message" placeholder="Votre message"/><br/>
-				<button id="envoi">Valider</button><br/>
+				<input type="text" style="width:100%;" id="champs-message" placeholder="Votre message..."/><br/>
+				<button class="btn btn-primary" id="envoiTchat">Envoyer</button><br/>
 				Connecté en tant que : <span id="connectedAs"></span>
 			</form>
 		</div>
@@ -26,7 +33,7 @@
 			<form id="formConnect" onsubmit="return false;" style="text-align:center;">
 				<input type="text" id="champs-pseudo" placeholder="Votre pseudo"/><br/>
 				<input type="password" id="champs-mdp" placeholder="Votre mdp"/><br/>
-				<button id="envoi">Valider</button><br/>
+				<button class="btn btn-primary" id="envoiConnex">Valider</button><br/>
 				<span id="infos"></span>
 			</form>
 		</div>
@@ -34,22 +41,73 @@
 	<script>
 	var SERVER_ADRESS=document.URL.substring(0,document.URL.indexOf("/",7));
  	var socket = io.connect(SERVER_ADRESS);
+ 	var playerId=-1;
 
+ 	/* FONCTIONS UTILITAIRES */
  	function tryConnexion(pseudo, mdp){
  		socket.emit('connection_attempt', {pseudo:pseudo, mdp:mdp});
  	}
 
+ 	function tchat(auteur,message,classe, rang){
+		//On supprime si y'a trop de messages
+		if($('#tchat li').length>50){
+			$('#tchat li:lt(5)').remove();
+		}
+		var debutMessage='';
+		if(auteur!=undefined && auteur!=''){
+			debutMessage=$('<span>').addClass('tchat-rang-0').addClass(classe).text(auteur + '> ');
+			if(rang!=undefined)
+				if(rang>0)
+					debutMessage.prepend($('<span>').addClass('tchat-rang-' + rang).text('GM'));
+		}
+		if(classe==undefined)
+			classe='';
+		var corpsMessage=$('<span>').text(message);
+		$('#tchat').append($('<li>').append(debutMessage).append(corpsMessage).addClass(classe));
+	};
+
+	//Cette fonction met à jour les variables affichées en fonction des résultats obtenus
+	function analyseReponse(message){
+		//faire un truc qui fait que si on analyse, on affiche pas forcement (genre le resultat de/list)
+
+		//Si un joueur se connecte ou quitte
+		if(message.search('vient de se connecter')!=-1)
+			socket.emit('broadcast_msg', {message:'/list'});
+		else if(message.search(' a quitté le jeu.')!=-1)
+			socket.emit('broadcast_msg', {message:'/list'});
+		//si c'est un /list
+		if(message.search('Liste des joueurs')!=-1 && message.search('spectateur')==-1){
+			//On compte le nombre de joueur à partir du nombre de barres
+			var decoup=message.substr(20, message.length).split('|');
+			$('#nbrPlayersOnline').text(decoup.length-1);
+			$('#listeJoueurs').empty();
+			for(var i = 0 ; i<decoup.length-1;i++){
+				//on recupere le pseudo, l'id, et on prepare le bouton
+				var pseudo = decoup[i].substr(0,decoup[i].indexOf('('));
+				var id = decoup[i].substr(decoup[i].indexOf('(')+1,decoup[i].length - decoup[i].indexOf(')') -1);
+				var joueur= $('<span>').text(pseudo);
+				var bouton = $('<button>').addClass('btn btn-small btn-danger').text('kicker').attr('data-id', id)
+											.click(function(){
+												socket.emit('broadcast_msg', {message:'/kick ' + $(this).attr('data-id')})
+											});
+				$('#listeJoueurs').append($('<li>').append(joueur).append(bouton));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/* GESTION ENVOI / REPONSE DE LA SOCKET */
 	socket.on('connect', function(){
 		//alert('Connecté au serveur');
 	});
 	socket.on('broadcast_msg', function(data){
-		//On supprime si y'a trop de messages
-		if($('#tchat li').length>30){
-			$('#tchat li:lt(5)').remove();
-		}
-		$('#tchat').append($('<li>').text(data.auteur + '> ' + data.message));
+		if(analyseReponse(data.message)) tchat(data.auteur, data.message, data.class, data.rang);
 		var objDiv = document.getElementById("tchat");
 		objDiv.scrollTop = objDiv.scrollHeight;
+	});
+	socket.on('player_die', function(datas){
+		tchat('', datas.pseudo + ' est mort.', 'tchat-game-event');
 	});
 	socket.on('connection_fail', function(datas){
 		$('#infos').text(datas.message);
@@ -65,7 +123,17 @@
 			return false;
 		});
 		$('#champs-message').focus();
+		socket.emit('broadcast_msg', {message:'/list'});
+	});
+	socket.on('set_id', function(id){
 		socket.emit('spect_mode_on');
+		playerId = id;
+	});
+	socket.on('kick_player', function(datas){
+		if(datas.id==playerId){
+			alert('KICK ! Vous avez été kické du jeu.');
+			document.location.reload(true);
+		}
 	});
 	
 	

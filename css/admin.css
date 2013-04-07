@@ -1,0 +1,35 @@
+body{background-color:rgb(50,50,100);padding:10px;}
+#wrapper{background-color: white;margin-top:10px;padding:1% 2%;width:80%;margin:auto;}
+#tchat{height:400px;width:60%;float:left;overflow: scroll;background-color:rgb(50,50,50);list-style: none;color:white;margin:0;}
+#tchat li{margin:0;padding:0 10px;}
+
+#infosOnline{width:38%;height: 400px;margin-left:60%;padding:1%;}
+#listeJoueurs{margin:0;padding:0;background-color:rgb(200,200,200);height: 200px;overflow-y: scroll;}
+#listeJoueurs li{margin:0;padding:3px 10px;position:relative;border-bottom:1px solid black;}
+#listeJoueurs li .btn{position: absolute;right:0px;top:0px;}
+/* COLORATION DU TCHAT */
+#tchat .tchat-rang-0{
+	color:rgb(200,150,150);
+}
+#tchat .tchat-rang-1{
+	background-color:rgb(50,150,50);
+	color:white;margin-right:2px;
+	border-radius:2px;padding:0px 2px;
+}
+#tchat .tchat-rang-2{
+	background-color:rgb(150,50,150);
+	color:white;margin-right:2px;
+	border-radius:2px;padding:0px 2px;
+}
+#tchat .tchat-admin{
+	color:rgb(200,50,200);
+}
+#tchat .tchat-game-event{
+	color:rgb(210,117,16);
+}
+#tchat .tchat-game-info{
+	color:rgb(50,110,190);
+}
+#tchat .tchat-error{
+	color:rgb(200,30,30);
+}

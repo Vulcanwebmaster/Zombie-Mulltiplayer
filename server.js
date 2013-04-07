@@ -137,7 +137,7 @@ function specialCommandProcessing(pseudo, string){
                 io.sockets.emit('kick_player', {id:id});
                 serverMap.removeJoueur(id);
                 io.sockets.emit('remove_player', {'id':id});
-                io.sockets.emit('broadcast_msg', {message:'Le joueur' + playerToKick.pseudo + ' a été kické.', class:'tchat-game-event'});
+                io.sockets.emit('broadcast_msg', {message:'Le joueur ' + playerToKick.pseudo + ' a été kické.', class:'tchat-game-event'});
                 result="Commande OK";
             }
             else
