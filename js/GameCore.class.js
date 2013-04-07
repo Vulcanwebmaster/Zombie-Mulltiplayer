@@ -60,7 +60,7 @@ function GameCore(pseudo,mdp){
 			$('#inscription h2').text(datas.message);
 			gameCore.pseudo=datas.pseudo;
 			//On sauvegarde le pseudo dans un cookie pour les futures connexions
-			if(datas.pseudo!="visiteur")
+			if(datas.pseudo.substr(0,8)!="visiteur")
 				createCookie('zombiz_pseudo', datas.pseudo, 30);//1 mois
 
 			//gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});

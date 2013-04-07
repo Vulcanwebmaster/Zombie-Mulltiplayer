@@ -23,7 +23,7 @@ module.exports = function DBCore(){
 
    this.createAccount=function(datas, socket){
       //On regarde si quelqu'un ne crée pas le compte visiteur
-      if(datas.pseudo=='visiteur'){
+      if(datas.pseudo.substr(0,8).toLowerCase()=='visiteur'){
          console.log(dateToLog(new Date) + 'Impossible de créer le compte ' + datas.pseudo);
          socket.emit('create_account_fail', {'message':'Le compte '+datas.pseudo+' n\'est pas disponible.'});
          return;
@@ -47,11 +47,12 @@ module.exports = function DBCore(){
       console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
       //On regarde si on se connecte en visiteur
       if(datas.pseudo=='visiteur'){
-         socket.set('pseudo', 'visiteur');
-         socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':datas.pseudo});
          var joueurId=serverMap.addJoueur(datas.pseudo, socket);
-         socket.broadcast.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+         var nouveauPseudo = 'visiteur_' + joueurId;
+         socket.broadcast.emit('broadcast_msg', {'message': nouveauPseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
          socket.set('id', joueurId);
+         socket.set('pseudo', nouveauPseudo);
+         socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':nouveauPseudo});
          return;
       }
       var _this=this;
@@ -69,7 +70,7 @@ module.exports = function DBCore(){
                socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
 
                var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
-               if(joueurDejaInGame == null || datas.pseudo.toLowerCase() == "visiteur")
+               if(joueurDejaInGame == null)
                   var joueurId=serverMap.addJoueurFromDB(users[0], socket);
                else{
                   socket.emit('set_id', -1);
@@ -91,7 +92,7 @@ module.exports = function DBCore(){
          console.log(dateToLog(new Date) + 'DBCore::updatePlayerStats : datas = ' + datas);
          return;
       }
-      if(datas.pseudo=='visiteur') return;
+      if(datas.pseudo.substr(0,8)=='visiteur') return;
       var _this=this;
       //on save les datas car l'asynchrone fait que sinon c'est remis à zero avant l'update DB
       var dataTmp={pseudo:datas.pseudo, kills:datas.kills, deaths:datas.deaths, record:datas.record};
@@ -150,8 +151,8 @@ module.exports = function DBCore(){
       });
    }
    this.getAccountInformations=function(pseudo, socket){
-      if(pseudo=="visiteur"){
-         socket.emit('response_account_informations', {pseudo:'visiteur', email:'Pas d\'adresse mail'});
+      if(pseudo.substr(0,8)=="visiteur"){
+         socket.emit('response_account_informations', {pseudo:pseudo, email:'Pas d\'adresse mail'});
          return;
       }
       this.PlayerModel.find({pseudoLowerCase:pseudo.toLowerCase()}, function(err, users){

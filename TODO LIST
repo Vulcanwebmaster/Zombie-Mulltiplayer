@@ -8,7 +8,6 @@
 - ajouter un bandeau avec des petites phrases rigolottes
 - faire une option mot de passe oublié
 - accelerer les zombies quand la partie prend du temps
-- numéros aux visiteurs ?
 abilités esquive, balle perforante, chance de drop arme
 compteur taille paquet
 supprimer un des boutons en trop (spect/pas spec)
@@ -21,8 +20,10 @@ mettre le boss en plus gros
 reflechir sur une histoire
 système de 3 types d'armes
 empêcher les comptes avec des noms de merde !
-ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) + mute
+alléger les échanges !
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
+ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) + mute ?
+
 
 Idées :
 
@@ -47,4 +48,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3.4 alpha (20130407)
+--- v 0.9.3.5 alpha (20130407)

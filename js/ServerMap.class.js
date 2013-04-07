@@ -20,19 +20,20 @@ module.exports = function ServerMap(io,characterManager, dbCore)
    var DEFAULT_ZOMBIE_SPEED;
 
    this.addJoueur=function(pseudo, socket){
-   		var newJoueur=characterManager.creationJoueur(this.nbJoueurs++,pseudo);
-   		this.listeAttente[newJoueur.id]=newJoueur;
-         socket.emit('set_id', newJoueur.id);
-         /*Ici on choisi ou non de lancer la partie*/
-         if(this.isRunning==false && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
-            this.start();
-         else if(this.getPlayingPlayers()==0)
-            this.start();
-         else
-            socket.emit('player_spectateur', {id:newJoueur.id});
-         newJoueur.x=this.widthMap/2;
-         newJoueur.y=this.heightMap/2;
-   		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
+      if(pseudo=='visiteur') pseudo = pseudo + '_' + (this.nbJoueurs);
+		var newJoueur=characterManager.creationJoueur(this.nbJoueurs++,pseudo);
+		this.listeAttente[newJoueur.id]=newJoueur;
+      socket.emit('set_id', newJoueur.id);
+      /*Ici on choisi ou non de lancer la partie*/
+      if(this.isRunning==false && this.getPlayingPlayers()==0  && this.getWaitingPlayers()==1)
+         this.start();
+      else if(this.getPlayingPlayers()==0)
+         this.start();
+      else
+         socket.emit('player_spectateur', {id:newJoueur.id});
+      newJoueur.x=this.widthMap/2;
+      newJoueur.y=this.heightMap/2;
+		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
    this.addJoueurFromDB=function(infosJoueur, socket){
       var idPlayer = this.addJoueur(infosJoueur.pseudo, socket);

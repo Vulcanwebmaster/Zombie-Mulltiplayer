@@ -4,7 +4,7 @@ body{background-color:rgb(50,50,100);padding:10px;}
 #tchat li{margin:0;padding:0 10px;}
 
 #infosOnline{width:38%;height: 400px;margin-left:60%;padding:1%;}
-#listeJoueurs{margin:0;padding:0;background-color:rgb(200,200,200);height: 200px;overflow-y: scroll;}
+#listeJoueurs{margin:3px 0px;padding:0;background-color:rgb(200,200,200);height: 300px;overflow-y: scroll;}
 #listeJoueurs li{margin:0;padding:3px 10px;position:relative;border-bottom:1px solid black;}
 #listeJoueurs li .btn{position: absolute;right:0px;top:0px;}
 /* COLORATION DU TCHAT */

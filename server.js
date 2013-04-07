@@ -119,6 +119,9 @@ function specialCommandProcessing(pseudo, string){
     else if(string=="/who"){
         result=serverMap.getListeJoueursStr();
     }
+    else if(string=="/getCurrentWave"){
+        result=serverMap.currentWave + ' (vague courante)';
+    }
     else if(string=="/list"){
         //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
         if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
@@ -202,6 +205,8 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('broadcast_msg', function(datas){
+        if(datas == undefined) return;
+        if(datas.message == undefined) return;
         socket.get('pseudo', function(err, pseudo){
             //On regarde si c'est une commande spéciale
             var specialCommandResult = specialCommandProcessing(pseudo, datas.message)

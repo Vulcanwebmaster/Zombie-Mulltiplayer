@@ -18,7 +18,8 @@
 			<ul id="tchat">
 			</ul>
 			<div id="infosOnline">
-				<p class="text-info">Il y a <span style="font-size:30px;line-height:35px;" id="nbrPlayersOnline" class="label label-info">0</span> joueurs en ligne.</p>
+				<p class="text-info">Il y a <span style="font-size:30px;line-height:35px;" id="nbrPlayersOnline" class="label label-info">0</span> joueurs en ligne en vague <span style="font-size:30px;line-height:35px;" id="currentWave" class="label label-warning">0</span>.</p>
+				<span id="refreshPlayerListButton" class="btn btn-small btn-primary"><i class="icon-refresh"></i></span>
 				<ul id="listeJoueurs">
 					<!--<li><span>WhiteSlash</span> <button class="btn btn-small btn-danger">Kicker</button></li>-->
 				</ul>
@@ -48,6 +49,12 @@
  		socket.emit('connection_attempt', {pseudo:pseudo, mdp:mdp});
  	}
 
+ 	function refreshStats(){
+ 		socket.emit('broadcast_msg', {message : '/list'});
+ 		socket.emit('broadcast_msg', {message : '/getCurrentWave'});
+ 		setTimeout(refreshStats, 10000);
+ 	}
+
  	function tchat(auteur,message,classe, rang){
 		//On supprime si y'a trop de messages
 		if($('#tchat li').length>50){
@@ -64,6 +71,8 @@
 			classe='';
 		var corpsMessage=$('<span>').text(message);
 		$('#tchat').append($('<li>').append(debutMessage).append(corpsMessage).addClass(classe));
+		var objDiv = document.getElementById("tchat");
+		objDiv.scrollTop = objDiv.scrollHeight;
 	};
 
 	//Cette fonction met à jour les variables affichées en fonction des résultats obtenus
@@ -84,14 +93,35 @@
 			for(var i = 0 ; i<decoup.length-1;i++){
 				//on recupere le pseudo, l'id, et on prepare le bouton
 				var pseudo = decoup[i].substr(0,decoup[i].indexOf('('));
-				var id = decoup[i].substr(decoup[i].indexOf('(')+1,decoup[i].length - decoup[i].indexOf(')') -1);
+				var id = decoup[i].substr(decoup[i].indexOf('(')+1 , decoup[i].indexOf(')') - decoup[i].indexOf('(')-1)
 				var joueur= $('<span>').text(pseudo);
 				var bouton = $('<button>').addClass('btn btn-small btn-danger').text('kicker').attr('data-id', id)
 											.click(function(){
 												socket.emit('broadcast_msg', {message:'/kick ' + $(this).attr('data-id')})
 											});
 				$('#listeJoueurs').append($('<li>').append(joueur).append(bouton));
+				//on lance l'appelle à /who pour maintenant savoir qui est en ligne ou pas
+				socket.emit('broadcast_msg', {message:'/who'});
 			}
+			return false;
+		}
+		//si c'est un /who
+		if(message.search('Liste des joueurs')!=-1 && message.search('spectateur')!=-1){
+			//On compte le nombre de joueur à partir du nombre de barres
+			var decoup=message.substr(20, message.length).split('|');
+			for(var i = 0 ; i<decoup.length-1;i++){
+				//on recupere le pseudo, l'id, et on prepare le bouton
+				var pseudo = decoup[i].substr(0,decoup[i].indexOf('('));
+				var status = decoup[i].substr(decoup[i].indexOf('(') , decoup[i].indexOf(')') - decoup[i].indexOf('(') +1)
+				$('#listeJoueurs li').each(function(){
+					if(pseudo == $(this).find('span:first-child').text())
+						$(this).find('span:first-child').append(' ' + status);
+				});
+			}
+			return false;
+		}
+		if(message.search('(vague courante)')!=-1){
+			$('#currentWave').text(parseInt(message));
 			return false;
 		}
 		return true;
@@ -103,8 +133,6 @@
 	});
 	socket.on('broadcast_msg', function(data){
 		if(analyseReponse(data.message)) tchat(data.auteur, data.message, data.class, data.rang);
-		var objDiv = document.getElementById("tchat");
-		objDiv.scrollTop = objDiv.scrollHeight;
 	});
 	socket.on('player_die', function(datas){
 		tchat('', datas.pseudo + ' est mort.', 'tchat-game-event');
@@ -113,9 +141,11 @@
 		$('#infos').text(datas.message);
 	});
 	socket.on('connection_success', function(datas){
+		//On vire la connexion et montre l'interface admin
 		$('#infos').text(datas.message);
 		$('#wrapperConnect').hide();
 		$('#wrapperTchat').show();
+		//On initialise les différents composants et events
 		$('#formTchat').submit(function(){
 			if($('#champs-message').val()!="")
 			socket.emit('broadcast_msg', {message:$('#champs-message').val()});
@@ -123,11 +153,13 @@
 			return false;
 		});
 		$('#champs-message').focus();
-		socket.emit('broadcast_msg', {message:'/list'});
+		$('#refreshPlayerListButton').click(function(){socket.emit('broadcast_msg', {message:'/list'});});
 	});
 	socket.on('set_id', function(id){
 		socket.emit('spect_mode_on');
 		playerId = id;
+		//On lance la boucle de refresh
+		refreshStats();
 	});
 	socket.on('kick_player', function(datas){
 		if(datas.id==playerId){
