@@ -44,7 +44,7 @@ function GameCore(pseudo,mdp){
 		this.socket.on('connect', function(){
 			$('#inscription h2').text('Liaison avec le serveur OK...');
 			gameCore.tryConnection(gameCore.pseudo, gameCore.mdp);
-			$('#inscription h2').text('Vérification des identifiants...');
+			$('#inscription h2').text('Vérification des identifiants en cours...');
 			/*if(gameCore.playerId == -1){
 				gameCore.socket.emit('new_player', {'pseudo' : gameCore.pseudo});
 				$('#inscription').append('<h2>Création d\'un personnage en cours...</h2>');
@@ -59,6 +59,10 @@ function GameCore(pseudo,mdp){
 		this.socket.on('connection_success', function(datas){
 			$('#inscription h2').text(datas.message);
 			gameCore.pseudo=datas.pseudo;
+			//On sauvegarde le pseudo dans un cookie pour les futures connexions
+			if(datas.pseudo!="visiteur")
+				createCookie('zombiz_pseudo', datas.pseudo, 30);//1 mois
+
 			//gameCore.socket.emit('new_player', {'pseudo' : datas.pseudo});
 		});
 
@@ -451,7 +455,7 @@ function updateLeaderBoard(){
 		$('#leaderboard').html(data);
 	});
 	//On update le leaderboard dans X secondes
-	setTimeout(updateLeaderBoard, 20000);
+	setTimeout(updateLeaderBoard, 60000);
 }
 
 
@@ -501,21 +505,22 @@ $(window).load(function(){
 
 	// FONCTIONS DE PRELOADING
 	console.log('Lancement du chargement...');
-	var tabObjImages={};
 	for(var i=0;i<tabImages.length;i++){
 		tabObjImages[i]=new Image();
 		tabObjImages[i].src=tabImages[i];
 		tabObjImages[i].onload=incrementChargement;
 	}
-	<!-- Chargement des sons -->
-	var nbZombieSound=8;
-	var AUDIO={};
+	/* Chargement des sons */
 	for(var key in audio_tableau){
 		AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
 		AUDIO[key].bind('canplaythrough',incrementChargement);
+		AUDIO[key].bind('error', incrementChargement);
 	}
 	$('#loadingScreen p').text($('#version').text());
 });
+var nbZombieSound=8;
+var AUDIO={};
+var tabObjImages={};
 
 //VARIABLES A PRELOADER
 var tabImages=['img/players.png', 'img/players_mini.png', 'img/buffs.png', 'img/sang.png',
@@ -527,6 +532,8 @@ var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/
 						'ZOMBIE_6':'/sounds/zombie_groan_1.wav', 'ZOMBIE_7':'/sounds/zombie_groan_2.wav',
 						'ZOMBIE_8':'/sounds/Zombie_Kill_You.mp3','ZOMBIE_9':'/sounds/Zombie_Long_Death.mp3',
 						'ZOMBIE_10':'/sounds/Zombie_Moan.mp3'};
+//var audio_tableau={};
+
 var totalOK = 0;
 var totalCible= tabImages.length + Object.keys(audio_tableau).length;
 function incrementChargement(){
@@ -536,5 +543,14 @@ function incrementChargement(){
 	if(totalOK==totalCible){
 		console.log('Chargement terminé.');
 		$('#loadingScreen').remove();
+		//Si on a le cookie du pseudo, alors on le met dans le champs
+		if(readCookie('zombiz_pseudo')!=null){
+			$('#champs-pseudo').val('');
+			$('#champs-pseudo').val(readCookie('zombiz_pseudo'));
+			$('#champs-mdp').val('');
+			$('#champs-mdp').focus();
+		}
+		else
+			$('#champs-pseudo').focus();
 	}
 }

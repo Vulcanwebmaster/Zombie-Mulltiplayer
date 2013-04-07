@@ -5,7 +5,6 @@
 	- pourquoi pas des "balles explosives" + de degats  + degats de zone
 - si un zombie s'eveille, il peut eveiller ses amis proches ?! !
 - ajouter la partie RPG avec des points de compétences
-- cookie pour la connexion ?
 - ajouter un bandeau avec des petites phrases rigolottes
 - faire une option mot de passe oublié
 - accelerer les zombies quand la partie prend du temps
@@ -24,10 +23,8 @@ système de 3 types d'armes
 empêcher les comptes avec des noms de merde !
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague)
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
-bug de la vie des zombies des fois ?
 
 *mettre quelques couleurs dans le tchat lite + outil de gestion + vraie url + lien de retour sur la page normale
-*remettre le bonus de vie en fin de vague
 
 Idées :
 
@@ -53,8 +50,3 @@ Idées :
 *************************************************************************************
 
 --- v 0.9.3.4 alpha (20130407)
-	ADD :
-	EDIT :
-		Le bonus de vie de fin de vague refait surface
-	FIX :
-		Le bug de la vie des zombies qui "dépasse" est corrigé

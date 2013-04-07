@@ -59,6 +59,7 @@ module.exports = function DBCore(){
       this.PlayerModel.find({pseudoLowerCase : datas.pseudo.toLowerCase(), mdp: this.Sha1(datas.mdp)}, function(err, users){
          if(users.length!=1){
             socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
+            console.log(dateToLog(new Date) + 'Echec de la connexion du compte : ' + datas.pseudo);
          }
          else{
             //Connexion en tant que joueur à partir de la DB
