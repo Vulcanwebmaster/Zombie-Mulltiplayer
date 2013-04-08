@@ -513,8 +513,9 @@ $(window).load(function(){
 	/* Chargement des sons */
 	for(var key in audio_tableau){
 		AUDIO[key]=new buzz.sound(audio_tableau[key], {preload:true});
-		AUDIO[key].bind('canplaythrough',incrementChargement);
-		AUDIO[key].bind('error', incrementChargement);
+		//AUDIO[key].bind('canplaythrough',incrementChargement);
+		//AUDIO[key].bind('error', incrementChargement);
+		incrementChargement();
 	}
 	$('#loadingScreen p').text($('#version').text());
 });
