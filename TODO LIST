@@ -29,6 +29,7 @@ ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) +
 *** ne pas envoyer les description de buffs from serveur, juste l'id et le temps
 *** ajouter heure dernier refresh sur tchatlite
 *** protéger la deco dans le tchatlite
+*** bouton FB (like) + tooltips quand on meurt ou spec
 
 Idées :
 
