@@ -24,6 +24,22 @@ alléger les échanges !
 ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de précision...)
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) + mute ?
 
+*** calculer la taille avec un JSON.stringify(data).length
+*** alléger les échanges (reduire la taille des keys des "temporary", voir pour supprimer des trucs mais ça parait dur)
+*** ne pas envoyer les description de buffs from serveur, juste l'id et le temps
+*** ajouter heure dernier refresh sur tchatlite
+*** protéger la deco dans le tchatlite
+*** bouton FB (like) + tooltips quand on meurt ou spec
+
+timers.js:96
+            if (!process.listeners('uncaughtException').length) throw e;
+                                                                      ^
+TypeError: Cannot read property 'duree' of undefined
+    at Object.applyBuff (/home/whiteslash/zombiz_team_survival/js/CharacterManager.class.js:368:47)
+    at ServerMap.update (/home/whiteslash/zombiz_team_survival/js/ServerMap.class.js:265:22)
+    at Object._onTimeout (/home/whiteslash/zombiz_team_survival/js/ServerMap.class.js:248:36)
+    at Timer.ontimeout (timers.js:94:19)
+
 
 Idées :
 
