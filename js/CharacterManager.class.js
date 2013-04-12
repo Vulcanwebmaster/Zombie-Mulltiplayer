@@ -304,78 +304,80 @@ module.exports = function CharacterManager(){
               if(this.buffs['poison']!=undefined && this.buffs['poison'].duree!=undefined && this.buffs['poison'].duree>0) empoisonner=true;
 
                 for(var stringBuff in this.buffs){
-                    if(stringBuff=="saignementLeger"){
-                        this.life-=0.1;
-                        this.buffs[stringBuff].duree--;
-                        instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
-                        if(this.life<=0){
-                            this.die(instance);
-                        }
-                        if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
-                        }
-                    }
-                    else if(stringBuff=="assomage"){
-                        this.speed=0;
-                        this.isFiring=false;
-                        this.buffs[stringBuff].duree--;
-                        if(this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
-                            this.speed=this.maxSpeed;
-                        }
-                    }
-                    else if(stringBuff=="saignementViolent"){
-                        this.life-=0.5;
-                        this.buffs[stringBuff].duree--;
-                        instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
-                        instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'sang', x:this.x, y:this.y};
-                        if(this.life<=0){
-                            this.die(instance);
-                        }
-                        if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
-                        }
-                    }
-                    else if(stringBuff=="zombizSlayer"){
-                        if(adrenaline && !empoisonner)
-                          this.speed=this.maxSpeed+2;
-                        else if(!adrenaline && !empoisonner)
-                          this.speed=this.maxSpeed+1;
-                        slayer=true;
-                        this.buffs[stringBuff].duree--;
-                        if(this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
-                            this.speed=this.maxSpeed;
-                        }
-                    }
-                    else if(stringBuff=="adrenaline"){
-                      if(slayer && !empoisonner)
-                          this.speed=this.maxSpeed+2;
-                      else if(!slayer && !empoisonner)
-                          this.speed=this.maxSpeed+1;
-                      adrenaline=true;
-                      this.buffs[stringBuff].duree--;
-                      if(this.buffs[stringBuff].duree==0){
-                        delete this.buffs[stringBuff];
-                        if(slayer)
-                          this.speed=this.maxSpeed+1;
-                        else
-                          this.speed=this.maxSpeed;
+                    if( this.buffs[stringBuff] != undefined){
+                      if(stringBuff=="saignementLeger"){
+                          this.life-=0.1;
+                          this.buffs[stringBuff].duree--;
+                          instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
+                          if(this.life<=0){
+                              this.die(instance);
+                          }
+                          if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                          }
                       }
-                    }
-                    else if(stringBuff=="poison"){
-                        this.speed=this.speed>0.1 ? this.speed - 0.1 : 0 ;
+                      else if(stringBuff=="assomage"){
+                          this.speed=0;
+                          this.isFiring=false;
+                          this.buffs[stringBuff].duree--;
+                          if(this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                              this.speed=this.maxSpeed;
+                          }
+                      }
+                      else if(stringBuff=="saignementViolent"){
+                          this.life-=0.5;
+                          this.buffs[stringBuff].duree--;
+                          instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'player_life', id:this.id, life:parseInt(this.life)};
+                          instance.temporaryDisplayItem[instance.numberTmpItem++]={type:'sang', x:this.x, y:this.y};
+                          if(this.life<=0){
+                              this.die(instance);
+                          }
+                          if(this.buffs[stringBuff]!=undefined && this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                          }
+                      }
+                      else if(stringBuff=="zombizSlayer"){
+                          if(adrenaline && !empoisonner)
+                            this.speed=this.maxSpeed+2;
+                          else if(!adrenaline && !empoisonner)
+                            this.speed=this.maxSpeed+1;
+                          slayer=true;
+                          this.buffs[stringBuff].duree--;
+                          if(this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                              this.speed=this.maxSpeed;
+                          }
+                      }
+                      else if(stringBuff=="adrenaline"){
+                        if(slayer && !empoisonner)
+                            this.speed=this.maxSpeed+2;
+                        else if(!slayer && !empoisonner)
+                            this.speed=this.maxSpeed+1;
+                        adrenaline=true;
                         this.buffs[stringBuff].duree--;
                         if(this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
+                          delete this.buffs[stringBuff];
+                          if(slayer)
+                            this.speed=this.maxSpeed+1;
+                          else
                             this.speed=this.maxSpeed;
                         }
-                    }
-                    else if(stringBuff=="survivor"){
-                        this.buffs[stringBuff].duree--;
-                        if(this.buffs[stringBuff].duree==0){
-                            delete this.buffs[stringBuff];
-                        }
+                      }
+                      else if(stringBuff=="poison"){
+                          this.speed=this.speed>0.1 ? this.speed - 0.1 : 0 ;
+                          this.buffs[stringBuff].duree--;
+                          if(this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                              this.speed=this.maxSpeed;
+                          }
+                      }
+                      else if(stringBuff=="survivor"){
+                          this.buffs[stringBuff].duree--;
+                          if(this.buffs[stringBuff].duree==0){
+                              delete this.buffs[stringBuff];
+                          }
+                      }
                     }
                 }
             }

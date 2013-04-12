@@ -31,15 +31,12 @@ ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) +
 *** protéger la deco dans le tchatlite
 *** bouton FB (like) + tooltips quand on meurt ou spec
 
-timers.js:96
-            if (!process.listeners('uncaughtException').length) throw e;
-                                                                      ^
-TypeError: Cannot read property 'duree' of undefined
-    at Object.applyBuff (/home/whiteslash/zombiz_team_survival/js/CharacterManager.class.js:368:47)
-    at ServerMap.update (/home/whiteslash/zombiz_team_survival/js/ServerMap.class.js:265:22)
-    at Object._onTimeout (/home/whiteslash/zombiz_team_survival/js/ServerMap.class.js:248:36)
-    at Timer.ontimeout (timers.js:94:19)
 
+SECURISER LE "LA PARTIE EST FINIE" PARCE QUE SI UN MEC QUITTE PENDANT LA PAUSE D UNE SECONDE, LES SCORES DOUBLES !
+
+//Changer la connexion
+//Changer l'update du skin
+//changer tous les broadcast (server, dbcore et servermap !)
 
 Idées :
 
@@ -64,4 +61,8 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.3.5 alpha (20130407)
+--- v 0.9.3.6 alpha (20130407)
+	ADD :
+	EDIT :
+	FIX : 
+		Correction de deux causes rares de crash

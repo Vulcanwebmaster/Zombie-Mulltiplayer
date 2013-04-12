@@ -43,11 +43,11 @@ module.exports = function DBCore(){
          }
       });
    }
-   this.connect=function(datas, socket, listeOnlinePlayers, serverMap){
+   this.connect=function(datas, socket, serverRoomManager){
       console.log(dateToLog(new Date) + 'Un joueur envoi son pseudo : ' + datas.pseudo);
       //On regarde si on se connecte en visiteur
       if(datas.pseudo=='visiteur'){
-         var joueurId=serverMap.addJoueur(datas.pseudo, socket);
+         var joueurId=serverRoomManager.addDefaultJoueur(datas.pseudo, socket);
          var nouveauPseudo = 'visiteur_' + joueurId;
          socket.broadcast.emit('broadcast_msg', {'message': nouveauPseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
          socket.set('id', joueurId);
@@ -65,13 +65,12 @@ module.exports = function DBCore(){
          else{
             //Connexion en tant que joueur à partir de la DB
             if(users[0].active==1){
-               listeOnlinePlayers[users[0].pseudo]=users[0];
                socket.set('pseudo', users[0].pseudo);
                socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
 
-               var joueurDejaInGame = serverMap.getPlayer(datas.pseudo);
+               var joueurDejaInGame = serverRoomManager.getPlayerByPseudo(users[0].pseudo);
                if(joueurDejaInGame == null)
-                  var joueurId=serverMap.addJoueurFromDB(users[0], socket);
+                  var joueurId=serverRoomManager.addDefaultJoueurFromDB(users[0], socket);
                else{
                   socket.emit('set_id', -1);
                   socket.emit('player_spectateur', {id:-1});

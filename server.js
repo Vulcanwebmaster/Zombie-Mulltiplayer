@@ -6,11 +6,8 @@ var app = require ('http'). createServer(handler)
  var DBCore= require('./js/DBCore.class.js');
  var dbCore=new DBCore();
 
-var CharacterManager=require('./js/CharacterManager.class.js');
-var characterManager=new CharacterManager();
-
-var ServerMap = require('./js/ServerMap.class.js');
-var serverMap = new ServerMap(io,characterManager, dbCore);
+ var ServerRoomManager=require('./js/ServerRoomManager.class.js');
+ var serverRoomManager = new ServerRoomManager(io, dbCore);
 
 app.listen (process.env.PORT || 80) ;
 
@@ -107,147 +104,39 @@ function handler( request , response ) {
     });
 }
 
-//Fonction de commandes spéciales IG
-function specialCommandProcessing(pseudo, string){
-    var result='';
-    if(string=="/help"){
-        result='Liste des commandes : /help (donne la liste des commandes), /who (donne la liste des joueurs en ligne)';
-        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
-            result+=', /list (affiche la liste des joueurs avec leur ID), /kick ID (kick le joueur ID), /annonce MSG (affiche un message type annonce)';
-        }
-    }
-    else if(string=="/who"){
-        result=serverMap.getListeJoueursStr();
-    }
-    else if(string=="/getCurrentWave"){
-        result=serverMap.currentWave + ' (vague courante)';
-    }
-    else if(string=="/list"){
-        //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
-        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
-            result=serverMap.getListeJoueursWithIDStr();
-        }
-        else
-            result="Vous n'avez pas les droits.";
-    }
-    else if(string.substr(0,5)=="/kick"){
-        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
-            if(string.length>=6){
-                var id = parseInt(string.substring(6,string.length));
-                var playerToKick = serverMap.getJoueur(id);
-                if(playerToKick==undefined) return 'Le joueur n\'existe pas';
-                dbCore.updatePlayerStats(playerToKick);
-                io.sockets.emit('kick_player', {id:id});
-                serverMap.removeJoueur(id);
-                io.sockets.emit('remove_player', {'id':id});
-                io.sockets.emit('broadcast_msg', {message:'Le joueur ' + playerToKick.pseudo + ' a été kické.', class:'tchat-game-event'});
-                result="Commande OK";
-            }
-            else
-                result="La commande s'utilise comme ceci : /kick playerID. Taper /list pour avoir la liste des ID";
-        }
-        else
-            result="Vous n'avez pas les droits.";
-    }
-    else if(string.substr(0,4)=="/ban"){
-        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>=2){
-            if(string.length>=5){
-                var id = parseInt(string.substring(5,string.length));
-                var playerToBan = serverMap.getJoueur(id);
-                if(playerToBan==undefined) return 'Le joueur n\'existe pas';
-                dbCore.updatePlayerStats(playerToBan);
-                io.sockets.emit('ban_player', {id:id});
-                serverMap.removeJoueur(id);
-                io.sockets.emit('remove_player', {'id':id});
-                io.sockets.emit('broadcast_msg', {message:'Le joueur' + playerToBan.pseudo + ' a été banni.', class:'tchat-game-event'});
-                dbCore.ban(playerToBan.pseudo);
-                result="Commande OK";
-            }
-            else
-                result="La commande s'utilise comme ceci : /ban playerID. Taper /list pour avoir la liste des ID";
-        }
-        else
-            result="Vous n'avez pas les droits.";
-    }
-    else if(string.substr(0,8)=="/annonce"){
-        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
-            io.sockets.emit('broadcast_msg', {auteur:'SERVEUR', message:string.substr(9, string.length), class:'tchat-admin'});
-            result="Commande OK";
-        }
-        else
-            result="Vous n'avez pas les droits.";
-
-    }
-    return result;
-}
-
-var listeOnlinePlayers = {};
-
 /* GESTION DES ENVOIS RECEPTIONS CLIENTS */
 io.sockets.on('connection', function(socket) {
-    socket.set('pseudo', '_null');
 
     socket.on('update_player_mouvement', function(datas){
-        //On protège en prenant l'id sauvegardé serverside
-        socket.get('id', function(err, id){datas.id=id;serverMap.updateJoueurMouvement(datas);});
+        serverRoomManager.actionJoueur('mvt', socket, datas);;
     });
 
     socket.on('update_player_angle', function(datas){
-        socket.get('id', function(err, id){datas.id=id;serverMap.updateJoueurAngle(datas);});
+        serverRoomManager.actionJoueur('angle', socket, datas);;
     });
 
     socket.on('fire',function(datas){
-        socket.get('id', function(err, id){datas.id=id;serverMap.fire(datas);});
+        serverRoomManager.actionJoueur('fire',socket, datas);;
     });
 
     socket.on('stop_fire', function(datas){
-        socket.get('id', function(err, id){datas.id=id;serverMap.stopFire(datas);});
+        serverRoomManager.actionJoueur('stopFire', socket, datas);;
     });
 
     socket.on('broadcast_msg', function(datas){
-        if(datas == undefined) return;
-        if(datas.message == undefined) return;
-        socket.get('pseudo', function(err, pseudo){
-            //On regarde si c'est une commande spéciale
-            var specialCommandResult = specialCommandProcessing(pseudo, datas.message)
-            if( specialCommandResult != ''){
-                socket.emit('broadcast_msg', {message:specialCommandResult});
-            }
-            else{
-                datas.class='';
-                datas.rang=(listeOnlinePlayers[pseudo]!=undefined) ? listeOnlinePlayers[pseudo].rang : 0;
-                datas.auteur=pseudo;io.sockets.emit('broadcast_msg', datas);
-            }
-        });
+        serverRoomManager.tchat(socket, datas);
     });
 
     socket.on('spect_mode_on', function(){
-        socket.get('id', function(err, id){serverMap.switchSpectateur(id);})
+       serverRoomManager.switchSpectateur('on', socket);
     });
 
     socket.on('spect_mode_off',function(){
-        socket.get('id', function(err, id){serverMap.switchInGame(id);})
+       serverRoomManager.serverMap.switchInGame('off', socket);
     });
 
     socket.on('disconnect',function(){
-        socket.get('id', function(err,id){
-            if(id==null) return;
-            //On lance un update de la DB sur ce joueur, pour pas qu'il perde ce qu'il a eu.
-            var playerToUpdate = serverMap.getJoueur(id);
-            if(playerToUpdate!=undefined){
-                dbCore.updatePlayerStats(serverMap.getJoueur(id));
-                serverMap.removeJoueur(id);
-                socket.broadcast.emit('remove_player', {'id':id});
-            }
-            socket.get('pseudo', function(err, pseudo){
-                if(pseudo!=null){
-                    if(listeOnlinePlayers[pseudo]!=undefined)
-                        delete listeOnlinePlayers[pseudo];
-                    console.log(dateToLog(new Date)+"Joueur '" + pseudo + "' a quitté.");
-                    socket.broadcast.emit('broadcast_msg', {'message': pseudo + ' a quitté le jeu.', 'class':'tchat-game-event'});
-                }
-            });
-        });
+        serverRoomManager.disconnect(socket);
     });
 
     //Fonctions de création de compte et connexion
@@ -255,7 +144,7 @@ io.sockets.on('connection', function(socket) {
         dbCore.createAccount(datas, this);
     });
     socket.on('connection_attempt', function(datas){
-        dbCore.connect(datas, this, listeOnlinePlayers, serverMap);
+        dbCore.connect(datas, this, serverRoomManager);
     });
     socket.on('request_account_informations', function(){
         socket.get('pseudo', function(err, pseudo){
@@ -277,7 +166,8 @@ io.sockets.on('connection', function(socket) {
             //A changer une fois les conditions d'obtentions faites.
             if(skinID>=0 && skinID<=10){
                 dbCore.updateAccountSkin(pseudo, skinID);
-                serverMap.getPlayer(pseudo).style=skinID;
+                //var joueur = serverMap.getPlayer(pseudo);
+                //if(joueur!=null) joueur.style=skinID;
             }
         });
     });

@@ -175,6 +175,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       if(!this.isRunning || this.getPlayingPlayers()==0)
          return;
       this.vagueEnTrainDeSeLancer=true;
+      this.io.sockets.emit('broadcast_msg',  {message:'Lancement de la vague ' + id + '...', class:'tchat-game-event'});
       console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
