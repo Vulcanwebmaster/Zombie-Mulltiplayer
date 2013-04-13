@@ -25,6 +25,8 @@ ajouter du réalisme aux armes (recul des zombies quand touchés, dispersion de 
 ajouter des commandes funky (spawn de zombies, restart, stop, changedelavague) + mute ?
 pouvoir cacher le tchat
 remettre les zombies IDLE quand ils sont loin de tout ?
+bonus firstblood
+description armes dans bestiaire
 
 *** calculer la taille avec un JSON.stringify(data).length
 *** alléger les échanges (reduire la taille des keys des "temporary", voir pour supprimer des trucs mais ça parait dur)
