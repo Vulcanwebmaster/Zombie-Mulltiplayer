@@ -604,6 +604,17 @@ function GameMap(){
 			gameMap.divMap.style.left=(parseInt(gameMap.divMap.style.left) - pas)+'px';
 	}
 
+	this.changeMap=function(datas){
+		//On change la taille des trucs en jquery et tout
+		$('#map').css({width:datas.x+'px', height:datas.y+'px', top:'0px', left:'0px',
+						'background-image':'url('+datas.file+')'});
+		$('#map').empty();
+		//On fini par ajouter les items spéciaux
+		for(var id in datas.objets){
+
+		}
+	}
+
 	/*constructor*/
 
 	this.widthPlateau=parseInt($('#plateau').css('width'));

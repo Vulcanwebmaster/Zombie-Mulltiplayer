@@ -49,7 +49,7 @@ module.exports = function DBCore(){
       if(datas.pseudo=='visiteur'){
          var joueurId=serverRoomManager.addDefaultJoueur(datas.pseudo, socket);
          var nouveauPseudo = 'visiteur_' + joueurId;
-         socket.broadcast.emit('broadcast_msg', {'message': nouveauPseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+         socket.broadcast.to('tchat-0').emit('broadcast_msg', {'message': nouveauPseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
          socket.set('id', joueurId);
          socket.set('pseudo', nouveauPseudo);
          socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':nouveauPseudo});
@@ -66,18 +66,65 @@ module.exports = function DBCore(){
             //Connexion en tant que joueur à partir de la DB
             if(users[0].active==1){
                socket.set('pseudo', users[0].pseudo);
-               socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
-
+               
                var joueurDejaInGame = serverRoomManager.getPlayerByPseudo(users[0].pseudo);
-               if(joueurDejaInGame == null)
+               if(joueurDejaInGame == null){
                   var joueurId=serverRoomManager.addDefaultJoueurFromDB(users[0], socket);
+                  socket.broadcast.to('tchat-0').emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
+                  socket.set('id', joueurId);
+                  socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+               }
                else{
-                  socket.emit('set_id', -1);
-                  socket.emit('player_spectateur', {id:-1});
+                  //socket.emit('set_id', -1);
+                  //socket.emit('player_spectateur', {id:-1});
+                  socket.emit('connection_fail', {'message':'Pseudo déjà utilisé.'});
                   socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + datas.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
                }
-               socket.broadcast.emit('broadcast_msg', {'message': datas.pseudo + ' vient de se connecter.', 'class': 'tchat-game-event'});
-               socket.set('id', joueurId);
+               
+            }
+            //ERROR
+            else
+               socket.emit('connection_fail', {'message':'Votre compte a été banni.'});
+         }
+      });
+   }
+
+   this.movePlayer=function(joueur,socket,serverRoomManager){
+      //On regarde si on se connecte en visiteur
+      if(joueur.pseudo=='visiteur'){
+         var joueurId=serverRoomManager.addJoueur(joueur.pseudo, socket, joueur.idMap);
+         var nouveauPseudo = 'visiteur_' + joueurId;
+         socket.broadcast.to('tchat-'+joueur.idMap).emit('broadcast_msg', {'message': nouveauPseudo + ' a rejoint la partie.', 'class': 'tchat-game-event'});
+         socket.set('id', joueurId);
+         socket.set('pseudo', nouveauPseudo);
+         socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo':nouveauPseudo});
+         return;
+      }
+      var _this=this;
+      //Load from DB
+      this.PlayerModel.find({pseudoLowerCase : joueur.pseudo.toLowerCase()}, function(err, users){
+         if(users.length!=1){
+            socket.emit('connection_fail', {'message':'Veuillez vérifier vos identifiants.'});
+            console.log(dateToLog(new Date) + 'Echec de la connexion du compte : ' + joueur.pseudo);
+         }
+         else{
+            //Connexion en tant que joueur à partir de la DB
+            if(users[0].active==1){
+               socket.set('pseudo', users[0].pseudo);
+               
+               var joueurDejaInGame = serverRoomManager.getPlayerByPseudo(users[0].pseudo);
+               if(joueurDejaInGame == null){
+                  var joueurId=serverRoomManager.addJoueurFromDB(users[0], socket, joueur.idMap);
+                  socket.emit('connection_success', {'message':'Vous êtes bien connecté.', 'pseudo': users[0].pseudo});
+                  socket.broadcast.to('tchat-'+joueur.idMap).emit('broadcast_msg', {'message': joueur.pseudo + ' a rejoint la partie.', 'class': 'tchat-game-event'});
+                  socket.set('id', joueurId);
+               }
+               else{
+                  //socket.emit('set_id', -1);
+                  //socket.emit('player_spectateur', {id:-1});
+                  socket.emit('broadcast_msg', {'message': 'ATTENTION : Le pseudo ' + joueur.pseudo + ' est déjà pris. Vous ne pourrez pas jouer. /!\\', 'class': 'tchat-error'});;
+                  socket.emit('connection_fail', {'message':'Pseudo déjà utilisé.'});   
+               }
             }
             //ERROR
             else

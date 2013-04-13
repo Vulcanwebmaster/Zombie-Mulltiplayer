@@ -37,6 +37,10 @@ function handler( request , response ) {
     }
     else if(filePath=='./bestiaire')
         filePath='./bestiaire.html';
+    else if(filePath=='./serverList'){
+        serverRoomManager.getListServers(response);
+        return;
+    }
     else if(filePath=='./fullLeaderboard'){
         dbCore.getLeaderboardHTML(response);
         return;
@@ -132,12 +136,15 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('spect_mode_off',function(){
-       serverRoomManager.serverMap.switchInGame('off', socket);
+       serverRoomManager.switchSpectateur('off', socket);
     });
 
     socket.on('disconnect',function(){
         serverRoomManager.disconnect(socket);
     });
+    socket.on('change_map', function(idMap){
+        serverRoomManager.changeMap(socket, idMap);
+    })
 
     //Fonctions de création de compte et connexion
     socket.on('create_account', function(datas){
@@ -166,8 +173,8 @@ io.sockets.on('connection', function(socket) {
             //A changer une fois les conditions d'obtentions faites.
             if(skinID>=0 && skinID<=10){
                 dbCore.updateAccountSkin(pseudo, skinID);
-                //var joueur = serverMap.getPlayer(pseudo);
-                //if(joueur!=null) joueur.style=skinID;
+                var joueur = serverRoomManager.getPlayerByPseudo(pseudo);
+                if(joueur!=null) joueur.style=skinID;
             }
         });
     });

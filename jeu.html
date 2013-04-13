@@ -52,11 +52,12 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 		Les 10 premiers joueurs en date du 4 avril 2013 ont débloqué un skin exclusif : membre du S.W.A.T. Pour les autres, vous pouvez sélectionner votre skin dans le menu "Boutique" une fois connecté.
 		</p>
 		<div id="menu">
-			<span id="passerSpectateur">Mode spectateur</span>
+			<span data-id="spec" id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
-			<span id="show_boutique">Boutique</span>
+			<span class="openFenetres" data-id="boutique" id="show_boutique">Boutique</span>
 			<span id="show_options">Options</span>
 			<span id="show_account">Votre compte</span>
+			<span id="show_serveurs">Changer de serveur</span>
 		</div>
 
 		<div id="plateau">
@@ -136,7 +137,7 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 					<input type="checkbox" id="checkbox-audio" checked="checked"/>Activer le son (raccourci touche M)<br/>
 					<input type="checkbox" id="checkbox-pseudo" checked="checked"/>Afficher les pseudos (raccourci touche V)<br/>
 					<input type="checkbox" id="checkbox-sang" checked="checked"/>Afficher le sang<br/>
-					<a id="hide_options" class="lienRouge" href="#">Fermer</a>
+					<a class="closeFenetres" id="hide_options" class="lienRouge" href="#">Fermer</a>
 				</div>
 			</div>
 			<!-- Fenêtres des informations du compte -->
@@ -150,7 +151,7 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 					<input type="password" id="account-passwd1"/><br/>
 					<input type="password" id="account-passwd2"/><br/>
 					<a id="account-change-passwd" class="lienRouge" href="#">Entrez le nouveau mot de passe 2 fois et validez.</a><br/><br/>
-					<a id="hide_account" class="lienRouge" href="#">Fermer cette fenêtre</a>
+					<a class="closeFenetres" id="hide_account" class="lienRouge" href="#">Fermer cette fenêtre</a>
 				</div>
 			</div>
 			<!-- Fenêtre de la boutique -->
@@ -169,8 +170,18 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 					<div class="previewSkin" style="background-position:-200px -100px" onclick="return gameCore.updateSkin(9)"></div>
 					<div class="previewSkin" style="background-position:-200px -200px" onclick="return gameCore.updateSkin(10)"></div>
 					<div style="clear:both"><!--stop le fucking float-->
-						<a id="hide_boutique" class="lienRouge" href="#">Fermer cette fenêtre</a>
+						<a class="closeFenetres" id="hide_boutique" class="lienRouge" href="#">Fermer cette fenêtre</a>
 					</div>
+				</div>
+			</div>
+			<!-- Fenêtre de changement de serveur -->
+			<div style="display:none" id="changementServeur" class="fenetreInfosPlateau">
+				<div class="miniWrapper">
+					<h2>Choisissez votre serveur</h2>
+						<table id="tableauListeServeurs">
+							<tr><td>Chargement en cours...</td></tr>
+						</table>
+						<a class="closeFenetres" id="hide_changement_serveur" class="lienRouge" href="#">Fermer cette fenêtre</a>
 				</div>
 			</div>
 

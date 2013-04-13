@@ -34,13 +34,15 @@ description armes dans bestiaire
 *** ajouter heure dernier refresh sur tchatlite
 *** protéger la deco dans le tchatlite
 *** bouton FB (like) + tooltips quand on meurt ou spec
-
+*** retirer bandeau "4 avril
+*** bloquer interface admin !
 
 SECURISER LE "LA PARTIE EST FINIE" PARCE QUE SI UN MEC QUITTE PENDANT LA PAUSE D UNE SECONDE, LES SCORES DOUBLES !
 
-//Changer la connexion
 //Changer l'update du skin
-//changer tous les broadcast (server, dbcore et servermap !)
+//ajouter objets dans le objetliste de la map
+//changer console log dans serverMap
+//envoyer un remove à tous les joueurs de la map quand un joueur switch
 
 Idées :
 

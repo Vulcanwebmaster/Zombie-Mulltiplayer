@@ -83,6 +83,8 @@ function GameCore(pseudo,mdp){
 			$('#inscription h2').text('Personnage créé ! Lancement du jeu...');
 			$('#inscription').fadeOut(1000,function(){$(this).remove()});
 			gameCore.playerId=nbr;
+
+			if(gameMap!=null)return;
 			gameMap=new GameMap();
 			//gameMap.desinit(); //on lance que quand tout ça marche
 			gameCore.socket.on('update',function(datas){
@@ -151,10 +153,6 @@ function GameCore(pseudo,mdp){
 				$('#options').show();
 				return false;
 			});
-			$('#hide_options').click(function(){
-				$('#options').hide();
-				return false;
-			})
 			$('#show_account').click(function(){
 				$('.fenetreInfosPlateau').hide();
 				$('#account').show();
@@ -172,17 +170,29 @@ function GameCore(pseudo,mdp){
 					gameCore.updateAccountEmail($('#account-email')[0].value);
 				return false;
 			});
-			$('#hide_account').click(function(){
-				$('#account').hide();
-				return false;
-			})
-			$('#show_boutique').click(function(){
+			$('#show_serveurs').click(function(){
 				$('.fenetreInfosPlateau').hide();
-				$('#boutique').show();
+				$('#changementServeur').show();
+				$.get('/serverList', function(data){
+					$('#tableauListeServeurs').html(data);
+				});
+			});
+			$('.openFenetres').click(function(){
+				$('.fenetreInfosPlateau').hide();
+				$('#'+$(this).attr('data-id')).show();
 				return false;
 			});
-			$('#hide_boutique').click(function(){
-				$('#boutique').hide();
+			$('.closeFenetres').click(function(){
+				$('.fenetreInfosPlateau').hide();
+				return false;
+			});
+
+			//On ajoute les fonctionnalités des trucs pour join le serveur
+			$('body').delegate('.joinServerButton', 'click', function(){
+				gameCore.changeMap($(this).attr('data-id-map'));
+				console.log('click sur ' + $(this).attr('data-id-map'));
+				$('.fenetreInfosPlateau').fadeOut();
+				gameMap.clearMapFull();
 				return false;
 			});
 		});
@@ -249,6 +259,9 @@ function GameCore(pseudo,mdp){
 			}
 		});
 
+		this.socket.on('info_map', function(datas){
+			gameMap.changeMap(datas);
+		});
 	}
 
 	this.updateAngle=function(angle){
@@ -290,6 +303,9 @@ function GameCore(pseudo,mdp){
 		this.socket.emit('update_account_skin', skinID);
 		$('#boutique').hide();
 		return false;
+	}
+	this.changeMap=function(mapID){
+		this.socket.emit('change_map', mapID);
 	}
 
 
@@ -524,7 +540,7 @@ var AUDIO={};
 var tabObjImages={};
 
 //VARIABLES A PRELOADER
-var tabImages=['img/players.png', 'img/players_mini.png', 'img/buffs.png', 'img/sang.png',
+var tabImages=['img/players.png', 'img/players_mini.png', 'img/buffs.png', 'img/sang.png','img/accueil.jpg',
 				'img/simple_bullet.png', 'img/droppables.png', 'img/zombies.png', 'img/zombies_mini.png'];
 var audio_tableau={'GUN_SHORT':'/sounds/gunshot_short.wav', 'GUN_LONG':'/sounds/gunshot_long.wav',
 						'ZOMBIE_0':'/sounds/i_want_brains.mp3', 'ZOMBIE_1':'/sounds/mummy_zombie.mp3', 

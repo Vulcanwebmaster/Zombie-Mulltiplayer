@@ -186,21 +186,21 @@ footer p{margin-top:0px;}
 
 
 /*LEADERBOARD*/
-#leaderboard{
+#leaderboard, #tableauListeServeurs{
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom:20px;
 }
-#leaderboard th,#leaderboard td{
+#leaderboard th,#leaderboard td, #tableauListeServeurs td, #tableauListeServeurs th{
 	text-align: center;
 	border:1px solid grey;
 	background-color:rgba(0,0,0,0.6);
 	color:white;
 }
-#leaderboard td{
+#leaderboard td, #tableauListeServeurs td{
 	color:rgb(220,190,150);
 }
-#leaderboard tr:nth-child(2n){
+#leaderboard tr:nth-child(2n), #tableauListeServeurs tr:nth-child(2n){
 	background-color:rgba(150,150,150,0.5);
 }
 /*gestion du truc pour afficher en gros les premiers joueurs*/

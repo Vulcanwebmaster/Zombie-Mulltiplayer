@@ -5,7 +5,7 @@ var dateToLog=function(date){
 }
 
 /*Classe qui gère tout les calculs sur la map*/
-module.exports = function ServerMap(io,characterManager, dbCore)
+module.exports = function ServerMap(io,characterManager, dbCore, options)
 {
    var listeJoueurs;
    var listeZombies;
@@ -33,6 +33,10 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          socket.emit('player_spectateur', {id:newJoueur.id});
       newJoueur.x=this.widthMap/2;
       newJoueur.y=this.heightMap/2;
+
+      //Si on est dans le cas d'une partie sans vagues, alors on fait un flush des specs
+      if(this.vagues==false)
+         this.flushFileAttente();
 		return newJoueur.id;//on retourne l'id du nouveau joueur pour lui renvoyer;
    }
    this.addJoueurFromDB=function(infosJoueur, socket){
@@ -109,7 +113,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          this.listeSpectateurs[id].directions={haut:false,bas:false,gauche:false,droite:false};
          this.listeSpectateurs[id].isFiring=false;
          this.listeSpectateurs[id].buffs={};
-         this.io.sockets.emit('remove_player', {'id':id});
+         this.io.sockets.in('map-'+this.id).emit('remove_player', {'id':id});
          this.testFinPartie();
       }
    }
@@ -122,13 +126,16 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             this.start();
          else if(this.getPlayingPlayers()==0  && this.getWaitingPlayers()>=1)
             this.start();
+         //On regarde si on est sur une partie avecou sans vague, et on flush
+         if(this.vagues==false)
+            this.flushFileAttente();
       }
    }
    this.flushFileAttente=function(){
       for(var id in this.listeAttente){
          this.listeJoueurs[id]=this.listeAttente[id];
          delete this.listeAttente[id];
-         this.io.sockets.emit('player_revive', this.listeJoueurs[id]);
+         this.io.sockets.in('map-'+this.id).emit('player_revive', this.listeJoueurs[id]);
          //this.io.sockets.emit('broadcast_msg', {auteur:'Admin', message: this.listeJoueurs[id].pseudo + ' rejoint la partie.', class:'tchat-admin'});
       }
    }
@@ -171,11 +178,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
    this.spawnWave=function(id){
       if(this.vagueEnTrainDeSeLancer==true)return;
+      if(this.vagues==false)return;
       this.flushFileAttente();
       if(!this.isRunning || this.getPlayingPlayers()==0)
          return;
       this.vagueEnTrainDeSeLancer=true;
-      this.io.sockets.emit('broadcast_msg',  {message:'Lancement de la vague ' + id + '...', class:'tchat-game-event'});
+      this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg',  {message:'Lancement de la vague ' + id + '...', class:'tchat-game-event'});
       console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
@@ -293,7 +301,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       this.temporaryDisplayItem[this.numberTmpItem++]={type:'online_players_number', value: this.getOnlinePlayers()};
       //this.MODULO_ENVOI=(this.MODULO_ENVOI+1)%3;
       //if( this.MODULO_ENVOI == 0){
-		   this.io.sockets.volatile.emit('update',{'timestamp' : new Date,
+		   this.io.sockets.in('map-'+this.id).volatile.emit('update',{'timestamp' : new Date,
                                               'listeJoueurs' : characterManager.listToNetwork(this.listeJoueurs),
                                               'listeZombies' : characterManager.listToNetwork(this.listeZombies), 
                                               'listeTemporaryItems': this.temporaryDisplayItem, 'listeDroppables' : this.listeDroppables});
@@ -565,9 +573,9 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
       if(fin){
-         this.io.sockets.emit('broadcast_msg', {'message':'Vague ' + this.currentWave + ' terminée. (Total : ' + this.totalZombiesKilled + ' zombies)'
+         this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'message':'Vague ' + this.currentWave + ' terminée. (Total : ' + this.totalZombiesKilled + ' zombies)'
                                                 , 'class':'tchat-game-event'});
-         this.io.sockets.emit('clear_map_full');
+         this.io.sockets.in('map-'+this.id).emit('clear_map_full');
          this.listeZombies={};
          this.nbZombies=0;
 
@@ -585,7 +593,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
             //si le joueur est mort
             if(!this.listeJoueurs[idPerso].alive){
                this.listeJoueurs[idPerso].revive(characterManager);
-               this.io.sockets.emit('player_revive', this.listeJoueurs[idPerso]);
+               this.io.sockets.in('map-'+this.id).emit('player_revive', this.listeJoueurs[idPerso]);
             }  
             else{
                //Sinon il gagne un bonus
@@ -609,7 +617,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
 
          //Assignation du bonus Zombiz Slayer
          if(joueurMeneur!=null){
-            this.io.sockets.emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer avec ' + maxKills + ' kills.' , 'class':'tchat-game-info'});
+            this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'message': joueurMeneur.pseudo + ' gagne le bonus Zombiz slayer avec ' + maxKills + ' kills.' , 'class':'tchat-game-info'});
             joueurMeneur.addBuff('zombizSlayer');
          }
          this.spawnWave(++this.currentWave);
@@ -625,17 +633,17 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          }
       }
       if(fin){
-         this.io.sockets.emit('broadcast_msg', {'message':'Fin de partie.', 'class':'tchat-game-event'});
+         this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'message':'Fin de partie.', 'class':'tchat-game-event'});
          console.log(dateToLog(new Date) + "La partie est terminée.");
          for(var idPerso in this.listeJoueurs){
-            this.io.sockets.emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
+            this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
          this.stop();
          //On relance une partie
          //On met un mini timeout pour que la boucle actuelle ait le temps de finir
          var _this=this;
          setTimeout(function(){
-            _this.io.sockets.emit('clear_map_full');
+            _this.io.sockets.in('map-'+_this.id).emit('clear_map_full');
             _this.nbZombies=0;
             _this.listeZombies={};
             _this.totalZombiesKilled=0;
@@ -648,7 +656,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                //On update toutes les stats des joueurs dans la DB
                dbCore.updatePlayerStats(_this.listeJoueurs[idPerso]);
                _this.listeJoueurs[idPerso].reini(characterManager);
-               _this.io.sockets.emit('player_revive', _this.listeJoueurs[idPerso]);
+               _this.io.sockets.in('map-'+_this.id).emit('player_revive', _this.listeJoueurs[idPerso]);
             }
             for(var idSpec in _this.listeSpectateurs){
                 dbCore.updatePlayerStats(_this.listeSpectateurs[idSpec]);
@@ -658,7 +666,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
                dbCore.updatePlayerStats(_this.listeAttente[idAttente]);
                _this.listeAttente[idAttente].reini(characterManager);
             } 
-            _this.io.sockets.emit('broadcast_msg', {'message':'Vous avez atteint la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-game-event'});                    
+            _this.io.sockets.in('tchat-'+_this.id).emit('broadcast_msg', {'message':'Vous avez atteint la vague ' + _this.currentWave + '. Prochaine partie dans 10 secondes !', 'class':'tchat-game-event'});                    
             _this.flushFileAttente();
             _this.start();
             _this.currentWave=-1;
@@ -707,7 +715,7 @@ module.exports = function ServerMap(io,characterManager, dbCore)
          if(this.calculDistanceBetween(persoTmp, dropTmp) < perso.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
             if(msg!='')
-               this.io.sockets.emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
+               this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:perso.id, life:perso.life};
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             delete this.listeDroppables[idDroppable];
@@ -715,8 +723,12 @@ module.exports = function ServerMap(io,characterManager, dbCore)
       }
    }
 
-   this.widthMap=2000;
-   this.heightMap=1000;
+   this.widthMap=options.largeur||2000;
+   this.id=options.id||0;
+   this.heightMap=options.hauteur||1000;
+   this.mapFile=options.map||'/img/map.jpg';
+   this.mapObjects=options.objets||{};
+   this.vagues=options.vagues||false;
    this.DIAGONALE_MAP=Math.sqrt(Math.pow(this.heightMap,2)+Math.pow(this.widthMap,2));
    this.io=io;//io passé en argument du constructeur
    this.GAME_SPEED=50;//ms
