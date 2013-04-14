@@ -720,7 +720,7 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
          if(this.calculDistanceBetween(persoTmp, dropTmp) < perso.taille/2){
             var msg = characterManager.manageDroppable(perso, droppable);
             if(msg!='')
-               this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {auteur:perso.pseudo, message:msg});
+               this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {message:msg, 'class':'tchat-game-event'});
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'player_life', id:perso.id, life:perso.life};
             this.temporaryDisplayItem[this.numberTmpItem++]={type:'remove_droppable', id:idDroppable};
             delete this.listeDroppables[idDroppable];

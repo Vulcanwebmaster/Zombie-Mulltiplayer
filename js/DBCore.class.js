@@ -95,7 +95,7 @@ module.exports = function DBCore(){
 
    this.movePlayer=function(joueur,socket,serverRoomManager){
       //On regarde si on se connecte en visiteur
-      if(joueur.pseudo=='visiteur'){
+      if(joueur.pseudo.substr(0,8)=='visiteur'){
          var joueurId=serverRoomManager.addJoueur(joueur.pseudo, socket, joueur.idMap);
          var nouveauPseudo = 'visiteur_' + joueurId;
          socket.broadcast.to('tchat-'+joueur.idMap).emit('broadcast_msg', {'message': nouveauPseudo + ' a rejoint la partie.', 'class': 'tchat-game-event'});

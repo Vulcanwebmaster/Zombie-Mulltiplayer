@@ -194,6 +194,8 @@ function GameCore(pseudo,mdp){
 				gameMap.clearMapFull();
 				return false;
 			});
+			//Par défaut on "force" l'affichage de l'ecran des serveurs
+			$('#show_serveurs').click();
 		});
 
 		this.socket.on('response_account_informations', function(datas){
@@ -349,10 +351,7 @@ function GameCore(pseudo,mdp){
 				OPTIONS.sound_enabled=!OPTIONS.sound_enabled;
 			}
 			if(key==KEYS.ETOILE ||key==KEYS.ETOILE2){
-				if($('#debug').css('display')=='none')
-					$('#debug').css({'display':'block'});
-				else
-					$('#debug').css({'display':'none'});
+				$('#debug').toggle();
 			}
 			if(key==KEYS.EFFACER){
 				e.preventDefault();

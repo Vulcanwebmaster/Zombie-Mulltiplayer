@@ -24,13 +24,11 @@ module.exports = function ServerRoomManager(io, dbCore)
 		this.listeMap[this.nombreMaps++]=this.getNewServerMap();
 		this.listeMap[0].id=0;
 		this.listeMap[0].nom='ACCUEIL';
-		this.listeMap[0].type='AUCUN';
+		this.listeMap[0].type='DETENTE';
 		var options={id:0,vagues:false,hauteur:448, largeur:630, map:'/img/accueil.jpg', 
 					objets : {
 						0:{classe:'mur-accueil', x:'0px', y:'368px'}, 
-						1:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:240},
-						2:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:140},
-						3:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:340}
+						1:{classe:'map-text', text:'Cliquez sur "Changer de Map" pour choisir une carte ou jouer.', x:10, y:340}
 					}
 					};
 		this.listeMap[0].serverMap=new ServerMap(io, characterManager, dbCore, options);
@@ -48,7 +46,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 						}
 						};
 		//Création de plusieurs map PLAINE
-		for(var i =0 ; i < 5 ; i++){
+		for(var i =0 ; i < 9 ; i++){
 			/** PLAINE **/
 			this.listeMap[this.nombreMaps]=this.getNewServerMap();
 			this.listeMap[this.nombreMaps].id=this.nombreMaps;
@@ -92,7 +90,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 		if(datas == undefined) return;
         if(datas.message == undefined) return;
         //On regarde si c'est une commande spéciale
-        var specialCommandResult = '';//this.specialCommandProcessing(pseudo, datas.message)
+        var specialCommandResult = this.specialCommandProcessing(socket, datas.message)
         if( specialCommandResult != ''){
             socket.emit('broadcast_msg', {message:specialCommandResult});
         }
@@ -111,7 +109,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 	this.addJoueur=function(pseudo, socket, idMap){
 		this.joinRoom(socket, idMap);
 		var playerId=this.listeMap[idMap].serverMap.addJoueur(pseudo, socket);
-		this.listeOnlinePlayers[socket.id]={pseudo:pseudo, id:playerId, idMap:idMap};
+		this.listeOnlinePlayers[socket.id]={pseudo:'visiteur_'+playerId, rang:0, id:playerId, idMap:idMap};
 		//on envoi au joueur les infos de la map
 		var serverMap=this.getLinkedServerMap(socket);
 		socket.emit('info_map', {x:serverMap.widthMap, y:serverMap.heightMap, file:serverMap.mapFile, objets:serverMap.mapObjects});
@@ -125,7 +123,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 	this.addJoueurFromDB=function(infoDB, socket, idMap){
 		this.joinRoom(socket, idMap);
 		var playerId=this.listeMap[idMap].serverMap.addJoueurFromDB(infoDB, socket);
-		this.listeOnlinePlayers[socket.id]={pseudo:infoDB.pseudo, id:playerId, idMap:idMap};
+		this.listeOnlinePlayers[socket.id]={pseudo:infoDB.pseudo, rang:infoDB.rang, id:playerId, idMap:idMap};
 		//on envoi au joueur les infos de la map
 		var serverMap=this.getLinkedServerMap(socket);
 		socket.emit('info_map', {x:serverMap.widthMap, y:serverMap.heightMap, file:serverMap.mapFile, objets:serverMap.mapObjects});
@@ -152,11 +150,11 @@ module.exports = function ServerRoomManager(io, dbCore)
 
 	this.changeMap=function(socket, idMap){
 		var currentMapId=this.listeOnlinePlayers[socket.id].idMap;
-		this.leaveRoom(socket, currentMapId);
 		
 		if(idMap==currentMapId)return;
 
 		if(this.listeMap[idMap]!=undefined){
+			this.leaveRoom(socket, currentMapId);
 			var joueur = this.listeOnlinePlayers[socket.id];
 			io.sockets.in('map-'+currentMapId).emit('remove_player', {'id':joueur.id});
 			io.sockets.in('tchat-'+currentMapId).emit('broadcast_msg', {'message': joueur.pseudo + ' a changé de map.', 'class':'tchat-game-event'});
@@ -199,39 +197,45 @@ module.exports = function ServerRoomManager(io, dbCore)
 
 	this.getListServers=function(response){
 		response.writeHead(200, {'Content-Type': 'text/html'});
-		response.write('<tr><th>Serveur</th><th>Type</th><th>Difficulté</th><th>Joueurs</th><th>Rejoindre</th></tr>');
+		response.write('<tr><th>Serveur</th><th>Type</th><th>Difficulté</th><th>Joueurs</th><th>Vague</th><th>Rejoindre</th></tr>');
 		for(var id in this.listeMap){
 			var serveur = this.listeMap[id];
-			response.write('<tr><td>'+ serveur.nom +'</td><td>'+ serveur.type +'</td><td>'+ serveur.niveau +'</td><td>'+serveur.serverMap.getOnlinePlayers() +'/10</td><td><a class="joinServerButton" data-id-map="'+id+'" href="#">Rejoindre</a></td></tr>');
+			response.write('<tr><td>'+ serveur.nom +'</td><td>'+ serveur.type +'</td><td>'+ serveur.niveau +'</td><td>'+serveur.serverMap.getOnlinePlayers() +'/10</td><td>'+serveur.serverMap.currentWave+'</td><td><a class="joinServerButton" data-id-map="'+id+'" href="#">Rejoindre</a></td></tr>');
 		}
 		response.end();
 	}
 
-	this.specialCommandProcessing=function(pseudo, string){
+	this.specialCommandProcessing=function(socket, string){
 		//Tout à changer ici. surtout les gettesr via pseudo, ce n'est plus vrai)
 	    var result='';
 	    if(string=="/help"){
 	        result='Liste des commandes : /help (donne la liste des commandes), /who (donne la liste des joueurs en ligne)';
-	        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+	        if(this.listeOnlinePlayers[socket.id]!=undefined && this.listeOnlinePlayers[socket.id].rang>0){
 	            result+=', /list (affiche la liste des joueurs avec leur ID), /kick ID (kick le joueur ID), /annonce MSG (affiche un message type annonce)';
 	        }
 	    }
 	    else if(string=="/who"){
-	        result=serverMap.getListeJoueursStr();
+	        result=this.getLinkedServerMap(socket).getListeJoueursStr();
+	    }
+	    else if(string.substr(0,3)=="/me"){
+	    	var pseudo=this.listeOnlinePlayers[socket.id].pseudo;
+	    	io.sockets.in('tchat-'+this.getLinkedServerMap(socket).id).emit('broadcast_msg',
+	    			{'message': pseudo + string.substr(3,string.length), 'class':'tchat-game-event'});
+	    	result=' ';
 	    }
 	    else if(string=="/getCurrentWave"){
-	        result=serverMap.currentWave + ' (vague courante)';
+	        result=this.getLinkedServerMap(socket).currentWave + ' (vague courante)';
 	    }
 	    else if(string=="/list"){
 	        //Commande d'admin, qui list les joueurs avec leur ID pour les kicker/ban
-	        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
-	            result=serverMap.getListeJoueursWithIDStr();
+	        if(this.listeOnlinePlayers[socket.id]!=undefined && this.listeOnlinePlayers[socket.id].rang>0){
+	            result=this.getLinkedServerMap(socket).getListeJoueursWithIDStr();
 	        }
 	        else
 	            result="Vous n'avez pas les droits.";
 	    }
-	    else if(string.substr(0,5)=="/kick"){
-	        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+	    /*else if(string.substr(0,5)=="/kick"){
+	        if(this.listeOnlinePlayers[socket.id]!=undefined && this.listeOnlinePlayers[socket.id].rang>0){
 	            if(string.length>=6){
 	                var id = parseInt(string.substring(6,string.length));
 	                var playerToKick = serverMap.getJoueur(id);
@@ -250,7 +254,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 	            result="Vous n'avez pas les droits.";
 	    }
 	    else if(string.substr(0,4)=="/ban"){
-	        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>=2){
+	        if(this.listeOnlinePlayers[socket.id]!=undefined && this.listeOnlinePlayers[socket.id].rang>=2){
 	            if(string.length>=5){
 	                var id = parseInt(string.substring(5,string.length));
 	                var playerToBan = serverMap.getJoueur(id);
@@ -268,9 +272,9 @@ module.exports = function ServerRoomManager(io, dbCore)
 	        }
 	        else
 	            result="Vous n'avez pas les droits.";
-	    }
+	    }*/
 	    else if(string.substr(0,8)=="/annonce"){
-	        if(listeOnlinePlayers[pseudo]!=undefined && listeOnlinePlayers[pseudo].rang>0){
+	        if(this.listeOnlinePlayers[socket.id]!=undefined && this.listeOnlinePlayers[socket.id].rang>0){
 	            io.sockets.emit('broadcast_msg', {auteur:'SERVEUR', message:string.substr(9, string.length), class:'tchat-admin'});
 	            result="Commande OK";
 	        }

@@ -27,7 +27,11 @@ pouvoir cacher le tchat
 remettre les zombies IDLE quand ils sont loin de tout ?
 bonus firstblood
 description armes dans bestiaire
+afficher la progressino de la vague (zombies tués + joueurs restants)
 faire du templating pour pied de page et header
+afficher qui est en ligne
+trouver un buff à mettre aux survivants d'une vague pour limiter les suicides
+partager le zombiz slayer en cas d'égalité
 
 *** calculer la taille avec un JSON.stringify(data).length
 *** alléger les échanges (reduire la taille des keys des "temporary", voir pour supprimer des trucs mais ça parait dur)
@@ -59,4 +63,4 @@ Idées :
 
 *************************************************************************************
 
---- v 0.9.4 alpha (201304014)
+--- v 0.9.4.1 alpha (201304014)

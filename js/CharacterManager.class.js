@@ -475,7 +475,7 @@ module.exports = function CharacterManager(){
     if(item.id<=6){
       if(perso.attaque.id < item.id){
         perso.attaque=this.creationArme(item.id);
-        return 'J\'ai trouvé un '+ perso.attaque.nom +'!';
+        return perso.pseudo + ' a trouvé un '+ perso.attaque.nom +'!';
       }
       else return '';
     }
@@ -487,7 +487,7 @@ module.exports = function CharacterManager(){
       perso.addBuff('adrenaline');
       return '';
     }
-    return "J'ai ramassé un objet non identitifé";
+    return perso.pseudo + " a ramassé un objet non identitifé";
   }
 
   this.listToNetwork=function(liste){
