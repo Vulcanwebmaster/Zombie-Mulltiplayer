@@ -32,6 +32,9 @@ faire du templating pour pied de page et header
 afficher qui est en ligne
 trouver un buff à mettre aux survivants d'une vague pour limiter les suicides
 partager le zombiz slayer en cas d'égalité
+si la vague est  -1, alors on met "aucune" dans la liste des serveurs
+afficher en rouge le "vous êtes spectateur"
+changer le nom des maps de PLAINE vers SF_CAMPUS
 
 *** calculer la taille avec un JSON.stringify(data).length
 *** alléger les échanges (reduire la taille des keys des "temporary", voir pour supprimer des trucs mais ça parait dur)
