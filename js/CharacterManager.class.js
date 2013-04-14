@@ -245,7 +245,7 @@ module.exports = function CharacterManager(){
                 this.alive=false;
                 this.isFiring=false;
                 this.directions={haut:false,bas:false,gauche:false,droite:false};
-                instance.io.sockets.emit('player_die', this);
+                instance.io.sockets.in('map-'+instance.id).emit('player_die', this);
                 instance.testFinPartie();
             },
             revive:function(characterManager){

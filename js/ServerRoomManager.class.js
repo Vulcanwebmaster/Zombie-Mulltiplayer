@@ -159,7 +159,7 @@ module.exports = function ServerRoomManager(io, dbCore)
 		if(this.listeMap[idMap]!=undefined){
 			var joueur = this.listeOnlinePlayers[socket.id];
 			io.sockets.in('map-'+currentMapId).emit('remove_player', {'id':joueur.id});
-			io.sockets.in('tchat-'+currentMapId).emit('broadcast_msg', {'message': joueur.pseudo + ' a quitté la partie.', 'class':'tchat-game-event'});
+			io.sockets.in('tchat-'+currentMapId).emit('broadcast_msg', {'message': joueur.pseudo + ' a changé de map.', 'class':'tchat-game-event'});
 			this.getLinkedServerMap(socket).removeJoueur(joueur.id);
 			joueur.idMap=parseInt(idMap);
 			dbCore.movePlayer(joueur,socket, this);
