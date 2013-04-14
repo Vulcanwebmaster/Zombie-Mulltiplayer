@@ -88,6 +88,8 @@ src: url('HUD.ttf') format('truetype');
 }
 .arbre1{opacity:0.8;width:155px;height:198px;z-index: 20;background-image:url('/img/arbre1.png');background-repeat: no-repeat;}
 .arbre2{opacity:0.8;width:152px;height:198px;z-index: 20;background-image:url('/img/arbre2.png');background-repeat: no-repeat;}
+.mur-accueil{opacity: 0.8;width:630px;height: 79px;z-index:20;background-image: url('/img/mur_accueil.png');background-repeat: no-repeat;}
+.map-text{font-size: 23px;color: white;font-family: headerFont;}
 
 /****************  CSS HUD  ***************** */
 #hud{

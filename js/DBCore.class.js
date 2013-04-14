@@ -1,6 +1,10 @@
 //Masque de dates à utiliser pour les log
 var dateToLog=function(date){
-    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+   var minutes = date.getMinutes()<10 ? '0' + date.getMinutes() : date.getMinutes();
+   var heures = date.getHours()<10 ? '0' + date.getHours() : date.getHours();
+   var jours = date.getDate()<10 ? '0' + date.getDate() : date.getDate();
+   var mois = date.getMonth()+1<10 ? '0' + (date.getMonth()+1) : date.getMonth()+1;
+   return '[' + jours + '/' + mois + ' ' + heures + ':' + minutes + '] ';
 }
 var s=function(n){
    return n>1 ? 's' : '';

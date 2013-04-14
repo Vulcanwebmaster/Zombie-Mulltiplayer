@@ -1,7 +1,11 @@
 
 //Masque de dates à utiliser pour les log
 var dateToLog=function(date){
-    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+   var minutes = date.getMinutes()<10 ? '0' + date.getMinutes() : date.getMinutes();
+   var heures = date.getHours()<10 ? '0' + date.getHours() : date.getHours();
+   var jours = date.getDate()<10 ? '0' + date.getDate() : date.getDate();
+   var mois = date.getMonth()+1<10 ? '0' + (date.getMonth()+1) : date.getMonth()+1;
+   return '[' + jours + '/' + mois + ' ' + heures + ':' + minutes + ']';
 }
 
 /*Classe qui gère tout les calculs sur la map*/
@@ -102,7 +106,8 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
          delete this.listeSpectateurs[id];
       if(this.listeAttente[id])
          delete this.listeAttente[id];
-      this.testVeilleServeur();
+      if(this.isRunning)
+         this.testVeilleServeur();
    }
    this.switchSpectateur=function(id){
       if(this.listeJoueurs[id] || this.listeAttente[id]){
@@ -184,7 +189,7 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
          return;
       this.vagueEnTrainDeSeLancer=true;
       this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg',  {message:'Lancement de la vague ' + id + '...', class:'tchat-game-event'});
-      console.log(dateToLog(new Date) + 'Lancement de la vague ' + id);
+      console.log(dateToLog(new Date) + this.serverInfo()+  'Lancement de la vague ' + id);
       var _this=this;
       setTimeout(function(){
          //_this.io.sockets.emit('broadcast_msg', {'message':'Une vague de zombies approche !', 'class':'tchat-game-event'});
@@ -634,7 +639,7 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
       }
       if(fin){
          this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'message':'Fin de partie.', 'class':'tchat-game-event'});
-         console.log(dateToLog(new Date) + "La partie est terminée.");
+         console.log(dateToLog(new Date) + this.serverInfo()+  "La partie est terminée.");
          for(var idPerso in this.listeJoueurs){
             this.io.sockets.in('tchat-'+this.id).emit('broadcast_msg', {'auteur': this.listeJoueurs[idPerso].pseudo, 'message':'J\'ai tué ' + this.listeJoueurs[idPerso].kills + ' zombies.'});
          }
@@ -687,7 +692,7 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
       if(this.getOnlinePlayers()>0)
          ilResteDesJoueurs=true;
       if(!ilResteDesJoueurs){
-         console.log(dateToLog(new Date) + 'Tous les joueurs ont quitté la partie, on met le serveur en veille.')
+         console.log(dateToLog(new Date) + this.serverInfo()+ 'Tous les joueurs ont quitté mise en veille.')
          this.stop();
          this.currentWave=-1;
          this.nbZombies=0;
@@ -721,6 +726,10 @@ module.exports = function ServerMap(io,characterManager, dbCore, options)
             delete this.listeDroppables[idDroppable];
          }
       }
+   }
+
+   this.serverInfo=function(){
+      return "[SERVEUR " + this.id + '] ';
    }
 
    this.widthMap=options.largeur||2000;

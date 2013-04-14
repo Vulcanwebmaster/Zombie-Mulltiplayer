@@ -190,7 +190,6 @@ function GameCore(pseudo,mdp){
 			//On ajoute les fonctionnalités des trucs pour join le serveur
 			$('body').delegate('.joinServerButton', 'click', function(){
 				gameCore.changeMap($(this).attr('data-id-map'));
-				console.log('click sur ' + $(this).attr('data-id-map'));
 				$('.fenetreInfosPlateau').fadeOut();
 				gameMap.clearMapFull();
 				return false;

@@ -32,10 +32,14 @@
 		</div>
 		<div id="wrapperConnect">
 			<form id="formConnect" onsubmit="return false;" style="text-align:center;">
-				<input type="text" id="champs-pseudo" placeholder="Votre pseudo"/><br/>
+				<!--<input type="text" id="champs-pseudo" placeholder="Votre pseudo"/><br/>
 				<input type="password" id="champs-mdp" placeholder="Votre mdp"/><br/>
 				<button class="btn btn-primary" id="envoiConnex">Valider</button><br/>
-				<span id="infos"></span>
+				<span id="infos"></span>-->
+				<p class="alert alert-error">
+					L'interface admin est pour le moment désactivée. Puisqu'elle n'est pas compatible avec la version 0.9.4a.<br/>
+					Je vous tiendrai au courant pour sa réintroduction. (nécessaire pour pouvoir modérer plusieurs map sans être dessus);
+				</p>
 			</form>
 		</div>
 	</div>
@@ -173,6 +177,7 @@
 		$('#formConnect').submit(function(){
 			tryConnexion($('#champs-pseudo').val(), $('#champs-mdp').val());
 			$('#connectedAs').text($('#champs-pseudo').val());
+			$('#infos').text('Connexion en cours...');
 			return false;
 		});
 		$('#champs-pseudo').focus();

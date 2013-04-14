@@ -611,7 +611,8 @@ function GameMap(){
 		$('#map').empty();
 		//On fini par ajouter les items spéciaux
 		for(var id in datas.objets){
-
+			var item=datas.objets[id];
+			$('#map').append($('<div>').attr('class', 'map-item ' + item.classe).css({top:item.y, left:item.x}).text(item.text!=undefined?item.text:''));
 		}
 	}
 

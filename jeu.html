@@ -45,12 +45,16 @@
 		<!-- 55 x 62 -->
 		<!--<div class="fb-like" data-href="https://www.facebook.com/ZombizTeamSurvival" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial" data-colorscheme="dark"></div>-->
 		<p style="color:white;background-color:#a92a28;padding:5px">Jeu en cours de développement (alpha).<br/>
-		 Bug ? Suggestions ? Envoyer un mail ici : <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a> ou ajoutez moi sur skype : <strong>whiteslash28</strong>.<br/>
-A venir : gestion de plusieurs map (differentes map et differents niveaux de difficulte...), partie RPG (niveaux, competences...), arsenal d'armes et inventaires ! Suivez l'actualite de Zombiz sur facebook pour les infos et les evenements !
+		 Bug ? Suggestions ? Envoyer un mail ici : <a href="mailto:zombiz.dev@gmail.com">zombiz.dev@gmail.com</a> ou ajoutez moi sur skype : <strong>whiteslash28</strong>.
 		</p>
-		<p style="color:white;background-color:#666666;padding:5px">
-		Les 10 premiers joueurs en date du 4 avril 2013 ont débloqué un skin exclusif : membre du S.W.A.T. Pour les autres, vous pouvez sélectionner votre skin dans le menu "Boutique" une fois connecté.
-		</p>
+		<div id="infoFB">
+			<div style="float:left;margin:3px;margin-right:10px;" class="fb-like" data-href="https://www.facebook.com/ZombizTeamSurvival" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial" data-colorscheme="dark"></div>
+			<p style="color:white;background-color:#666686;padding:5px">
+				On se retrouve sur facebook pour les évènements et concours à venir.<br/>
+				Envie de nouveaux skins ? D'être au courant des prochaines nouveautés ?<br/>
+				Alors rejoignez la page facebook et devenez fan de Zombiz ! N'oubliez pas d'inviter vos amis, Zombiz est fun à plusieurs ;)
+			</p>
+		</div>
 		<div id="menu">
 			<span data-id="spec" id="passerSpectateur">Mode spectateur</span>
 			<span id="rejoindrePartie">Rejoindre la prochaine vague</span>
@@ -62,14 +66,6 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 
 		<div id="plateau">
 			<div id="map">
-				<!-- Ajout des arbres -->
-				<div class="map-item arbre1" style="left:60px;top:880px;"></div>
-				<div class="map-item arbre2" style="left:750px;top:400px;"></div>
-				<div class="map-item arbre1" style="left:1000px;top:-40px;"></div>
-				<div class="map-item arbre1" style="left:1200px;top:-70px;"></div>
-				<div class="map-item arbre1" style="left:1100px;top:20px;"></div>
-				<div class="map-item arbre2" style="left:1220px;top:90px;"></div>
-				<div class="map-item arbre1" style="left:1120px;top:160px;"></div>
 			</div><!-- div#map -->
 
 			<div id="tchat">
@@ -203,7 +199,7 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 				<a href="http://www.yootheme.com/icons" target="_blank">Social icons by YOOtheme</a>
 			</p>
 			<p id="copyright">Copyright ©2013</p>
-			<p id="version">Version 0.9.3.5 alpha (20130407)</p>
+			<p id="version">Version 0.9.4 alpha (20130414)</p>
 		</footer>
 	</div><!-- div#wrapper -->
 
@@ -218,13 +214,13 @@ A venir : gestion de plusieurs map (differentes map et differents niveaux de dif
 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	</script>
-	<!-- <div id="fb-root"></div>
-	<script>/*(function(d, s, id) {
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
 	  if (d.getElementById(id)) return;
 	  js = d.createElement(s); js.id = id;
 	  js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1";
 	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));*/</script>-->
+	}(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>

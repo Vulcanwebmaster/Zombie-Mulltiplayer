@@ -1,6 +1,10 @@
 //Masque de dates à utiliser pour les log
 var dateToLog=function(date){
-    return '[' + date.getDate() + '/' + (date.getMonth() +1) + ' ' + date.getHours() + ':' + date.getMinutes() + '] ';
+   var minutes = date.getMinutes()<10 ? '0' + date.getMinutes() : date.getMinutes();
+   var heures = date.getHours()<10 ? '0' + date.getHours() : date.getHours();
+   var jours = date.getDate()<10 ? '0' + date.getDate() : date.getDate();
+   var mois = date.getMonth()+1<10 ? '0' + (date.getMonth()+1) : date.getMonth()+1;
+   return '[' + jours + '/' + mois + ' ' + heures + ':' + minutes + '] ';
 }
 
 var CharacterManager=require('./CharacterManager.class.js');
@@ -21,17 +25,38 @@ module.exports = function ServerRoomManager(io, dbCore)
 		this.listeMap[0].id=0;
 		this.listeMap[0].nom='ACCUEIL';
 		this.listeMap[0].type='AUCUN';
-		//mettre des spec et les envoyer dans la servermap
-		var options={id:0,vagues:false,hauteur:448, largeur:630, map:'/img/accueil.jpg', objets : {}};
+		var options={id:0,vagues:false,hauteur:448, largeur:630, map:'/img/accueil.jpg', 
+					objets : {
+						0:{classe:'mur-accueil', x:'0px', y:'368px'}, 
+						1:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:240},
+						2:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:140},
+						3:{classe:'map-text', text:'Cliquez sur "Changer de Serveur" pour choisir une carte ou jouer.', x:10, y:340}
+					}
+					};
 		this.listeMap[0].serverMap=new ServerMap(io, characterManager, dbCore, options);
 
-		/** PLAINE 1 **/
-		this.listeMap[this.nombreMaps++]=this.getNewServerMap();
-		this.listeMap[1].id=1;
-		this.listeMap[1].nom='PLAINE_1';
-		//mettre des spec et les envoyer dans la servermap
-		var options={id:1,vagues:true,hauteur:1000, largeur:2000, map:'/img/map.jpg', objets : {}};
-		this.listeMap[1].serverMap=new ServerMap(io, characterManager, dbCore, options);
+		
+		var options={id:1,vagues:true,hauteur:1000, largeur:2000, map:'/img/map.jpg', 
+						objets : {
+							0:{classe:'arbre1', x:'60px', y:'880px'},
+							1:{classe:'arbre2', x:'750px', y:'400px'},
+							2:{classe:'arbre1', x:'1000px', y:'-40px'},
+							3:{classe:'arbre1', x:'1200px', y:'-70px'},
+							4:{classe:'arbre1', x:'1100px', y:'20px'},
+							5:{classe:'arbre2', x:'1220px', y:'90px'},
+							6:{classe:'arbre1', x:'1120px', y:'160px'}
+						}
+						};
+		//Création de plusieurs map PLAINE
+		for(var i =0 ; i < 5 ; i++){
+			/** PLAINE **/
+			this.listeMap[this.nombreMaps]=this.getNewServerMap();
+			this.listeMap[this.nombreMaps].id=this.nombreMaps;
+			this.listeMap[this.nombreMaps].nom='PLAINE_'+this.nombreMaps;
+			options.id=this.nombreMaps;
+			this.listeMap[this.nombreMaps].serverMap=new ServerMap(io, characterManager, dbCore, options);
+			this.nombreMaps++;
+		}
 	}
 
 	this.getNewServerMap=function(){
@@ -127,13 +152,14 @@ module.exports = function ServerRoomManager(io, dbCore)
 
 	this.changeMap=function(socket, idMap){
 		var currentMapId=this.listeOnlinePlayers[socket.id].idMap;
-		console.log('Map id : from ' + currentMapId + ' to ' + idMap);
 		this.leaveRoom(socket, currentMapId);
 		
 		if(idMap==currentMapId)return;
 
 		if(this.listeMap[idMap]!=undefined){
 			var joueur = this.listeOnlinePlayers[socket.id];
+			io.sockets.in('map-'+currentMapId).emit('remove_player', {'id':joueur.id});
+			io.sockets.in('tchat-'+currentMapId).emit('broadcast_msg', {'message': joueur.pseudo + ' a quitté la partie.', 'class':'tchat-game-event'});
 			this.getLinkedServerMap(socket).removeJoueur(joueur.id);
 			joueur.idMap=parseInt(idMap);
 			dbCore.movePlayer(joueur,socket, this);
