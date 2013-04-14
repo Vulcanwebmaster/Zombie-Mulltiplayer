@@ -158,6 +158,10 @@ module.exports = function ServerRoomManager(io, dbCore)
 			var joueur = this.listeOnlinePlayers[socket.id];
 			io.sockets.in('map-'+currentMapId).emit('remove_player', {'id':joueur.id});
 			io.sockets.in('tchat-'+currentMapId).emit('broadcast_msg', {'message': joueur.pseudo + ' a changé de map.', 'class':'tchat-game-event'});
+			
+			var playerToUpdate = this.getLinkedServerMap(socket).getJoueur(joueur.id);
+            dbCore.updatePlayerStats(playerToUpdate);
+            
 			this.getLinkedServerMap(socket).removeJoueur(joueur.id);
 			joueur.idMap=parseInt(idMap);
 			dbCore.movePlayer(joueur,socket, this);
